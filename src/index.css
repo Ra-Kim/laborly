@@ -1,0 +1,91 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+/* Custom Global Styles */
+:root {
+	--primary-color: #164EA8;
+	--dark-primary: #0d2f65;
+	--accent-color: #cdddf5;
+	--text-color: #3b4047;
+	--bg-color: #f0f6fe;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	scroll-behavior: smooth;
+}
+
+/* Apply base styles to the whole app */
+body {
+	@apply bg-[var(--bg-color)] text-[var(--text-color)] font-primaryFont leading-relaxed text-base w-[100vw] overflow-x-hidden;
+}
+
+/* Global container for consistent spacing */
+.container {
+	@apply max-w-[100rem] mx-auto py-24 px-4 md:px-12 lg:px-24;
+}
+
+/* Headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	@apply  text-gray-900 font-primaryFont font-semibold;
+}
+
+h1 {
+	@apply text-4xl md:text-5xl;
+}
+
+h2 {
+	@apply text-3xl md:text-4xl;
+}
+
+h3 {
+	@apply text-2xl md:text-3xl;
+}
+
+h4 {
+	@apply text-xl md:text-2xl;
+}
+
+/* Buttons */
+.btn {
+	@apply inline-flex items-center justify-between gap-3 p-5 sm:px-6  rounded-lg text-xs sm:text-sm font-normal transition-all duration-500 overflow-x-hidden;
+}
+
+.btn-primary {
+	@apply bg-[var(--primary-color)] text-white hover:bg-[var(--dark-primary)];
+}
+
+.btn-secondary {
+	@apply bg-[var(--secondary-color)] text-white hover:bg-[var(--dark-secondary)];
+}
+.btn-white {
+	@apply bg-[var(--accent-color)] text-[var(--primary-color)] hover:text-white hover:bg-[var(--dark-secondary)];
+}
+
+.btn-outline {
+	@apply border border-[var(--primary-color)] text-[var(--primary-color)] hover:bg-[var(--primary-color)] hover:text-white;
+}
+
+/* Links */
+a {
+	@apply text-[var(--primary-color)] hover:text-[#547efe];
+}
+
+.active {
+	@apply text-[#547efe];
+}
+
+.soft-shadow {
+	box-shadow: 0 8px 30px rgba(22, 78, 168, 0.2);
+}
+.card-shadow {
+	box-shadow: 0 5px 20px rgba(22, 78, 168, 0.15);
+}

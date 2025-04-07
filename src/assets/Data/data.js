@@ -1,0 +1,111 @@
+// data.js
+import {
+	FaHammer,
+	FaPaintRoller,
+	FaPlug,
+	FaTools,
+	FaToilet,
+	FaFan,
+	FaCogs,
+	FaCarCrash,
+	FaBroom,
+	FaTree,
+	FaLock,
+	FaFireExtinguisher,
+	FaTshirt,
+	FaTruckPickup,
+	FaWindowRestore,
+} from "react-icons/fa";
+
+export const artisanCategories = [
+	{
+		id: 1,
+		title: "Carpenters",
+		icon: FaHammer,
+		providers: 124,
+	},
+	{
+		id: 2,
+		title: "Painters",
+		icon: FaPaintRoller,
+		providers: 98,
+	},
+	{
+		id: 3,
+		title: "Electricians",
+		icon: FaPlug,
+		providers: 87,
+	},
+	{
+		id: 4,
+		title: "Plumbers",
+		icon: FaToilet,
+		providers: 76,
+	},
+	{
+		id: 5,
+		title: "AC Technicians",
+		icon: FaFan,
+		providers: 52,
+	},
+	{
+		id: 6,
+		title: "Auto Mechanics",
+		icon: FaCarCrash,
+		providers: 65,
+	},
+	{
+		id: 7,
+		title: "Welders",
+		icon: FaTools,
+		providers: 41,
+	},
+	{
+		id: 8,
+		title: "Technicians",
+		icon: FaCogs,
+		providers: 103,
+	},
+	{
+		id: 9,
+		title: "Cleaners",
+		icon: FaBroom,
+		providers: 89,
+	},
+	{
+		id: 10,
+		title: "Gardeners",
+		icon: FaTree,
+		providers: 72,
+	},
+	{
+		id: 11,
+		title: "Security Experts",
+		icon: FaLock,
+		providers: 38,
+	},
+	{
+		id: 12,
+		title: "Fire Safety",
+		icon: FaFireExtinguisher,
+		providers: 22,
+	},
+	{
+		id: 13,
+		title: "Tailors",
+		icon: FaTshirt,
+		providers: 49,
+	},
+	{
+		id: 14,
+		title: "Movers",
+		icon: FaTruckPickup,
+		providers: 34,
+	},
+	{
+		id: 15,
+		title: "Window Installers",
+		icon: FaWindowRestore,
+		providers: 29,
+	},
+];
