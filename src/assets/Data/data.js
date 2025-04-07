@@ -109,3 +109,51 @@ export const artisanCategories = [
 		providers: 29,
 	},
 ];
+
+export const testimonials = [
+	{
+		id: 1,
+		name: "Chinedu Okafor",
+		role: "Homeowner, Lagos",
+		message:
+			"Laborly connected me with a reliable electrician in just minutes. The process was smooth and stress-free!",
+		image: "/images/testimonials/chinedu.jpg",
+		rating: 5,
+	},
+	{
+		id: 2,
+		name: "Aisha Bello",
+		role: "Business Owner, Abuja",
+		message:
+			"I needed urgent plumbing work at my shop and Laborly delivered! Fast service and great professionals.",
+		image: "/images/testimonials/aisha.jpg",
+		rating: 4,
+	},
+	{
+		id: 3,
+		name: "Tunde Balogun",
+		role: "Construction Manager, Ibadan",
+		message:
+			"Laborly makes it super easy to find trustworthy artisans. I highly recommend it to anyone managing projects.",
+		image: "/images/testimonials/tunde.jpg",
+		rating: 5,
+	},
+	{
+		id: 4,
+		name: "Grace Nwankwo",
+		role: "Interior Designer, Port Harcourt",
+		message:
+			"The handyman I hired through Laborly exceeded my expectations. Punctual, professional, and skilled!",
+		image: "/images/testimonials/grace.jpg",
+		rating: 5,
+	},
+	{
+		id: 5,
+		name: "Joseph Adeyemi",
+		role: "Landlord, Enugu",
+		message:
+			"It's hard to find reliable artisans, but Laborly really came through. Now I use it for all my rental properties.",
+		image: "/images/testimonials/joseph.jpg",
+		rating: 4,
+	},
+];

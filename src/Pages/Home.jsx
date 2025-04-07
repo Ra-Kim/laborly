@@ -1,7 +1,9 @@
 import React from 'react'
 import { BsArrowRight } from "react-icons/bs";
 import manImage from '../assets/man-image.png'
+import clientImage from '../assets/client.png'
 import CategorySection from '../Components/CategorySection';
+import Footer from '../Components/Footer';
 const Home = () => {
   return (
     <>
@@ -30,9 +32,47 @@ const Home = () => {
       </section>
       {/*  */}
       <CategorySection />
+      {/*  */}
+      <section className="grid grid-cols-1 md:grid-cols-2 bg-darkPrimary rounded-lg mx-auto w-[90%] px-6 md:px-14 py-10 text-gray-50 relative overflow-visible">
+        {/* Text Content */}
+        <div className="flex flex-col justify-center z-10">
+          <h2 className="text-5xl text-gray-50 md:text-6xl lg:text-6xl font-bold mb-4 max-w-md leading-tight">
+            Hire an expert Labourer today!
+          </h2>
+          <p className="text-[.7rem] sm:text-sm text-gray-200 leading-relaxed max-w-sm">
+            Connect with skilled and reliable labourers near you—ready to tackle your
+            home repairs, installations, or maintenance tasks with precision and care.
+            Fast, easy, and stress-free hiring starts here.
+          </p>
+
+          <div className="mt-6">
+            <button className="btn btn-primary flex items-center gap-2 hover:bg-white hover:text-primary transition-all">
+              Get Started For Free! <BsArrowRight className="text-lg" />
+            </button>
+          </div>
+        </div>
+
+        {/* Image */}
+        <div className="relative flex items-end justify-end mt-10 ml-50 md:mt-0">
+          <img
+            src={clientImage}
+            alt="Labourer"
+            className="w-[30rem] max-w-lg -mt-20 md:-mt-28 lg:-mt-36 z-20 "
+          />
+        </div>
+      </section>
 
 
+      <section className='container'>
+        <h2>What our users say about us</h2>
 
+
+        <div>
+
+        </div>
+      </section>
+
+      <Footer/>
     </>
   )
 }
