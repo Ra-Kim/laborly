@@ -50,10 +50,10 @@ const Home = () => {
       <CategorySection />
       {/*  */}
       <FeaturedExperts />
-      <section className="grid grid-cols-1 md:grid-cols-2 bg-darkPrimary rounded-lg mx-auto w-[90%] px-6 md:px-14 py-10 text-gray-50 relative overflow-visible">
+      <section className="grid grid-cols-1 md:grid-cols-2 bg-darkPrimary rounded-lg mx-auto w-[90%] px-6 md:px-14 pt-10 text-gray-50 relative overflow-visible overflow-x-hidden ">
         {/* Text Content */}
         <div className="flex flex-col justify-center z-10">
-          <h2 className="text-5xl text-gray-50 md:text-6xl lg:text-6xl font-bold mb-4 max-w-md leading-tight">
+          <h2 className="text-[2.4rem] text-gray-50 md:text-5xl lg:text-6xl font-bold mb-4 max-w-lg leading-tight">
             Hire an expert Labourer today!
           </h2>
           <p className="text-[.7rem] sm:text-sm text-gray-200 leading-relaxed max-w-sm">
@@ -70,11 +70,11 @@ const Home = () => {
         </div>
 
         {/* Image */}
-        <div className="relative flex items-end justify-end mt-10 ml-50 md:mt-0">
+        <div className="relative flex items-end justify-end mt-10 ml-50 md:mt-0 ">
           <img
             src={clientImage}
             alt="Labourer"
-            className="w-[30rem] max-w-lg -mt-20 md:-mt-28 lg:-mt-36 z-20 "
+            className="w-[50rem] max-w-xl -mt-36 md:-mt-28 lg:-mt-36 z-20 -mr-48 lg:-mr-0"
           />
         </div>
       </section>

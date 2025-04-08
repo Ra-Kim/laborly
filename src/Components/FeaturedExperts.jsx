@@ -77,7 +77,7 @@ const FeaturedExperts = () => {
 
 
             <div className='flex items-center justify-center mx-auto my-5'>
-                <button className=" btn btn-primary py-4 flex items-center w-[30%] text-center justify-center gap-3">View All <BsArrowRight /></button>
+                <button className=" btn btn-primary py-4 flex items-center w-full sm:w-[30%] text-center justify-center gap-3">View All <BsArrowRight /></button>
             </div>
 
         </section >

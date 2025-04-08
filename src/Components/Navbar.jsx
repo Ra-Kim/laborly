@@ -26,7 +26,7 @@ const NavBar = () => {
                     <img
                         src={logo}
                         alt="Laborly-logo"
-                        className="w-[3rem] sm:w-[5rem] md:w-[7rem] max-w-24"
+                        className="w-[5rem] md:w-[7rem] max-w-24"
                     />
                 </div>
 
@@ -75,7 +75,7 @@ const NavBar = () => {
                         <img
                             src={logo}
                             alt="Laborly logo"
-                            className="w-[3rem] sm:w-[5rem] md:w-[7rem] max-w-24"
+                            className="w-[7rem] max-w-24"
                         />
                     </div>
                     <ul className="pt-20 p-5 flex flex-col items-left justify-center text-base gap-12 font-normal text-primary">
