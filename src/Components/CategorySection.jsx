@@ -7,14 +7,14 @@ const CategorySection = () => {
         <>
             <section className='px-6 py-10 md:px-20'>
                 <div className='flex items-center justify-between'>
-                    <h3 className='text-gray-900 font-secondaryFont text-sm sm:text-base'>Explore by <span className='text-primary'>category</span> </h3>
+                    <h3 className='text-gray-900 font-secondaryFont text-2xl sm:text-3xl md:text-4xl font-bold text-center'>Explore by <span className='text-primary'>category</span> </h3>
                     <div>
                         <h5 className='flex items-center justify-center gap-3 font-normal text-primary text-[.7rem] sm:text-sm'>Show all<BsArrowRight /></h5>
                     </div>
                 </div>
 
                 {/*  */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 py-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 py-10">
                     {artisanCategories.slice(0, 6).map((categoryData) => {
                         const Icon = categoryData.icon;
                         return (

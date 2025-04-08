@@ -1,7 +1,7 @@
 
 import React from "react";
 import { FaStar, FaRegStar } from "react-icons/fa"; // Icons for full, half, and empty stars
-import { testimonials } from "../assets/Testimonial";
+import { testimonials } from "../assets/Data/data";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
@@ -14,11 +14,7 @@ const Testimonials = () => {
         <section>
             <div className="container text-center">
 
-                <h2 className="font-workSans text-darkPrimary text-center text-4xl">
-                    Testimonials
-                </h2>
-                <span className="flex mx-auto h-[.1rem] w-[5rem] bg-primary my-2"></span>
-                <p>See what our clients are saying</p>
+                <h2>What our users say about us</h2>
 
 
                 <div className="">
@@ -48,7 +44,7 @@ const Testimonials = () => {
                         {testimonials.map((testimonial) => (
                             <SwiperSlide
                                 key={testimonial.id}
-                                className="flex flex-col relative items-center justify-start gap-3 py-8  px-4 rounded-md bg-white soft-shadow my-14 cursor-pointer">
+                                className="flex flex-col relative items-center justify-start gap-3 py-8  px-4 rounded-xl bg-white soft-shadow my-14  cursor-pointer">
                                 {/* Image container */}
                                 <div className="w-14 h-14 flex items-center justify-center m-auto rounded-full border-4 border-white shadow-lg  ">
                                     <RiAccountPinCircleFill className="text-2xl" />
@@ -57,13 +53,13 @@ const Testimonials = () => {
                                 <div>
                                     {/* Testimonial content */}
                                     <p className="text-xm text-center text-gray-600 mt-5 text-sm">
-                                        {testimonial.testimonial}
+                                        {testimonial.message}
                                     </p>
                                     <h3 className="text-center text-xl mt-5 text-darkPrimary">
                                         {testimonial.name}
                                     </h3>
                                     <p className="text-primary text-xm text-center text-xs">
-                                        {testimonial.title}
+                                        {testimonial.role}
                                     </p>
                                     <div className=" text-sm flex items-center justify-center m-auto my-2 text-center text-secondary">
                                         {Array.from({ length: 5 }, (_, index) => (

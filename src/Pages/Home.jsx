@@ -1,17 +1,33 @@
 import React from 'react'
+import { Typewriter } from 'react-simple-typewriter';
 import { BsArrowRight } from "react-icons/bs";
 import manImage from '../assets/man-image.png'
 import clientImage from '../assets/client.png'
 import CategorySection from '../Components/CategorySection';
 import Footer from '../Components/Footer';
+import Testimonials from '../Components/Testimonials';
+import FeaturedExperts from '../Components/FeaturedExperts';
 const Home = () => {
   return (
     <>
       <section className="w-full min-h-screen px-6 md:px-20 py-16 flex flex-col-reverse md:flex-row items-center justify-center gap-10 bg-gradient-to-br from-[#f1f7ff] to-white">
         {/* Text Section */}
         <div className="w-full md:w-1/2 text-center md:text-left">
-          <h2 className="font-secondaryFont font-bold text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-tight">
-            Find quality Handymen fast with <span className="text-primary">Laborly.</span>
+
+          <h2 className="font-secondaryFont font-bold text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-tight text-center md:text-left">
+            Find quality{' '}
+            <span className="text-primary">
+              <Typewriter
+                words={['Handymen', 'Plumbers', 'Electricians', 'Painters']}
+                loop={0}
+                cursor
+                cursorStyle="|"
+                typeSpeed={200}
+                deleteSpeed={100}
+                delaySpeed={1200}
+              />
+            </span>{' '}
+            fast with <span className="text-primary">Laborly.</span>
           </h2>
 
           <p className="mt-4 text-gray-600 text-base md:text-lg leading-[1.4] md:leading-[1.2]  max-w-xl">
@@ -33,6 +49,7 @@ const Home = () => {
       {/*  */}
       <CategorySection />
       {/*  */}
+      <FeaturedExperts />
       <section className="grid grid-cols-1 md:grid-cols-2 bg-darkPrimary rounded-lg mx-auto w-[90%] px-6 md:px-14 py-10 text-gray-50 relative overflow-visible">
         {/* Text Content */}
         <div className="flex flex-col justify-center z-10">
@@ -62,17 +79,10 @@ const Home = () => {
         </div>
       </section>
 
+      {/*  */}
+      <Testimonials />
 
-      <section className='container'>
-        <h2>What our users say about us</h2>
-
-
-        <div>
-
-        </div>
-      </section>
-
-      <Footer/>
+      <Footer />
     </>
   )
 }

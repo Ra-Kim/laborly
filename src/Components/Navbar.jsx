@@ -20,7 +20,7 @@ const NavBar = () => {
 
     return (
         <div className="fixed top-0 w-full z-50">
-            <div className="w-full static z-50 flex items-center justify-between bg-white py-3 px-5 sm:py-3 sm:px-10">
+            <div className="w-full static z-50 flex items-center justify-between bg-white py-3 px-5 sm:py-3 sm:px-10 soft-shadow">
                 {/* Logo */}
                 <div>
                     <img
