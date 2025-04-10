@@ -10,9 +10,6 @@ const FeaturedExperts = () => {
 
             <h2 className='text-gray-900 font-secondaryFont text-2xl sm:text-3xl md:text-4xl font-bold text-center'>Featured <span className='text-primary'>Laborly</span> Experts</h2>
 
-
-
-
             {/*  */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 p-6 md:p-10">
                 {profileData.slice(0, 8).map((profile) => (
@@ -73,9 +70,6 @@ const FeaturedExperts = () => {
                     </div>
                 ))}
             </div>
-
-
-
             <div className='flex items-center justify-center mx-auto my-5'>
                 <button className=" btn btn-primary py-4 flex items-center w-full sm:w-[30%] text-center justify-center gap-3">View All <BsArrowRight /></button>
             </div>
