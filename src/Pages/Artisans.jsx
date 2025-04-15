@@ -6,8 +6,11 @@ import { FaRegStar, FaStar } from 'react-icons/fa';
 import { IoEyeOutline } from 'react-icons/io5';
 import { PiFunnelSimple } from 'react-icons/pi';
 import { IoIosArrowDown } from 'react-icons/io';
+import { useNavigate } from 'react-router-dom';
+import Footer from '../Components/Footer';
+// 
 const Artisans = () => {
-
+  const navigate = useNavigate()
   const { categories } = useContext(ArtisanContext)
   const [filterItems, setFilterItems] = useState(profileData)
   const [selectedState, setSelectedState] = useState("")
@@ -77,7 +80,7 @@ const Artisans = () => {
           <div className='bg-white rounded-xl p-3 md:p-6 soft-shadow md:col-span-1'>
             <div className="hidden md:block">
 
-              <h3 className="text-center text-xl text-darkPrimary">All Categories</h3>
+              <h3 className="text-center text-lg text-darkPrimary">All Categories</h3>
 
               <ul className='flex flex-col mt-10 gap-4'>
                 {categories.map((data, index) => (
@@ -125,6 +128,7 @@ const Artisans = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {filterItems.slice(0, 6).map((profile) => (
                 <div
+
                   key={profile.id}
                   className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border group cursor-pointer flex flex-col items-center text-center"
                 >
@@ -164,7 +168,7 @@ const Artisans = () => {
                   <div className="w-full mb-4">
                     <h5 className="text-sm font-medium text-gray-700 group-hover:text-primary my-2">Skills</h5>
                     <ul className="flex flex-wrap justify-center gap-2">
-                      {profile.skills.map((skill, idx) => (
+                      {profile.skills.slice(0, 3).map((skill, idx) => (
                         <li
                           key={idx}
                           className="bg-gray-100 group-hover:bg-white text-xs text-gray-800 px-3 py-1 rounded-full transition duration-300"
@@ -176,7 +180,8 @@ const Artisans = () => {
                   </div>
 
                   {/* CTA Button */}
-                  <button className="mt-auto btn btn-primary w-full group-hover:bg-white group-hover:text-primary group-hover:border group-hover:border-primary transition-all">
+                  <button onClick={() => navigate(`/artisans/${profile.id}`)}
+                    className="mt-auto btn btn-primary w-full group-hover:bg-white group-hover:text-primary group-hover:border group-hover:border-primary transition-all">
                     View Profile <IoEyeOutline className='text-xl' />
                   </button>
                 </div>
@@ -187,7 +192,9 @@ const Artisans = () => {
 
 
 
+
       </section >
+      <Footer/>
 
     </>
   )

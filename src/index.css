@@ -4,7 +4,7 @@
 
 /* Custom Global Styles */
 :root {
-	--primary-color: #164EA8;
+	--primary-color: #164ea8;
 	--dark-primary: #0d2f65;
 	--accent-color: #cdddf5;
 	--text-color: #3b4047;
@@ -16,6 +16,16 @@
 	padding: 0;
 	box-sizing: border-box;
 	scroll-behavior: smooth;
+}
+
+/* Create a class to hide scrollbar */
+.scrollbar-hide {
+	scrollbar-width: none; /* Firefox */
+	-ms-overflow-style: none; /* IE and Edge */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+	display: none; /* Chrome, Safari, Opera */
 }
 
 /* Apply base styles to the whole app */
@@ -35,7 +45,7 @@ h3,
 h4,
 h5,
 h6 {
-	@apply  text-gray-900 font-primaryFont font-semibold;
+	@apply text-gray-900 font-primaryFont font-semibold;
 }
 
 h1 {

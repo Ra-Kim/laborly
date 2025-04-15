@@ -18,7 +18,7 @@ const ArtisanProvider = ({ children }) => {
 
     // To get all the state
 
-    const contextValue = {categories}
+    const contextValue = { profileData, categories }
     return (
         <ArtisanContext.Provider value={contextValue}>
             {children}
