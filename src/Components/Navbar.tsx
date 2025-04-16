@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import logo from "../assets/laborly-logo.png";
 import { NavLink, useNavigate } from "react-router-dom";
 import { IoClose } from "react-icons/io5";

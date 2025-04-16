@@ -1,19 +1,18 @@
-import React from 'react'
 import { Route, Routes } from 'react-router-dom'
+import Navbar from './Components/Navbar'
 import Home from './Pages/Home'
 import Artisans from './Pages/Artisans'
 import ArtisanProfile from './Pages/ArtisanProfile'
-import NotFound from './Pages/NotFound'
-import Navbar from './Components/Navbar'
 import Blog from './Pages/Blog'
+import NotFound from './Pages/NotFound'
 import ArtisansSignIn from './Pages/UserSignUp/ArtisansSignIn'
 import ArtisansSignUp from './Pages/UserSignUp/ArtisansSignUp'
+
 
 
 const App = () => {
   return (
     <>
-
       <Navbar />
       <Routes>
         <Route path='/' element={<Home />} />
