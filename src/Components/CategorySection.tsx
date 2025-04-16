@@ -1,6 +1,5 @@
-import React from 'react'
+import { artisanCategories } from '@/lib/constants';
 import { BsArrowRight } from "react-icons/bs";
-import { artisanCategories } from '../assets/Data/data';
 import { IoArrowForwardOutline } from "react-icons/io5";
 const CategorySection = () => {
     return (

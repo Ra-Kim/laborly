@@ -63,7 +63,7 @@ import {
 
 import { FaBolt, FaWrench } from "react-icons/fa";
 
-import userPhoto from "../user-photo.png";
+import userPhoto from "../assets/user-photo.png";
 
 export const artisanCategories = [
 	{

@@ -1,14 +1,11 @@
-import React, { useContext } from 'react'
 import { BsArrowRight } from 'react-icons/bs'
-
 import { IoEyeOutline } from "react-icons/io5";
 import { FaRegStar, FaStar } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import { ArtisanContext } from '../Contexts/ArtisansContext';
+import { profileData } from '@/lib/constants';
 
 const FeaturedExperts = () => {
     const navigate = useNavigate()
-    const { profileData } = useContext(ArtisanContext)
     return (
         <section className='px-6 py-20 md:px-20'>
 

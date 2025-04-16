@@ -1,13 +1,12 @@
 
-import React from "react";
 import { FaStar, FaRegStar } from "react-icons/fa"; // Icons for full, half, and empty stars
-import { testimonials } from "../assets/Data/data";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/autoplay";
 import { Autoplay } from "swiper/modules";
 import { RiAccountPinCircleFill } from "react-icons/ri";
+import { testimonials } from "@/lib/constants";
 
 const Testimonials = () => {
     return (

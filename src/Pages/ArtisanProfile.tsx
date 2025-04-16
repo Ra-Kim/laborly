@@ -1,25 +1,24 @@
-import React, { useContext, useEffect, useState } from 'react'
+import  {  useEffect, useState } from 'react'
 import { FaRegStar, FaStar } from 'react-icons/fa'
 import { IoIosSend } from 'react-icons/io'
 import { useNavigate, useParams } from 'react-router-dom'
-import { ArtisanContext } from '../Contexts/ArtisansContext'
 import { MdLocationPin } from 'react-icons/md'
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/autoplay";
 import { Autoplay } from "swiper/modules";
-import Footer from '../Components/Footer'
 import { IoEyeOutline } from 'react-icons/io5'
+import { profileData } from '@/lib/constants'
+import Footer from '@/components/Footer'
 
 const ArtisanProfile = () => {
     const navigate = useNavigate()
     const { artisanId } = useParams()
-    const { profileData } = useContext(ArtisanContext)
-    const [artisanInfo, setArtisanInfo] = useState(null)
+    const [artisanInfo, setArtisanInfo] = useState<typeof profileData[0] | null>(null)
     // 
     const fetchArtisanData = async () => {
-        const artisanData = profileData.find(artisan => artisan.id === Number(artisanId))
+        const artisanData = profileData.find(artisan => artisan.id === Number(artisanId)) ?? null
         setArtisanInfo(artisanData)
         console.log(artisanInfo)
     }

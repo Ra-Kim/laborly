@@ -1,8 +1,5 @@
-import React from "react";
 import { IoIosSend } from "react-icons/io";
 import { Link } from "react-router-dom";
-import { FaMapLocationDot } from "react-icons/fa6";
-import { IoMdCall } from "react-icons/io";
 import { MdEmail } from "react-icons/md";
 import { IoIosArrowRoundForward } from "react-icons/io";
 import { FaFacebookF, FaPinterestP } from "react-icons/fa";
@@ -94,12 +91,12 @@ const Footer = () => {
                         <li className="flex items-center gap-2 text-gray-700 hover:text-primary transition-all duration-300">
                             <IoIosArrowRoundForward />
 
-                            <Link className="text-gray-700 text-sm">Find a Handyman</Link>
+                            <Link to ="/artisans" className="text-gray-700 text-sm">Find a Handyman</Link>
                         </li>
                         <li className="flex items-center gap-2 text-gray-700 hover:text-primary transition-all duration-300">
                             <IoIosArrowRoundForward />
 
-                            <Link className="text-gray-700 text-sm">Blog</Link>
+                            <Link to="/blog" className="text-gray-700 text-sm">Blog</Link>
                         </li>
 
                     </ul>
@@ -116,12 +113,12 @@ const Footer = () => {
                         <li className="flex items-center gap-2 text-gray-700 hover:text-primary transition-all duration-300">
                             <IoIosArrowRoundForward />
 
-                            <Link className="text-gray-700 text-sm">For Artisans</Link>
+                            <Link to="/" className="text-gray-700 text-sm">For Artisans</Link>
                         </li>
                         <li className="flex items-center gap-2 text-gray-700 hover:text-primary transition-all duration-300">
                             <IoIosArrowRoundForward />
 
-                            <Link className="text-gray-700 text-sm">For Clients</Link>
+                            <Link to ="/" className="text-gray-700 text-sm">For Clients</Link>
                         </li>
                     </ul>
                 </div>
