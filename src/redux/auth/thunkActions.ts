@@ -97,13 +97,39 @@ export const googleLogin = createAsyncThunk(
           message: string;
         };
         useApiErrorHandler(err);
-        return thunkAPI.rejectWithValue(error.message);
+        return thunkAPI.rejectWithValue(err.message);
       } else {
         return thunkAPI.rejectWithValue(String(error));
       }
     }
   }
 );
+
+export const googleCallback = createAsyncThunk(
+    "google-callback",
+    async (data: string, thunkAPI) => {
+      try {
+        const response = await useAxios({
+          url: `${BASE_URL}auth/google/callback`,
+          method: "GET",
+          data,
+        });
+  
+        return response.data;
+      } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+          const err = error.response.data as {
+            status_code: number;
+            message: string;
+          };
+          useApiErrorHandler(err);
+          return thunkAPI.rejectWithValue(error.message);
+        } else {
+          return thunkAPI.rejectWithValue(String(error));
+        }
+      }
+    }
+  );
 
 export const logOut = createAsyncThunk(
   "logout",

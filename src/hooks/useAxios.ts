@@ -20,11 +20,7 @@ export const useAxios = async (
   } catch (error: any) {
     // Handle only network errors (no response at all)
     if (!error.response) {
-      return {
-        data: null,
-        error: "Network error. Please check your internet connection.",
-        status_code: 0,
-      };
+      throw new Error("Network error.");
     }
 
     // Re-throw other errors to be handled by your existing error handler

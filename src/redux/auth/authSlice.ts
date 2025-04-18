@@ -16,7 +16,7 @@ const AuthSlice = createSlice({
     builder.addCase(signUp.pending, (state) => {
       return { ...state, loading: "loading" };
     });
-    builder.addCase(signUp.fulfilled, (state, action) => {
+    builder.addCase(signUp.fulfilled, (state) => {
       return {
         ...state,
         loading: "successful",

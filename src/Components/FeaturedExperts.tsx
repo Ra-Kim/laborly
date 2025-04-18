@@ -13,8 +13,9 @@ const FeaturedExperts = () => {
 
             {/*  */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 p-6 md:p-10">
-                {profileData.slice(0, 8).map((profile) => (
+                {profileData.slice(0, 8).map((profile, idx) => (
                     <div
+                    key={idx}
                         className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border group cursor-pointer flex flex-col items-center text-center"
                     >
                         {/* Profile Image */}
