@@ -6,7 +6,7 @@ import Blog from './Pages/Blog'
 import NotFound from './Pages/NotFound'
 import Login from './Pages/auth/login'
 import Signup from './Pages/auth/signup'
-import Navbar from '@/components/Navbar'
+import Navbar from '@/components/Navbar.tsx'
 
 
 
