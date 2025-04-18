@@ -5,8 +5,9 @@ import Artisans from './Pages/Artisans'
 import ArtisanProfile from './Pages/ArtisanProfile'
 import Blog from './Pages/Blog'
 import NotFound from './Pages/NotFound'
-import ArtisansSignIn from './Pages/UserSignUp/ArtisansSignIn'
-import ArtisansSignUp from './Pages/UserSignUp/ArtisansSignUp'
+import Login from './Pages/auth/login'
+import Signup from './Pages/auth/signup'
+
 
 
 
@@ -22,8 +23,8 @@ const App = () => {
         <Route path='/blog' element={<Blog />} />
         <Route path='*' element={<NotFound />} />
         {/*  */}
-        <Route path='/artisans-sign-in' element={<ArtisansSignIn />} />
-        <Route path='/artisans-sign-up' element={<ArtisansSignUp />} />
+        <Route path='/auth/sign-in' element={<Login />} />
+        <Route path='/auth/sign-up' element={<Signup />} />
 
       </Routes>
     </>
