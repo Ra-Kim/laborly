@@ -10,7 +10,7 @@ import "swiper/css/autoplay";
 import { Autoplay } from "swiper/modules";
 import { IoEyeOutline } from 'react-icons/io5'
 import { profileData } from '@/lib/constants'
-import Footer from '@/components/Footer'
+import Footer from '@/Components/Footer'
 
 const ArtisanProfile = () => {
     const navigate = useNavigate()

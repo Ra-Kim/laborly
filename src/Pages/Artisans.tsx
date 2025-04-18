@@ -5,7 +5,7 @@ import { IoEyeOutline } from "react-icons/io5";
 import { IoIosArrowDown } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { artisanCategories, nigeriaStates, profileData } from "@/lib/constants";
-import Footer from "@/components/Footer";
+import Footer from "@/Components/Footer";
 //
 const Artisans = () => {
   const navigate = useNavigate();
