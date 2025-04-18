@@ -8,6 +8,7 @@ import { HiChevronRight } from "react-icons/hi";
 import { useAppThunkDispatch } from "@/redux/store";
 import { googleLogin } from "@/redux/auth/thunkActions";
 import { toast } from "react-toastify";
+
 const NavBar = () => {
   const [showNavbar, setShowNavbar] = useState(false);
 
