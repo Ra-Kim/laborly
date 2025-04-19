@@ -2,10 +2,11 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   getClientProfile,
   getFavoriteWorkers,
-  getJobDetail,
-  getJobs,
+  getClientJobDetail,
+  getClientJobs,
 } from "./thunkActions";
-import { IClientProfile, IFavoriteWorker, IJob } from "@/types/client";
+import { IClientProfile, IFavoriteWorker } from "@/types/client";
+import { IJob } from "@/types/jobs";
 
 export interface IState {
   loading: "failed" | "loading" | "successful" | "idle";
@@ -53,30 +54,30 @@ const ClientSlice = createSlice({
     builder.addCase(getFavoriteWorkers.rejected, (state) => {
       return { ...state, loading: "failed" };
     });
-    builder.addCase(getJobs.pending, (state) => {
+    builder.addCase(getClientJobs.pending, (state) => {
       return { ...state, loading: "loading" };
     });
-    builder.addCase(getJobs.fulfilled, (state, action) => {
+    builder.addCase(getClientJobs.fulfilled, (state, action) => {
       return {
         ...state,
         loading: "successful",
         jobs: action.payload,
       };
     });
-    builder.addCase(getJobs.rejected, (state) => {
+    builder.addCase(getClientJobs.rejected, (state) => {
       return { ...state, loading: "failed" };
     });
-    builder.addCase(getJobDetail.pending, (state) => {
+    builder.addCase(getClientJobDetail.pending, (state) => {
       return { ...state, loading: "loading" };
     });
-    builder.addCase(getJobDetail.fulfilled, (state, action) => {
+    builder.addCase(getClientJobDetail.fulfilled, (state, action) => {
       return {
         ...state,
         loading: "successful",
         jobDetail: action.payload,
       };
     });
-    builder.addCase(getJobDetail.rejected, (state) => {
+    builder.addCase(getClientJobDetail.rejected, (state) => {
       return { ...state, loading: "failed" };
     });
   },
