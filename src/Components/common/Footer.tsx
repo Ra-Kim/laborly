@@ -4,7 +4,7 @@ import { MdEmail } from "react-icons/md";
 import { IoIosArrowRoundForward } from "react-icons/io";
 import { FaFacebookF, FaPinterestP } from "react-icons/fa";
 import { RiInstagramFill } from "react-icons/ri";
-import logo from "../assets/laborly-logo.png";
+import logo from "../../assets/laborly-logo.png";
 
 const Footer = () => {
     return (

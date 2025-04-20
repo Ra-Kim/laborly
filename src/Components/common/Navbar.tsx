@@ -1,13 +1,10 @@
 import { useState } from "react";
-import logo from "../assets/laborly-logo.png";
+import logo from "../../assets/laborly-logo.png";
 import { NavLink, useNavigate } from "react-router-dom";
 import { IoClose } from "react-icons/io5";
 import { IoIosSend } from "react-icons/io";
 import { IoMenu } from "react-icons/io5";
 import { HiChevronRight } from "react-icons/hi";
-import { useAppThunkDispatch } from "@/redux/store";
-import { googleLogin } from "@/redux/auth/thunkActions";
-import { toast } from "react-toastify";
 
 const NavBar = () => {
   const [showNavbar, setShowNavbar] = useState(false);
@@ -18,15 +15,13 @@ const NavBar = () => {
   const toggleNavbar = () => {
     setShowNavbar(!showNavbar);
   };
-  const dispatch = useAppThunkDispatch();
-  const googleSignin = async () => {
-    try {
-      await dispatch(googleLogin("")).unwrap();
-      navigate("/auth/sign-in");
-    } catch (error: any) {
-      toast.error(error); // <-- This should show your error message
-    }
-  };
+  // const googleSignin = async () => {
+  //   try {
+  //     await dispatch(googleLogin("")).unwrap();
+  //   } catch (error: any) {
+  //     toast.error(error); // <-- This should show your error message
+  //   }
+  // };
 
   // function to remove menu bar
 
@@ -64,7 +59,10 @@ const NavBar = () => {
         {/* Buttons */}
 
         <div className="flex items-center justify-center gap-4 sm:gap-8">
-          <button onClick={googleSignin} className="btn btn-primary">
+          <button
+            onClick={() => navigate("/auth/sign-up")}
+            className="btn btn-primary"
+          >
             Create an Account <IoIosSend />
           </button>
 

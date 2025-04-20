@@ -3,10 +3,10 @@ import { Typewriter } from 'react-simple-typewriter';
 import { BsArrowRight } from "react-icons/bs";
 import manImage from '../assets/man-image.png'
 import clientImage from '../assets/client.png'
-import CategorySection from '../Components/CategorySection';
-import Footer from '../Components/Footer';
-import Testimonials from '../Components/Testimonials';
-import FeaturedExperts from '../Components/FeaturedExperts';
+import CategorySection from '../fragments/landing/CategorySection';
+import Footer from '../Components/common/Footer';
+import Testimonials from '../fragments/landing/Testimonials';
+import FeaturedExperts from '../fragments/landing/FeaturedExperts';
 const Home = () => {
   return (
     <>

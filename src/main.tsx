@@ -6,14 +6,17 @@ import { Provider } from "react-redux";
 import { store } from "./redux/store.ts";
 import { StrictMode } from "react";
 import { ToastContainer } from "react-toastify";
+import { AuthProvider } from "./context/AuthProvider.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Provider store={store}>
-      <BrowserRouter>
-        <ToastContainer />
-        <App />
-      </BrowserRouter>
+      <AuthProvider>
+        <BrowserRouter>
+          <ToastContainer />
+          <App />
+        </BrowserRouter>
+      </AuthProvider>
     </Provider>
   </StrictMode>
 );

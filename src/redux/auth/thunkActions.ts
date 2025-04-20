@@ -25,7 +25,7 @@ export const signUp = createAsyncThunk(
         autoClose: 2000,
       });
       let res: ISignUpRes = response.data;
-      localStorage.setItem("access_token", res.access_token);
+      localStorage.setItem("token", res.access_token);
       localStorage.setItem("role", res.user.role);
       return response.data;
     } catch (error) {
@@ -61,7 +61,7 @@ export const login = createAsyncThunk(
         autoClose: 2000,
       });
       let res: ISignUpRes = response.data;
-      localStorage.setItem("access_token", res.access_token);
+      localStorage.setItem("token", res.access_token);
       localStorage.setItem("role", res.user.role);
       return response.data;
     } catch (error) {
