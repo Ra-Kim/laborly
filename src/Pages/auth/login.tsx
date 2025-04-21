@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { PasswordInput } from "@/Components/ui/passwordInput";
-import { emailRegex, passwordRegex } from "@/lib/regex";
+import { emailRegex } from "@/lib/regex";
 import { useNavigate } from "react-router-dom";
 import Logo from "@/Components/common/Logo";
 import { useAppThunkDispatch } from "@/redux/store";

@@ -1,24 +1,25 @@
-import React from 'react'
-import { Typewriter } from 'react-simple-typewriter';
+import { Typewriter } from "react-simple-typewriter";
 import { BsArrowRight } from "react-icons/bs";
-import manImage from '../assets/man-image.png'
-import clientImage from '../assets/client.png'
-import CategorySection from '../fragments/landing/CategorySection';
-import Footer from '../Components/common/Footer';
-import Testimonials from '../fragments/landing/Testimonials';
-import FeaturedExperts from '../fragments/landing/FeaturedExperts';
+import manImage from "../assets/man-image.png";
+import clientImage from "../assets/client.png";
+import CategorySection from "../fragments/landing/CategorySection";
+import Footer from "../Components/common/Footer";
+import Testimonials from "../fragments/landing/Testimonials";
+import FeaturedExperts from "../fragments/landing/FeaturedExperts";
+import { useNavigate } from "react-router-dom";
+
 const Home = () => {
+  const navigate = useNavigate();
   return (
     <>
       <section className="w-full min-h-screen px-6 md:px-20 py-16 flex flex-col-reverse md:flex-row items-center justify-center gap-10 bg-gradient-to-br from-[#f1f7ff] to-white">
         {/* Text Section */}
         <div className="w-full md:w-1/2 text-center md:text-left">
-
           <h2 className="font-secondaryFont font-bold text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-tight text-center md:text-left">
-            Find quality{' '}
+            Find quality{" "}
             <span className="text-primary">
               <Typewriter
-                words={['Handymen', 'Plumbers', 'Electricians', 'Painters']}
+                words={["Handymen", "Plumbers", "Electricians", "Painters"]}
                 loop={0}
                 cursor
                 cursorStyle="|"
@@ -26,16 +27,20 @@ const Home = () => {
                 deleteSpeed={100}
                 delaySpeed={1200}
               />
-            </span>{' '}
+            </span>{" "}
             fast with <span className="text-primary">Laborly.</span>
           </h2>
 
           <p className="mt-4 text-gray-600 text-base md:text-lg leading-[1.4] md:leading-[1.2]  max-w-xl">
-            Laborly helps you find a wide range of professional handymen with zero hassles. Get tasks done easily!
+            Laborly helps you find a wide range of professional handymen with
+            zero hassles. Get tasks done easily!
           </p>
 
           <div className="mt-6">
-            <button className="btn btn-primary flex items-center gap-2">
+            <button
+              className="btn btn-primary flex items-center gap-2"
+              onClick={() => navigate(`/auth/sign-up`)}
+            >
               Get Started <BsArrowRight className="text-lg" />
             </button>
           </div>
@@ -43,7 +48,11 @@ const Home = () => {
 
         {/* Image Section */}
         <div className="w-full md:w-1/2 flex justify-center">
-          <img src={manImage} alt="Handyman illustration" className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-xl w-full object-contain" />
+          <img
+            src={manImage}
+            alt="Handyman illustration"
+            className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-xl w-full object-contain"
+          />
         </div>
       </section>
       {/*  */}
@@ -57,13 +66,16 @@ const Home = () => {
             Hire an expert Labourer today!
           </h2>
           <p className="text-[.7rem] sm:text-sm text-gray-200 leading-relaxed max-w-sm">
-            Connect with skilled and reliable labourers near you—ready to tackle your
-            home repairs, installations, or maintenance tasks with precision and care.
-            Fast, easy, and stress-free hiring starts here.
+            Connect with skilled and reliable labourers near you—ready to tackle
+            your home repairs, installations, or maintenance tasks with
+            precision and care. Fast, easy, and stress-free hiring starts here.
           </p>
 
           <div className="mt-6">
-            <button className="btn btn-primary flex items-center gap-2 hover:bg-white hover:text-primary transition-all">
+            <button
+              className="btn btn-primary flex items-center gap-2 hover:bg-white hover:text-primary transition-all"
+              onClick={() => navigate(`/auth/sign-up`)}
+            >
               Get Started For Free! <BsArrowRight className="text-lg" />
             </button>
           </div>
@@ -84,7 +96,7 @@ const Home = () => {
 
       <Footer />
     </>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
