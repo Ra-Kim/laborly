@@ -25,9 +25,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     return !!authToken;
   }
 
+  function checkRole() {
+    return localStorage.getItem("role") || ""
+  }
+
   return (
     <AuthContext.Provider
-      value={{ logout, isAuthenticated: checkAuthentication }}
+      value={{ logout, isAuthenticated: checkAuthentication, role: checkRole() }}
     >
       {children}
     </AuthContext.Provider>

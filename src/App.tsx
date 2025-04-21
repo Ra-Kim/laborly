@@ -1,4 +1,4 @@
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import Home from "./Pages/Home";
 import Artisans from "./Pages/Artisans";
 import ArtisanProfile from "./Pages/ArtisanProfile";
@@ -7,8 +7,16 @@ import NotFound from "./Pages/NotFound";
 import Login from "./Pages/auth/login";
 import Signup from "./Pages/auth/signup";
 import Navbar from "@/Components/common/Navbar";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import AuthLayout from "./layouts/AuthLayout";
+import WorkerLayout from "./layouts/WorkerLayout";
+import ClientLayout from "./layouts/ClientLayout";
+import WorkerDashboard from "./Pages/worker/Dashboard";
+import ClientDashboard from "./Pages/client/Dashboard";
+import { useAuth } from "./hooks/useAuth";
+import useRedirectByRole from "./hooks/useRedirectByRole";
+import WorkerRoute from "./routes/WorkerRoute";
+import ClientRoute from "./routes/ClientRoute";
 
 const App = () => {
   const { pathname } = useLocation();
@@ -16,6 +24,29 @@ const App = () => {
     if (pathname.includes("auth")) return false;
     return true;
   }, [pathname]);
+
+  const { isAuthenticated, role, logout } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (!isAuthenticated() && !location.pathname.startsWith("/auth")) {
+      navigate("/auth/sign-in");
+    }
+
+    if (isAuthenticated() && location.pathname === "/") {
+      if (role === "WORKER") {
+        navigate("/worker/dashboard");
+        return;
+      }
+      if (role === "CLIENT") {
+        navigate(`/client/dashboard`);
+        return;
+      }
+      logout();
+    }
+  }, [isAuthenticated, navigate, location.pathname, role]);
+  useRedirectByRole();
   return (
     <>
       {showNavbar && <Navbar />}
@@ -30,6 +61,26 @@ const App = () => {
         <Route path="/auth" element={<AuthLayout />}>
           <Route path="sign-in" element={<Login />} />
           <Route path="sign-up" element={<Signup />} />
+        </Route>
+        <Route
+          path="/worker"
+          element={
+            <WorkerRoute>
+              <WorkerLayout />
+            </WorkerRoute>
+          }
+        >
+          <Route path="dashboard" element={<WorkerDashboard />} />
+        </Route>
+        <Route
+          path="/client"
+          element={
+            <ClientRoute>
+              <ClientLayout />
+            </ClientRoute>
+          }
+        >
+          <Route path="dashboard" element={<ClientDashboard />} />
         </Route>
       </Routes>
     </>
