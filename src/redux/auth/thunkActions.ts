@@ -37,6 +37,11 @@ export const signUp = createAsyncThunk(
         useApiErrorHandler(err, CREATE_USER);
         return thunkAPI.rejectWithValue(error.message);
       } else {
+        const err = {
+          status_code: 0,
+          message: "network error",
+        };
+        useApiErrorHandler(err, CREATE_USER);
         return thunkAPI.rejectWithValue(String(error));
       }
     }
@@ -73,6 +78,11 @@ export const login = createAsyncThunk(
         useApiErrorHandler(err, LOG_IN);
         return thunkAPI.rejectWithValue(error.message);
       } else {
+        const err = {
+          status_code: 0,
+          message: "network error",
+        };
+        useApiErrorHandler(err, LOG_IN);
         return thunkAPI.rejectWithValue(String(error));
       }
     }
@@ -99,6 +109,11 @@ export const googleLogin = createAsyncThunk(
         useApiErrorHandler(err);
         return thunkAPI.rejectWithValue(err.message);
       } else {
+        const err = {
+          status_code: 0,
+          message: "network error",
+        };
+        useApiErrorHandler(err);
         return thunkAPI.rejectWithValue(String(error));
       }
     }
@@ -106,30 +121,35 @@ export const googleLogin = createAsyncThunk(
 );
 
 export const googleCallback = createAsyncThunk(
-    "google-callback",
-    async (data: string, thunkAPI) => {
-      try {
-        const response = await useAxios({
-          url: `${BASE_URL}auth/google/callback`,
-          method: "GET",
-          data,
-        });
-  
-        return response.data;
-      } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-          const err = error.response.data as {
-            status_code: number;
-            message: string;
-          };
-          useApiErrorHandler(err);
-          return thunkAPI.rejectWithValue(error.message);
-        } else {
-          return thunkAPI.rejectWithValue(String(error));
-        }
+  "google-callback",
+  async (data: string, thunkAPI) => {
+    try {
+      const response = await useAxios({
+        url: `${BASE_URL}auth/google/callback`,
+        method: "GET",
+        data,
+      });
+
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        const err = error.response.data as {
+          status_code: number;
+          message: string;
+        };
+        useApiErrorHandler(err);
+        return thunkAPI.rejectWithValue(error.message);
+      } else {
+        const err = {
+          status_code: 0,
+          message: "network error",
+        };
+        useApiErrorHandler(err);
+        return thunkAPI.rejectWithValue(String(error));
       }
     }
-  );
+  }
+);
 
 export const logOut = createAsyncThunk(
   "logout",
@@ -158,6 +178,11 @@ export const logOut = createAsyncThunk(
         useApiErrorHandler(err, LOG_OUT);
         return thunkAPI.rejectWithValue(error.message);
       } else {
+        const err = {
+          status_code: 0,
+          message: "network error",
+        };
+        useApiErrorHandler(err, LOG_OUT);
         return thunkAPI.rejectWithValue(String(error));
       }
     }

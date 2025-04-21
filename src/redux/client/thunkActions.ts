@@ -26,6 +26,11 @@ export const getClientProfile = createAsyncThunk(
         useApiErrorHandler(err);
         return thunkAPI.rejectWithValue(err.message);
       } else {
+        const err = {
+          status_code: 0,
+          message: "network error",
+        };
+        useApiErrorHandler(err);
         return thunkAPI.rejectWithValue(String(error));
       }
     }
@@ -59,6 +64,11 @@ export const patchClientProfile = createAsyncThunk(
         useApiErrorHandler(err, UPDATE_CLIENT_PROFILE);
         return thunkAPI.rejectWithValue(err.message);
       } else {
+        const err = {
+          status_code: 0,
+          message: "network error",
+        };
+        useApiErrorHandler(err, UPDATE_CLIENT_PROFILE);
         return thunkAPI.rejectWithValue(String(error));
       }
     }
@@ -85,6 +95,11 @@ export const getFavoriteWorkers = createAsyncThunk(
         useApiErrorHandler(err);
         return thunkAPI.rejectWithValue(err.message);
       } else {
+        const err = {
+          status_code: 0,
+          message: "network error",
+        };
+        useApiErrorHandler(err);
         return thunkAPI.rejectWithValue(String(error));
       }
     }
@@ -117,6 +132,11 @@ export const addFavoriteWorker = createAsyncThunk(
         useApiErrorHandler(err, ADD_FAVORITE_WORKER);
         return thunkAPI.rejectWithValue(err.message);
       } else {
+        const err = {
+          status_code: 0,
+          message: "network error",
+        };
+        useApiErrorHandler(err, ADD_FAVORITE_WORKER);
         return thunkAPI.rejectWithValue(String(error));
       }
     }
@@ -149,6 +169,11 @@ export const deleteFavoriteWorker = createAsyncThunk(
         useApiErrorHandler(err, DELETE_FAVORITE_WORKER);
         return thunkAPI.rejectWithValue(err.message);
       } else {
+        const err = {
+          status_code: 0,
+          message: "network error",
+        };
+        useApiErrorHandler(err, DELETE_FAVORITE_WORKER);
         return thunkAPI.rejectWithValue(String(error));
       }
     }
@@ -175,6 +200,11 @@ export const getClientJobs = createAsyncThunk(
         useApiErrorHandler(err);
         return thunkAPI.rejectWithValue(err.message);
       } else {
+        const err = {
+          status_code: 0,
+          message: "network error",
+        };
+        useApiErrorHandler(err);
         return thunkAPI.rejectWithValue(String(error));
       }
     }
@@ -200,6 +230,11 @@ export const getClientJobDetail = createAsyncThunk(
         useApiErrorHandler(err);
         return thunkAPI.rejectWithValue(err.message);
       } else {
+        const err = {
+          status_code: 0,
+          message: "network error",
+        };
+        useApiErrorHandler(err);
         return thunkAPI.rejectWithValue(String(error));
       }
     }

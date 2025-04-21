@@ -34,6 +34,11 @@ export const createService = createAsyncThunk(
         useApiErrorHandler(err, CREATE_SERVICE);
         return thunkAPI.rejectWithValue(err.message);
       } else {
+        const err = {
+          status_code: 0,
+          message: "network error",
+        };
+        useApiErrorHandler(err, CREATE_SERVICE);
         return thunkAPI.rejectWithValue(String(error));
       }
     }
@@ -67,6 +72,11 @@ export const updateService = createAsyncThunk(
         useApiErrorHandler(err, UPDATE_SERVICE);
         return thunkAPI.rejectWithValue(err.message);
       } else {
+        const err = {
+          status_code: 0,
+          message: "network error",
+        };
+        useApiErrorHandler(err, UPDATE_SERVICE);
         return thunkAPI.rejectWithValue(String(error));
       }
     }
@@ -99,6 +109,11 @@ export const deleteService = createAsyncThunk(
         useApiErrorHandler(err, DELETE_SERVICE);
         return thunkAPI.rejectWithValue(err.message);
       } else {
+        const err = {
+          status_code: 0,
+          message: "network error",
+        };
+        useApiErrorHandler(err, DELETE_SERVICE);
         return thunkAPI.rejectWithValue(String(error));
       }
     }
@@ -125,6 +140,11 @@ export const myServices = createAsyncThunk(
         useApiErrorHandler(err);
         return thunkAPI.rejectWithValue(err.message);
       } else {
+        const err = {
+          status_code: 0,
+          message: "network error",
+        };
+        useApiErrorHandler(err);
         return thunkAPI.rejectWithValue(String(error));
       }
     }
@@ -150,6 +170,11 @@ export const searchServices = createAsyncThunk(
         useApiErrorHandler(err);
         return thunkAPI.rejectWithValue(err.message);
       } else {
+        const err = {
+          status_code: 0,
+          message: "network error",
+        };
+        useApiErrorHandler(err);
         return thunkAPI.rejectWithValue(String(error));
       }
     }

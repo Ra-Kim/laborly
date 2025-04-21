@@ -26,6 +26,11 @@ export const startConversation = createAsyncThunk(
         useApiErrorHandler(err);
         return thunkAPI.rejectWithValue(err.message);
       } else {
+        const err = {
+          status_code: 0,
+          message: "network error",
+        };
+        useApiErrorHandler(err);
         return thunkAPI.rejectWithValue(String(error));
       }
     }
@@ -52,6 +57,11 @@ export const replyConversation = createAsyncThunk(
         useApiErrorHandler(err);
         return thunkAPI.rejectWithValue(err.message);
       } else {
+        const err = {
+          status_code: 0,
+          message: "network error",
+        };
+        useApiErrorHandler(err);
         return thunkAPI.rejectWithValue(String(error));
       }
     }
@@ -78,7 +88,12 @@ export const myThreads = createAsyncThunk(
           useApiErrorHandler(err);
           return thunkAPI.rejectWithValue(err.message);
         } else {
-          return thunkAPI.rejectWithValue(String(error));
+          const err = {
+          status_code: 0,
+          message: "network error",
+        };
+        useApiErrorHandler(err);
+        return thunkAPI.rejectWithValue(String(error));
         }
       }
     }
@@ -103,7 +118,12 @@ export const myThreads = createAsyncThunk(
           useApiErrorHandler(err);
           return thunkAPI.rejectWithValue(err.message);
         } else {
-          return thunkAPI.rejectWithValue(String(error));
+          const err = {
+          status_code: 0,
+          message: "network error",
+        };
+        useApiErrorHandler(err);
+        return thunkAPI.rejectWithValue(String(error));
         }
       }
     }

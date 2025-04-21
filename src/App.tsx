@@ -8,6 +8,7 @@ import Login from "./Pages/auth/login";
 import Signup from "./Pages/auth/signup";
 import Navbar from "@/Components/common/Navbar";
 import { useMemo } from "react";
+import AuthLayout from "./layouts/AuthLayout";
 
 const App = () => {
   const { pathname } = useLocation();
@@ -26,8 +27,10 @@ const App = () => {
         <Route path="/blog" element={<Blog />} />
         <Route path="*" element={<NotFound />} />
         {/*  */}
-        <Route path="/auth/sign-in" element={<Login />} />
-        <Route path="/auth/sign-up" element={<Signup />} />
+        <Route path="/auth" element={<AuthLayout />}>
+          <Route path="sign-in" element={<Login />} />
+          <Route path="sign-up" element={<Signup />} />
+        </Route>
       </Routes>
     </>
   );

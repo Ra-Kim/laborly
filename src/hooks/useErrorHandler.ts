@@ -7,9 +7,6 @@ export const useApiErrorHandler = (
   },
   toastId?: Id
 ) => {
-  if (err.status_code === 0) {
-    toast.error("network error");
-  }
   if (err.status_code === 401) {
     toast.error(`${err?.message}`);
     localStorage.removeItem("token");

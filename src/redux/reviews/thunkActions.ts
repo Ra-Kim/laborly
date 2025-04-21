@@ -26,6 +26,11 @@ export const submitReview = createAsyncThunk(
         useApiErrorHandler(err);
         return thunkAPI.rejectWithValue(err.message);
       } else {
+        const err = {
+          status_code: 0,
+          message: "network error",
+        };
+        useApiErrorHandler(err);
         return thunkAPI.rejectWithValue(String(error));
       }
     }
@@ -51,6 +56,11 @@ export const getWorkerReviews = createAsyncThunk(
         useApiErrorHandler(err);
         return thunkAPI.rejectWithValue(err.message);
       } else {
+        const err = {
+          status_code: 0,
+          message: "network error",
+        };
+        useApiErrorHandler(err);
         return thunkAPI.rejectWithValue(String(error));
       }
     }
@@ -77,6 +87,11 @@ export const myReviews = createAsyncThunk(
         useApiErrorHandler(err);
         return thunkAPI.rejectWithValue(err.message);
       } else {
+        const err = {
+          status_code: 0,
+          message: "network error",
+        };
+        useApiErrorHandler(err);
         return thunkAPI.rejectWithValue(String(error));
       }
     }
@@ -102,6 +117,11 @@ export const getWorkerSummary = createAsyncThunk(
         useApiErrorHandler(err);
         return thunkAPI.rejectWithValue(err.message);
       } else {
+        const err = {
+          status_code: 0,
+          message: "network error",
+        };
+        useApiErrorHandler(err);
         return thunkAPI.rejectWithValue(String(error));
       }
     }

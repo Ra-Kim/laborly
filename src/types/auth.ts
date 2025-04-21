@@ -4,7 +4,7 @@ export interface ISignUp {
   password: string;
   first_name: string;
   last_name: string;
-  role: "CLIENT" | "WORKER";
+  role: string;
 }
 
 export interface ISignUpRes {

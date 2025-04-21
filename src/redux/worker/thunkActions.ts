@@ -26,6 +26,11 @@ export const getWorkerProfile = createAsyncThunk(
         useApiErrorHandler(err);
         return thunkAPI.rejectWithValue(err.message);
       } else {
+        const err = {
+          status_code: 0,
+          message: "network error",
+        };
+        useApiErrorHandler(err);
         return thunkAPI.rejectWithValue(String(error));
       }
     }
@@ -59,6 +64,11 @@ export const patchWorkerProfile = createAsyncThunk(
         useApiErrorHandler(err, UPDATE_WORKER_PROFILE);
         return thunkAPI.rejectWithValue(err.message);
       } else {
+        const err = {
+          status_code: 0,
+          message: "network error",
+        };
+        useApiErrorHandler(err, UPDATE_WORKER_PROFILE);
         return thunkAPI.rejectWithValue(String(error));
       }
     }
@@ -85,6 +95,11 @@ export const getWorkerKYC = createAsyncThunk(
         useApiErrorHandler(err);
         return thunkAPI.rejectWithValue(err.message);
       } else {
+        const err = {
+          status_code: 0,
+          message: "network error",
+        };
+        useApiErrorHandler(err);
         return thunkAPI.rejectWithValue(String(error));
       }
     }
@@ -111,6 +126,11 @@ export const submitKYC = createAsyncThunk(
         useApiErrorHandler(err);
         return thunkAPI.rejectWithValue(err.message);
       } else {
+        const err = {
+          status_code: 0,
+          message: "network error",
+        };
+        useApiErrorHandler(err);
         return thunkAPI.rejectWithValue(String(error));
       }
     }
@@ -137,6 +157,11 @@ export const getWorkerJobs = createAsyncThunk(
         useApiErrorHandler(err);
         return thunkAPI.rejectWithValue(err.message);
       } else {
+        const err = {
+          status_code: 0,
+          message: "network error",
+        };
+        useApiErrorHandler(err);
         return thunkAPI.rejectWithValue(String(error));
       }
     }
@@ -144,26 +169,31 @@ export const getWorkerJobs = createAsyncThunk(
 );
 
 export const getWorkerJobDetail = createAsyncThunk(
-    "get-worker-job-detail",
-    async (data: string, thunkAPI) => {
-      try {
-        const response = await useAxios({
-          url: `${BASE_URL}worker/jobs/${data}`,
-          method: "GET",
-        });
-  
-        return response.data;
-      } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-          const err = error.response.data as {
-            status_code: number;
-            message: string;
-          };
-          useApiErrorHandler(err);
-          return thunkAPI.rejectWithValue(err.message);
-        } else {
-          return thunkAPI.rejectWithValue(String(error));
-        }
+  "get-worker-job-detail",
+  async (data: string, thunkAPI) => {
+    try {
+      const response = await useAxios({
+        url: `${BASE_URL}worker/jobs/${data}`,
+        method: "GET",
+      });
+
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        const err = error.response.data as {
+          status_code: number;
+          message: string;
+        };
+        useApiErrorHandler(err);
+        return thunkAPI.rejectWithValue(err.message);
+      } else {
+        const err = {
+          status_code: 0,
+          message: "network error",
+        };
+        useApiErrorHandler(err);
+        return thunkAPI.rejectWithValue(String(error));
       }
     }
-  );
+  }
+);

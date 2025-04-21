@@ -27,6 +27,11 @@ export const createJob = createAsyncThunk(
         useApiErrorHandler(err);
         return thunkAPI.rejectWithValue(err.message);
       } else {
+        const err = {
+          status_code: 0,
+          message: "network error",
+        };
+        useApiErrorHandler(err);
         return thunkAPI.rejectWithValue(String(error));
       }
     }
@@ -60,6 +65,11 @@ export const acceptJob = createAsyncThunk(
         useApiErrorHandler(err, ACCEPT_JOB);
         return thunkAPI.rejectWithValue(err.message);
       } else {
+        const err = {
+          status_code: 0,
+          message: "network error",
+        };
+        useApiErrorHandler(err, ACCEPT_JOB);
         return thunkAPI.rejectWithValue(String(error));
       }
     }
@@ -92,6 +102,11 @@ export const completeJob = createAsyncThunk(
         useApiErrorHandler(err, MARK_AS_COMPLETE);
         return thunkAPI.rejectWithValue(err.message);
       } else {
+        const err = {
+          status_code: 0,
+          message: "network error",
+        };
+        useApiErrorHandler(err, MARK_AS_COMPLETE);
         return thunkAPI.rejectWithValue(String(error));
       }
     }
@@ -124,6 +139,11 @@ export const cancelJob = createAsyncThunk(
         useApiErrorHandler(err, CANCEL_JOB);
         return thunkAPI.rejectWithValue(err.message);
       } else {
+        const err = {
+          status_code: 0,
+          message: "network error",
+        };
+        useApiErrorHandler(err, CANCEL_JOB);
         return thunkAPI.rejectWithValue(String(error));
       }
     }
@@ -150,6 +170,11 @@ export const getJobs = createAsyncThunk(
         useApiErrorHandler(err);
         return thunkAPI.rejectWithValue(err.message);
       } else {
+        const err = {
+          status_code: 0,
+          message: "network error",
+        };
+        useApiErrorHandler(err);
         return thunkAPI.rejectWithValue(String(error));
       }
     }
@@ -175,6 +200,11 @@ export const getJobDetail = createAsyncThunk(
         useApiErrorHandler(err);
         return thunkAPI.rejectWithValue(err.message);
       } else {
+        const err = {
+          status_code: 0,
+          message: "network error",
+        };
+        useApiErrorHandler(err);
         return thunkAPI.rejectWithValue(String(error));
       }
     }
