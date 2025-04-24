@@ -4,27 +4,48 @@ export const useAxios = async (
   request: AxiosRequestConfig
 ): Promise<AxiosApiResponse> => {
   try {
-    const response: AxiosApiResponse = await axios.request({
+    const response = await axios.request({
       ...request,
       headers: {
         ...request.headers,
         authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-      // withCredentials: true,
     });
 
-    if (response.status_code === 401) {
+    console.log(response);
+
+    // Example: check for unauthorized response
+    if (response.status === 401) {
       localStorage.clear();
     }
-    return response;
+    // Return data in your custom format
+    return {
+      data: response.data,
+      error: null,
+      status_code: response.status,
+    };
   } catch (error: any) {
-    // Handle only network errors (no response at all)
+    console.error("Axios error:", error);
+
     if (!error.response) {
-      throw new Error("Network error.");
+      return {
+        data: null,
+        error: "Network error or server unreachable.",
+        status_code: 502,
+      };
     }
 
-    // Re-throw other errors to be handled by your existing error handler
-    throw error;
+    // Check for `detail` in response
+    const errorMessage =
+      error.response.data?.detail ||
+      error.response.data?.message ||
+      error.message;
+
+    return {
+      data: null,
+      error: errorMessage,
+      status_code: error.response.status,
+    };
   }
 };
 

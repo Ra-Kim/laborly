@@ -11,6 +11,7 @@ import Logo from "@/Components/common/Logo";
 import { useAppThunkDispatch } from "@/redux/store";
 import { googleLogin, login } from "@/redux/auth/thunkActions";
 import { SVGS } from "@/assets/svgs";
+import { redirectToDashboard } from "@/lib/utils";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -37,7 +38,11 @@ const Login = () => {
   const onSubmit: SubmitHandler<
     Yup.InferType<typeof validationSchema>
   > = async (data) => {
-    await dispatch(login(data)).unwrap();
+    const res = await dispatch(login(data));
+    if (res.meta.requestStatus === "fulfilled") {
+      const role = res.payload?.role || localStorage.getItem("role");
+      redirectToDashboard(navigate, role);
+    }
   };
 
   const GoogleIcon = SVGS.google;

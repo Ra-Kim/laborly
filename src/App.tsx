@@ -77,7 +77,6 @@ const App = () => {
 				</Route>
 				<Route path="/client" element={<ClientLayout />}>
 					<Route path="dashboard" element={<ClientDashboard />} />
-					
 				</Route>
 			</Routes>
 		</>
