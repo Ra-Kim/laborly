@@ -76,7 +76,7 @@ const Signup = () => {
     );
     data = { ...data, phone_number: updatedPhoneNumber };
     console.log(data);
-    await dispatch(signUp(data)).unwrap();
+    await dispatch(signUp(data));
   };
 
   const GoogleIcon = SVGS.google;
