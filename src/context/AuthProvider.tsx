@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   return (
     <AuthContext.Provider
-      value={{ logout, isAuthenticated: checkAuthentication, role: checkRole() }}
+      value={{ logout, isAuthenticated: checkAuthentication, role: checkRole }}
     >
       {children}
     </AuthContext.Provider>

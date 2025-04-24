@@ -22,6 +22,8 @@ const App = () => {
   const { pathname } = useLocation();
   const showNavbar = useMemo(() => {
     if (pathname.includes("auth")) return false;
+    if (pathname.includes("worker")) return false;
+    if (pathname.includes("client")) return false;
     return true;
   }, [pathname]);
 
@@ -30,22 +32,32 @@ const App = () => {
   const location = useLocation();
   useRedirectByRole();
 
-  console.log(isAuthenticated(), role);
   useEffect(() => {
+    // If not authenticated and not on auth pages, redirect to login
     if (!isAuthenticated() && !location.pathname.startsWith("/auth")) {
       navigate("/auth/sign-in");
     }
 
-    if (isAuthenticated() && location.pathname === "/") {
-      if (role === "WORKER") {
+    // If authenticated and trying to access auth pages, redirect to dashboard
+    if (isAuthenticated() && location.pathname.startsWith("/auth")) {
+      if (role() === "WORKER") {
         navigate("/worker/dashboard");
-        return;
+      } else if (role() === "CLIENT") {
+        navigate("/client/dashboard");
+      } else {
+        logout();
       }
-      if (role === "CLIENT") {
+    }
+
+    // Redirect authenticated users from "/" to their dashboard
+    if (isAuthenticated() && location.pathname === "/") {
+      if (role() === "WORKER") {
+        navigate("/worker/dashboard");
+      } else if (role() === "CLIENT") {
         navigate(`/client/dashboard`);
-        return;
+      } else {
+        logout();
       }
-      logout();
     }
   }, [isAuthenticated, navigate, location.pathname, role]);
   return (

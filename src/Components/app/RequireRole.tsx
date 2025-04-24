@@ -1,7 +1,7 @@
-import { ReactNode } from "react";
 import { Navigate, useLocation } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth"; // update path as needed
+import { ReactNode } from "react";
 
-// Define the allowed roles as a TypeScript union type
 type UserRole = "CLIENT" | "WORKER";
 
 interface RequireRoleProps {
@@ -11,14 +11,22 @@ interface RequireRoleProps {
 
 const RequireRole = ({ allowedRole, children }: RequireRoleProps) => {
   const location = useLocation();
+  const { role, isAuthenticated } = useAuth(); // Replace with your actual auth hook
 
-  // Simulated role fetch (you can get from localStorage, context, auth provider, etc.)
-  const role = localStorage.getItem("role") as UserRole | null;
+  if (!isAuthenticated()) {
+    return <Navigate to="/auth/sign-in" state={{ from: location }} replace />;
+  }
 
-  if (!role || role !== allowedRole) {
-    const redirectPath = role === "CLIENT" ? "/client/dashboard" : "/worker/dashboard"
-    return (<Navigate to={redirectPath} state={{ from: location }} replace />);
-}
+  if (!role() || role() !== allowedRole) {
+    const redirectPath =
+      role() === "CLIENT"
+        ? "/client/dashboard"
+        : role() === "WORKER"
+        ? "/worker/dashboard"
+        : "/auth/sign-in"; // fallback for unexpected roles
+
+    return <Navigate to={redirectPath} state={{ from: location }} replace />;
+  }
 
   return <>{children}</>;
 };
