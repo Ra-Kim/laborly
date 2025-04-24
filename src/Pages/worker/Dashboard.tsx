@@ -1,5 +1,9 @@
 const WorkerDashbaord = () => {
-  return <div>Worker Dashbaord</div>;
+	return (
+		<div>
+			<h3>Dashboard</h3>
+		</div>
+	);
 };
 
 export default WorkerDashbaord;

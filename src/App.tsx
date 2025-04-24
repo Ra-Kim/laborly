@@ -17,74 +17,71 @@ import { useAuth } from "./hooks/useAuth";
 import useRedirectByRole from "./hooks/useRedirectByRole";
 import WorkerRoute from "./routes/WorkerRoute";
 import ClientRoute from "./routes/ClientRoute";
+import MyJobs from "./Pages/worker/MyJobs";
 
 const App = () => {
-  const { pathname } = useLocation();
-  const showNavbar = useMemo(() => {
-    if (pathname.includes("auth")) return false;
-    return true;
-  }, [pathname]);
+	const location = useLocation();
+	const hideNavbarRoutes = ["/client", "/client/dashboard", "/worker", "/worker/my-jobs"];
 
-  const { isAuthenticated, role, logout } = useAuth();
-  const navigate = useNavigate();
-  const location = useLocation();
+	// const { pathname } = useLocation();
 
-  useEffect(() => {
-    if (!isAuthenticated() && !location.pathname.startsWith("/auth")) {
-      navigate("/auth/sign-in");
-    }
+	// const showNavbar = useMemo(() => {
+	//   if (pathname.includes("auth")) return false;
+	//   return true;
+	// }, [pathname]);
 
-    if (isAuthenticated() && location.pathname === "/") {
-      if (role === "WORKER") {
-        navigate("/worker/dashboard");
-        return;
-      }
-      if (role === "CLIENT") {
-        navigate(`/client/dashboard`);
-        return;
-      }
-      logout();
-    }
-  }, [isAuthenticated, navigate, location.pathname, role]);
-  useRedirectByRole();
-  return (
-    <>
-      {showNavbar && <Navbar />}
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/artisans" element={<Artisans />} />
-        <Route path="/artisans/:artisanId" element={<ArtisanProfile />} />
+	// const { isAuthenticated, role, logout } = useAuth();
+	// const navigate = useNavigate();
+	// const location = useLocation();
 
-        <Route path="/blog" element={<Blog />} />
-        <Route path="*" element={<NotFound />} />
-        {/*  */}
-        <Route path="/auth" element={<AuthLayout />}>
-          <Route path="sign-in" element={<Login />} />
-          <Route path="sign-up" element={<Signup />} />
-        </Route>
-        <Route
-          path="/worker"
-          element={
-            <WorkerRoute>
-              <WorkerLayout />
-            </WorkerRoute>
-          }
-        >
-          <Route path="dashboard" element={<WorkerDashboard />} />
-        </Route>
-        <Route
-          path="/client"
-          element={
-            <ClientRoute>
-              <ClientLayout />
-            </ClientRoute>
-          }
-        >
-          <Route path="dashboard" element={<ClientDashboard />} />
-        </Route>
-      </Routes>
-    </>
-  );
+	// useEffect(() => {
+	//   if (!isAuthenticated() && !location.pathname.startsWith("/auth")) {
+	//     navigate("/auth/sign-in");
+	//   }
+
+	//   if (isAuthenticated() && location.pathname === "/") {
+	//     if (role === "WORKER") {
+	//       navigate("/worker/dashboard");
+	//       return;
+	//     }
+	//     if (role === "CLIENT") {
+	//       navigate(`/client/dashboard`);
+	//       return;
+	//     }
+	//     logout();
+	//   }
+	// }, [isAuthenticated, navigate, location.pathname, role]);
+	// useRedirectByRole();
+	return (
+		<>
+			{!hideNavbarRoutes.includes(location.pathname) && <Navbar />}
+
+			<Routes>
+				<Route path="/" element={<Home />} />
+				<Route path="/artisans" element={<Artisans />} />
+				<Route path="/artisans/:artisanId" element={<ArtisanProfile />} />
+
+				<Route path="/blog" element={<Blog />} />
+				<Route path="*" element={<NotFound />} />
+				{/*  */}
+				<Route path="/auth" element={<AuthLayout />}>
+					<Route path="sign-in" element={<Login />} />
+					<Route path="sign-up" element={<Signup />} />
+				</Route>
+
+				{/*  */}
+
+				<Route path="/worker" element={<WorkerLayout />}>
+					<Route index element={<WorkerDashboard />} />
+					<Route path="my-jobs" element={<MyJobs />} />
+				</Route>
+				<Route path="/client" element={<ClientLayout />}>
+					<Route path="dashboard" element={<ClientDashboard />} />
+					
+				</Route>
+			</Routes>
+		</>
+	);
 };
 
 export default App;
