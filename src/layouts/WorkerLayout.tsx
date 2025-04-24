@@ -1,4 +1,4 @@
-import { useState, useEffect, ReactNode } from "react";
+import { useState, useEffect, ReactNode, useMemo } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { FaUserCircle, FaSignOutAlt, FaTasks } from "react-icons/fa";
@@ -9,10 +9,15 @@ import { IoNotifications } from "react-icons/io5";
 import profilePhoto from "../assets/user-photo.png";
 import logo from "../assets/laborly-logo.png";
 import { HiHome } from "react-icons/hi";
+import { MdHomeRepairService } from "react-icons/md";
+import { IUser } from "@/types/auth";
 
 const WorkerLayout = () => {
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
+  const user: IUser = useMemo(() => {
+    return JSON.parse(localStorage.getItem(`user`) || "{}");
+  }, []);
 
   // Handle screen size for collapsibility
   function useIsMediumUp() {
@@ -109,10 +114,14 @@ const WorkerLayout = () => {
 
         {/* Menu Items */}
         <Menu className="text-sm overflow-hidden">
-          <SidebarLink to="." icon={<HiHome />} label="Dashboard" />
+          <SidebarLink to="/" icon={<HiHome />} label="Dashboard" />
 
           <SidebarLink to="my-jobs" icon={<FaTasks />} label="My Jobs" />
-
+          <SidebarLink
+            to="my-services"
+            icon={<MdHomeRepairService />}
+            label="Services"
+          />
           <SidebarLink
             to="messages"
             icon={<BsChatDotsFill />}
@@ -124,11 +133,6 @@ const WorkerLayout = () => {
             label="Profile"
           />
           <SidebarLink to="user-profile" icon={<BiSupport />} label="Support" />
-          <SidebarLink
-            to="user-profile"
-            icon={<IoNotifications />}
-            label="Notifications"
-          />
 
           <MenuItem icon={<FaSignOutAlt />} onClick={handleLogout}>
             Log out
@@ -140,12 +144,9 @@ const WorkerLayout = () => {
       <main className="flex-1 min-h-0 flex flex-col overflow-hidden transition-all duration-300 pl-2 sm:pl-8">
         {/* Top bar */}
         <div className="bg-white soft-shadow w-full p-4 rounded-lg sticky top-0 z-20 flex justify-between items-center">
-          {/* <button
-                        className="text-gray-800 p-2 hover:text-primary md:hidden"
-                        onClick={() => setCollapsed(!collapsed)}
-                    >
-                        <FaBars size={20} />
-                    </button> */}
+          <p className="text-darkPrimary font-bold text-lg">
+            Welcome , {user.first_name} {user.last_name}
+          </p>
           <div>
             <div className="relative inline-flex items-center justify-center w-10 h-10 rounded-full bg-white card-shadow mx-2">
               <IoNotifications className="text-xl text-secondary" />

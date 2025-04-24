@@ -94,6 +94,7 @@ export const login = createAsyncThunk(
     const res: ISignUpRes = response.data;
     localStorage.setItem("token", res.access_token);
     localStorage.setItem("role", res.user.role);
+    localStorage.setItem("user", JSON.stringify(res.user));
 
     toast.update(LOG_IN, {
       render: "Login successful!",
