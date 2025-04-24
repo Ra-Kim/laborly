@@ -37,7 +37,11 @@ const Login = () => {
   const onSubmit: SubmitHandler<
     Yup.InferType<typeof validationSchema>
   > = async (data) => {
-    await dispatch(login(data)).unwrap();
+    await dispatch(login(data)).then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        navigate("/");
+      }
+    });
   };
 
   const GoogleIcon = SVGS.google;

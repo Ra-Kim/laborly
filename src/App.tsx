@@ -28,7 +28,9 @@ const App = () => {
   const { isAuthenticated, role, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  useRedirectByRole();
 
+  console.log(isAuthenticated(), role);
   useEffect(() => {
     if (!isAuthenticated() && !location.pathname.startsWith("/auth")) {
       navigate("/auth/sign-in");
@@ -46,7 +48,6 @@ const App = () => {
       logout();
     }
   }, [isAuthenticated, navigate, location.pathname, role]);
-  useRedirectByRole();
   return (
     <>
       {showNavbar && <Navbar />}

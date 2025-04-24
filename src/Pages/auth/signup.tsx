@@ -75,15 +75,18 @@ const Signup = () => {
       ""
     );
     data = { ...data, phone_number: updatedPhoneNumber };
-    console.log(data);
-    await dispatch(signUp(data));
+    await dispatch(signUp(data)).then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        navigate(`/auth/sign-in`);
+      }
+    });
   };
 
   const GoogleIcon = SVGS.google;
   // google sign in
   const googleSignUp = () => {
-    dispatch(googleLogin("")).unwrap()
-  }
+    dispatch(googleLogin("")).unwrap();
+  };
   return (
     <div className="py-4 w-4/5 justify-center mx-auto bg-white !font-[Roboto]">
       <div className="flex justify-between items-center">
@@ -256,7 +259,10 @@ const Signup = () => {
             Or Sign up with
           </p>
         </div>
-        <Button className="grid grid-cols-[auto,1fr] w-full" onClick={googleSignUp}>
+        <Button
+          className="grid grid-cols-[auto,1fr] w-full"
+          onClick={googleSignUp}
+        >
           <div className="h-full w-fit p-1 bg-white rounded-full">
             <GoogleIcon />
           </div>
