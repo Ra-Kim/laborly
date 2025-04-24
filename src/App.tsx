@@ -20,67 +20,86 @@ import ClientRoute from "./routes/ClientRoute";
 import MyJobs from "./Pages/worker/MyJobs";
 
 const App = () => {
-	const location = useLocation();
-	const hideNavbarRoutes = ["/client", "/client/dashboard", "/worker", "/worker/my-jobs"];
+  const { pathname } = useLocation();
+  const showNavbar = useMemo(() => {
+    if (pathname.includes("auth")) return false;
+    if (pathname.includes("worker")) return false;
+    if (pathname.includes("client")) return false;
+    return true;
+  }, [pathname]);
 
-	// const { pathname } = useLocation();
+  const { isAuthenticated, role, logout } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  useRedirectByRole();
 
-	// const showNavbar = useMemo(() => {
-	//   if (pathname.includes("auth")) return false;
-	//   return true;
-	// }, [pathname]);
+  useEffect(() => {
+    // If not authenticated and not on auth pages, redirect to login
+    if (!isAuthenticated() && !location.pathname.startsWith("/auth")) {
+      navigate("/auth/sign-in");
+    }
 
-	// const { isAuthenticated, role, logout } = useAuth();
-	// const navigate = useNavigate();
-	// const location = useLocation();
+    // If authenticated and trying to access auth pages, redirect to dashboard
+    if (isAuthenticated() && location.pathname.startsWith("/auth")) {
+      if (role() === "WORKER") {
+        navigate("/worker/dashboard");
+      } else if (role() === "CLIENT") {
+        navigate("/client/dashboard");
+      } else {
+        logout();
+      }
+    }
 
-	// useEffect(() => {
-	//   if (!isAuthenticated() && !location.pathname.startsWith("/auth")) {
-	//     navigate("/auth/sign-in");
-	//   }
+    // Redirect authenticated users from "/" to their dashboard
+    if (isAuthenticated() && location.pathname === "/") {
+      if (role() === "WORKER") {
+        navigate("/worker/dashboard");
+      } else if (role() === "CLIENT") {
+        navigate(`/client/dashboard`);
+      } else {
+        logout();
+      }
+    }
+  }, [isAuthenticated, navigate, location.pathname, role]);
+  return (
+    <>
+      {showNavbar && <Navbar />}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/artisans" element={<Artisans />} />
+        <Route path="/artisans/:artisanId" element={<ArtisanProfile />} />
 
-	//   if (isAuthenticated() && location.pathname === "/") {
-	//     if (role === "WORKER") {
-	//       navigate("/worker/dashboard");
-	//       return;
-	//     }
-	//     if (role === "CLIENT") {
-	//       navigate(`/client/dashboard`);
-	//       return;
-	//     }
-	//     logout();
-	//   }
-	// }, [isAuthenticated, navigate, location.pathname, role]);
-	// useRedirectByRole();
-	return (
-		<>
-			{!hideNavbarRoutes.includes(location.pathname) && <Navbar />}
-
-			<Routes>
-				<Route path="/" element={<Home />} />
-				<Route path="/artisans" element={<Artisans />} />
-				<Route path="/artisans/:artisanId" element={<ArtisanProfile />} />
-
-				<Route path="/blog" element={<Blog />} />
-				<Route path="*" element={<NotFound />} />
-				{/*  */}
-				<Route path="/auth" element={<AuthLayout />}>
-					<Route path="sign-in" element={<Login />} />
-					<Route path="sign-up" element={<Signup />} />
-				</Route>
-
-				{/*  */}
-
-				<Route path="/worker" element={<WorkerLayout />}>
-					<Route index element={<WorkerDashboard />} />
-					<Route path="my-jobs" element={<MyJobs />} />
-				</Route>
-				<Route path="/client" element={<ClientLayout />}>
-					<Route path="dashboard" element={<ClientDashboard />} />
-				</Route>
-			</Routes>
-		</>
-	);
+        <Route path="/blog" element={<Blog />} />
+        <Route path="*" element={<NotFound />} />
+        {/*  */}
+        <Route path="/auth" element={<AuthLayout />}>
+          <Route path="sign-in" element={<Login />} />
+          <Route path="sign-up" element={<Signup />} />
+        </Route>
+        <Route
+          path="/worker"
+          element={
+            <WorkerRoute>
+              <WorkerLayout />
+            </WorkerRoute>
+          }
+        >
+          <Route path="dashboard" element={<WorkerDashboard />} />
+          <Route path="my-jobs" element={<MyJobs />} />
+        </Route>
+        <Route
+          path="/client"
+          element={
+            <ClientRoute>
+              <ClientLayout />
+            </ClientRoute>
+          }
+        >
+          <Route path="dashboard" element={<ClientDashboard />} />
+        </Route>
+      </Routes>
+    </>
+  );
 };
 
 export default App;

@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import JobDetail from "./JobDetails";
+import { JobStatus } from "@/types/jobs";
 
 const jobs = [
 	{
@@ -19,6 +20,7 @@ const jobs = [
 		description: "Sink is leaking and may need new parts.",
 	},
 ];
+
 
 const statusColors = {
 	Pending: "bg-yellow-100 text-yellow-700",
@@ -48,7 +50,7 @@ const MyJobs = () => {
 								</div>
 								<span
 									className={`text-xs font-medium px-3 py-1 rounded-full ${
-										statusColors[job.status]
+										statusColors[job.status as JobStatus]
 									}`}
 								>
 									{job.status}
