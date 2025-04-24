@@ -1,8 +1,7 @@
 import { useState, useEffect, ReactNode, useMemo } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { FaUserCircle, FaSignOutAlt, FaTasks } from "react-icons/fa";
-
 import { BiSupport } from "react-icons/bi";
 import { BsChatDotsFill } from "react-icons/bs";
 import { IoNotifications } from "react-icons/io5";
@@ -14,6 +13,7 @@ import { IUser } from "@/types/auth";
 
 const WorkerLayout = () => {
   const navigate = useNavigate();
+  const location = useLocation()
   const [collapsed, setCollapsed] = useState(false);
   const user: IUser = useMemo(() => {
     return JSON.parse(localStorage.getItem(`user`) || "{}");
@@ -56,7 +56,6 @@ const WorkerLayout = () => {
     label: string;
   }) => {
     const isActive = location.pathname === to;
-
     return (
       <MenuItem
         icon={icon}
@@ -114,11 +113,11 @@ const WorkerLayout = () => {
 
         {/* Menu Items */}
         <Menu className="text-sm overflow-hidden">
-          <SidebarLink to="/" icon={<HiHome />} label="Dashboard" />
+          <SidebarLink to="/worker/dashboard" icon={<HiHome />} label="Dashboard" />
 
-          <SidebarLink to="my-jobs" icon={<FaTasks />} label="My Jobs" />
+          <SidebarLink to="/worker/my-jobs" icon={<FaTasks />} label="My Jobs" />
           <SidebarLink
-            to="my-services"
+            to="/worker/my-services"
             icon={<MdHomeRepairService />}
             label="Services"
           />
@@ -144,9 +143,7 @@ const WorkerLayout = () => {
       <main className="flex-1 min-h-0 flex flex-col overflow-hidden transition-all duration-300 pl-2 sm:pl-8">
         {/* Top bar */}
         <div className="bg-white soft-shadow w-full p-4 rounded-lg sticky top-0 z-20 flex justify-between items-center">
-          <p className="text-darkPrimary font-bold text-lg">
-            Welcome , {user.first_name} {user.last_name}
-          </p>
+          <p className="text-darkPrimary font-bold text-lg">Welcome , {user.first_name} {user.last_name}</p>
           <div>
             <div className="relative inline-flex items-center justify-center w-10 h-10 rounded-full bg-white card-shadow mx-2">
               <IoNotifications className="text-xl text-secondary" />
