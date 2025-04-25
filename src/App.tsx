@@ -25,105 +25,92 @@ import ClientMessages from "./Pages/client/ClientMessages";
 import ClientProfile from "./Pages/client/ClientProfile";
 import Services from "./Pages/worker/Services";
 const App = () => {
-	const location = useLocation();
-	const hideNavbarRoutes = [
-		"/client",
-		"/client/client-jobs",
-		"/client/client-messages",
-		"/client/client-profile",
-		"/worker",
-		"/worker/my-jobs",
-		"/worker/messages",
-		"/worker/profile",
-	];
+  const { pathname } = useLocation();
 
-	const { pathname } = useLocation();
+  const showNavbar = useMemo(() => {
+    if (pathname.includes("auth")) return false;
+    if (pathname.includes("worker")) return false;
+    if (pathname.includes("client")) return false;
+    return true;
+  }, [pathname]);
 
-	const showNavbar = useMemo(() => {
-		if (pathname.includes("auth")) return false;
-		if (pathname.includes("worker")) return false;
-		if (pathname.includes("client")) return false;
-		return true;
-	}, [pathname]);
+  const { isAuthenticated, role, logout } = useAuth();
+  const navigate = useNavigate();
+  useRedirectByRole();
 
-	const { isAuthenticated, role, logout } = useAuth();
-	const navigate = useNavigate();
-	useRedirectByRole();
+  useEffect(() => {
+    if (!isAuthenticated() && !location.pathname.startsWith("/auth")) {
+      navigate("/auth/sign-in");
+    }
 
-	useEffect(() => {
-		if (!isAuthenticated() && !location.pathname.startsWith("/auth")) {
-			navigate("/auth/sign-in");
-		}
+    if (isAuthenticated() && location.pathname === "/") {
+      if (role() === "WORKER") {
+        navigate("/worker/dashboard");
+        return;
+      }
+      if (role() === "CLIENT") {
+        navigate(`/client/dashboard`);
+        return;
+      }
+      logout();
+    }
+  }, [isAuthenticated, navigate, location.pathname, role]);
+  return (
+    <>
+      {showNavbar && <Navbar />}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/artisans" element={<Artisans />} />
+        <Route path="/artisans/:artisanId" element={<ArtisanProfile />} />
 
-		if (isAuthenticated() && location.pathname === "/") {
-			if (role() === "WORKER") {
-				navigate("/worker/dashboard");
-				return;
-			}
-			if (role() === "CLIENT") {
-				navigate(`/client/dashboard`);
-				return;
-			}
-			logout();
-		}
-	}, [isAuthenticated, navigate, location.pathname, role]);
-	return (
-		<>
-			{showNavbar && <Navbar />}
-			<Routes>
-				<Route path="/" element={<Home />} />
-				<Route path="/artisans" element={<Artisans />} />
-				<Route path="/artisans/:artisanId" element={<ArtisanProfile />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/artisans" element={<Artisans />} />
+        <Route path="/artisans/:artisanId" element={<ArtisanProfile />} />
 
-				<Route path="/" element={<Home />} />
-				<Route path="/artisans" element={<Artisans />} />
-				<Route path="/artisans/:artisanId" element={<ArtisanProfile />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="*" element={<NotFound />} />
+        {/*  */}
+        <Route path="/auth" element={<AuthLayout />}>
+          <Route path="sign-in" element={<Login />} />
+          <Route path="sign-up" element={<Signup />} />
+        </Route>
 
-				<Route path="/blog" element={<Blog />} />
-				<Route path="*" element={<NotFound />} />
-				{/*  */}
-				<Route path="/auth" element={<AuthLayout />}>
-					<Route path="sign-in" element={<Login />} />
-					<Route path="sign-up" element={<Signup />} />
-				</Route>
+        {/*  */}
 
-				{/*  */}
+        <Route path="/client" element={<ClientLayout />}>
+          <Route index element={<ClientDashboard />} />
+          <Route path="client-jobs" element={<ClientJobs />} />
+          <Route path="client-messages" element={<ClientMessages />} />
+          <Route path="client-profile" element={<ClientProfile />} />
+        </Route>
 
-				<Route path="/worker" element={<WorkerLayout />}>
-					<Route index element={<WorkerDashboard />} />
-					<Route path="my-jobs" element={<MyJobs />} />
-					<Route path="profile" element={<Profile />} />
-					<Route path="messages" element={<Messages />} />
-				</Route>
-				<Route path="/client" element={<ClientLayout />}>
-					<Route index element={<ClientDashboard />} />
-					<Route path="client-jobs" element={<ClientJobs />} />
-					<Route path="client-messages" element={<ClientMessages />} />
-					<Route path="client-profile" element={<ClientProfile />} />
-				</Route>
+        {/*  */}
 
-				{/*  */}
-
-				<Route
-					path="/worker"
-					element={
-						<WorkerRoute>
-							<WorkerLayout />
-						</WorkerRoute>
-					}
-				></Route>
-
-				<Route
-					path="/client"
-					element={
-						<ClientRoute>
-							<ClientLayout />
-						</ClientRoute>
-					}
-				></Route>
-			</Routes>
-		</>
-	);
+        <Route
+          path="/worker"
+          element={
+            <WorkerRoute>
+              <WorkerLayout />
+            </WorkerRoute>
+          }
+        >
+          <Route index element={<WorkerDashboard />} />
+          <Route path="my-jobs" element={<MyJobs />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="messages" element={<Messages />} />
+          <Route path="my-services" element={<Services />} />
+        </Route>
+        <Route
+          path="/client"
+          element={
+            <ClientRoute>
+              <ClientLayout />
+            </ClientRoute>
+          }
+        ></Route>
+      </Routes>
+    </>
+  );
 };
 
 export default App;
