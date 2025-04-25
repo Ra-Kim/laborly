@@ -20,12 +20,17 @@ import ClientRoute from "./routes/ClientRoute";
 import MyJobs from "./Pages/worker/MyJobs";
 import Profile from "./Pages/worker/Profile";
 import Messages from "./Pages/worker/Messages";
+import ClientJobs from "./Pages/client/ClientJobs";
+import ClientMessages from "./Pages/client/ClientMessages";
+import ClientProfile from "./Pages/client/ClientProfile";
 
 const App = () => {
 	const location = useLocation();
 	const hideNavbarRoutes = [
 		"/client",
-		"/client/dashboard",
+		"/client/client-jobs",
+		"/client/client-messages",
+		"/client/client-profile",
 		"/worker",
 		"/worker/my-jobs",
 		"/worker/messages",
@@ -87,7 +92,10 @@ const App = () => {
 					<Route path="messages" element={<Messages />} />
 				</Route>
 				<Route path="/client" element={<ClientLayout />}>
-					<Route path="dashboard" element={<ClientDashboard />} />
+					<Route index element={<ClientDashboard />} />
+					<Route path="client-jobs" element={<ClientJobs />} />
+					<Route path="client-messages" element={<ClientMessages />} />
+					<Route path="client-profile" element={<ClientProfile />} />
 				</Route>
 			</Routes>
 		</>
