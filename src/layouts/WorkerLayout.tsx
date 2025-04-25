@@ -3,10 +3,8 @@ import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import {
 	FaTachometerAlt,
- 	FaUserCircle,
- 
+	FaUserCircle,
 	FaSignOutAlt,
-	 
 	FaTasks,
 } from "react-icons/fa";
 
@@ -119,16 +117,16 @@ const WorkerLayout = () => {
 						label="Messages"
 					/>
 					<SidebarLink
-						to="user-profile"
+						to="profile"
 						icon={<FaUserCircle />}
 						label="Profile"
 					/>
-					<SidebarLink to="user-profile" icon={<BiSupport />} label="Support" />
+					{/* <SidebarLink to="user-profile" icon={<BiSupport />} label="Support" />
 					<SidebarLink
-						to="user-profile"
+						to="notificatio"
 						icon={<IoNotifications />}
 						label="Notifications"
-					/>
+					/> */}
 
 					<MenuItem icon={<FaSignOutAlt />} onClick={handleLogout}>
 						Log out

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import JobDetail from "./JobDetails";
+import { IoCloseOutline } from "react-icons/io5";
 
 const jobs = [
 	{
@@ -29,39 +30,37 @@ const statusColors = {
 
 const MyJobs = () => {
 	const [displaySideModal, setDisplaySideModal] = useState(false);
+
 	return (
 		<div className="px-4 py-8 flex">
 			{/* Job Listing */}
 			<div>
 				<h2 className="text-3xl font-bold mb-6">My Jobs</h2>
 
-				<div className="space-y-6">
+				<div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-4 ">
 					{jobs.map((job) => (
 						<div
 							key={job.id}
-							className="p-5 rounded-xl border shadow-sm hover:shadow-md transition-shadow duration-200"
+							className="p-5 rounded-xl card-shadow duration-200 flex flex-col"
 						>
 							<div className="flex justify-between items-start mb-2">
 								<div>
 									<h3 className="text-xl font-semibold">{job.title}</h3>
 									<p className="text-sm text-gray-500">{job.date}</p>
 								</div>
+							</div>
+							<p className="text-gray-700 mb-3">{job.description}</p>
+							<div className="flex justify-between items-center">
 								<span
-									className={`text-xs font-medium px-3 py-1 rounded-full ${
+									className={`text-[.6rem] sm:text-xs font-medium px-3 py-1 rounded-full ${
 										statusColors[job.status]
 									}`}
 								>
 									{job.status}
 								</span>
-							</div>
-							<p className="text-gray-700 mb-3">{job.description}</p>
-							<div className="flex justify-between items-center">
-								<span className="text-sm font-medium text-gray-600">
-									{job.party}
-								</span>
 								<button
 									onClick={() => setDisplaySideModal(!displaySideModal)}
-									className="text-sm px-4 py-1.5 border border-gray-300 rounded-md hover:bg-gray-100 transition"
+									className="btn  border border-gray-300 rounded-md hover:bg-gray-100 transition"
 								>
 									View Details
 								</button>
@@ -73,7 +72,15 @@ const MyJobs = () => {
 
 			{/* Job Details */}
 
-			<JobDetail />
+			{displaySideModal && (
+				<div className="bg-white z-30 absolute right-0 top-0 bottom-0 max-w-md card-shadow">
+					<IoCloseOutline
+						onClick={() => setDisplaySideModal(!displaySideModal)}
+						className="absolute top-5 left-5 text-xl"
+					/>
+					<JobDetail />
+				</div>
+			)}
 		</div>
 	);
 };

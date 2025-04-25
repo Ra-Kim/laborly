@@ -1,4 +1,5 @@
 import React from "react";
+import { MdLocationPin } from "react-icons/md";
 import { useParams } from "react-router-dom";
 
 const JobDetail = () => {
@@ -23,10 +24,10 @@ const JobDetail = () => {
 	};
 
 	return (
-		<div className="max-w-4xl mx-auto px-4 py-10">
-			<h3>Job Details</h3>
+		<div className="w-full px-4 py-14">
+			<h3 className="text-xl mb-4">Job Details</h3>
 			<div className="mb-6">
-				<h2 className="text-3xl font-bold">{job.title}</h2>
+				<h4 className="text-2xl font-bold">{job.title}</h4>
 				<p className="text-sm text-gray-500">{job.date}</p>
 			</div>
 
@@ -35,18 +36,16 @@ const JobDetail = () => {
 					<p>
 						<span className="font-semibold">Client:</span> {job.client}
 					</p>
-					<p>
-						<span className="font-semibold">Assigned Artisan:</span>{" "}
-						{job.worker}
-					</p>
+
 					<p>
 						<span className="font-semibold">Budget:</span> {job.budget}
 					</p>
-					<p>
-						<span className="font-semibold">Location:</span> {job.location}
+					<p className="flex items-center gap-2">
+						<MdLocationPin /> {job.location}
 					</p>
 				</div>
 				<div>
+                    Status: 
 					<span
 						className={`inline-block px-4 py-2 rounded-full text-sm font-medium ${
 							statusColors[job.status]
@@ -58,26 +57,17 @@ const JobDetail = () => {
 			</div>
 
 			<div className="bg-white rounded-lg border p-6 shadow-sm">
-				<h3 className="text-lg font-semibold mb-2">Job Description</h3>
+				<h3 className="text-sm font-semibold mb-2">Job Description</h3>
 				<p className="text-gray-700">{job.description}</p>
 
 				{job.notes && (
 					<>
-						<h3 className="text-lg font-semibold mt-6 mb-2">
+						<h3 className="text-sm font-semibold mt-6 mb-2">
 							Additional Notes
 						</h3>
 						<p className="text-gray-700">{job.notes}</p>
 					</>
 				)}
-			</div>
-
-			<div className="mt-8 flex gap-4">
-				<button className="px-4 py-2 bg-gray-100 text-gray-800 rounded hover:bg-gray-200 transition">
-					Cancel Job
-				</button>
-				<button className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">
-					Mark as Completed
-				</button>
 			</div>
 		</div>
 	);

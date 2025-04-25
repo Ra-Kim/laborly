@@ -18,10 +18,19 @@ import useRedirectByRole from "./hooks/useRedirectByRole";
 import WorkerRoute from "./routes/WorkerRoute";
 import ClientRoute from "./routes/ClientRoute";
 import MyJobs from "./Pages/worker/MyJobs";
+import Profile from "./Pages/worker/Profile";
+import Messages from "./Pages/worker/Messages";
 
 const App = () => {
 	const location = useLocation();
-	const hideNavbarRoutes = ["/client", "/client/dashboard", "/worker", "/worker/my-jobs"];
+	const hideNavbarRoutes = [
+		"/client",
+		"/client/dashboard",
+		"/worker",
+		"/worker/my-jobs",
+		"/worker/messages",
+		"/worker/profile",
+	];
 
 	// const { pathname } = useLocation();
 
@@ -74,6 +83,8 @@ const App = () => {
 				<Route path="/worker" element={<WorkerLayout />}>
 					<Route index element={<WorkerDashboard />} />
 					<Route path="my-jobs" element={<MyJobs />} />
+					<Route path="profile" eldement={<Profile />} />
+					<Route path="messages" element={<Messages />} />
 				</Route>
 				<Route path="/client" element={<ClientLayout />}>
 					<Route path="dashboard" element={<ClientDashboard />} />
