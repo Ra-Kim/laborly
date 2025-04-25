@@ -86,6 +86,7 @@ const App = () => {
         >
           <Route path="dashboard" element={<WorkerDashboard />} />
           <Route path="my-jobs" element={<MyJobs />} />
+          <Route path="my-services" element={<MyJobs />} />
         </Route>
         <Route
           path="/client"
