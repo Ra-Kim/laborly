@@ -141,7 +141,7 @@ const CreateService = ({
           Cancel
         </Button>
         <Button className={`w-full lg:w-40`} type="submit" disabled={loading}>
-          Create service
+          {service?.id ? "Update service" : "Create service"}
         </Button>
       </div>
     </form>

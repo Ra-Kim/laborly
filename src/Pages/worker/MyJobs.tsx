@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import JobDetail from "./JobDetails";
+import JobDetail from "../../fragments/jobs/JobDetails";
 import { IoCloseOutline } from "react-icons/io5";
 
 const jobs = [

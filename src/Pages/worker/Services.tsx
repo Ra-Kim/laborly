@@ -52,6 +52,7 @@ const Services = () => {
               {myServices.map((service) => {
                 return (
                   <ServiceCard
+                    key={service.id}
                     title={service.title}
                     description={service.description}
                     location={service.location}
