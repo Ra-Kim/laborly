@@ -122,12 +122,12 @@ const WorkerLayout = () => {
             label="Services"
           />
           <SidebarLink
-            to="messages"
+            to="/worker/messages"
             icon={<BsChatDotsFill />}
             label="Messages"
           />
           <SidebarLink
-            to="user-profile"
+            to="/worker/user-profile"
             icon={<FaUserCircle />}
             label="Profile"
           />

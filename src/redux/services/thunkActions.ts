@@ -89,7 +89,7 @@ export const deleteService = createAsyncThunk(
   }
 );
 
-export const myServices = createAsyncThunk(
+export const getMyServices = createAsyncThunk(
   "my-services",
   async (_: string, thunkAPI) => {
     const response = await useAxios({

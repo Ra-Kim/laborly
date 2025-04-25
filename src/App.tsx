@@ -20,55 +20,48 @@ import ClientRoute from "./routes/ClientRoute";
 import MyJobs from "./Pages/worker/MyJobs";
 import Profile from "./Pages/worker/Profile";
 import Messages from "./Pages/worker/Messages";
+import Services from "./Pages/worker/Services";
 
 const App = () => {
-	const location = useLocation();
-	const hideNavbarRoutes = [
-		"/client",
-		"/client/dashboard",
-		"/worker",
-		"/worker/my-jobs",
-		"/worker/messages",
-		"/worker/profile",
-	];
+  const location = useLocation();
 
-	// const { pathname } = useLocation();
+  const { pathname } = useLocation();
 
-	// const showNavbar = useMemo(() => {
-	//   if (pathname.includes("auth")) return false;
-	//   return true;
-	// }, [pathname]);
+  const showNavbar = useMemo(() => {
+    if (pathname.includes("auth")) return false;
+    if (pathname.includes("worker")) return false;
+    if (pathname.includes("client")) return false;
+    return true;
+  }, [pathname]);
 
-	// const { isAuthenticated, role, logout } = useAuth();
-	// const navigate = useNavigate();
-	// const location = useLocation();
+  const { isAuthenticated, role, logout } = useAuth();
+  const navigate = useNavigate();
+  useRedirectByRole();
 
-	// useEffect(() => {
-	//   if (!isAuthenticated() && !location.pathname.startsWith("/auth")) {
-	//     navigate("/auth/sign-in");
-	//   }
+  useEffect(() => {
+    if (!isAuthenticated() && !location.pathname.startsWith("/auth")) {
+      navigate("/auth/sign-in");
+    }
 
-	//   if (isAuthenticated() && location.pathname === "/") {
-	//     if (role === "WORKER") {
-	//       navigate("/worker/dashboard");
-	//       return;
-	//     }
-	//     if (role === "CLIENT") {
-	//       navigate(`/client/dashboard`);
-	//       return;
-	//     }
-	//     logout();
-	//   }
-	// }, [isAuthenticated, navigate, location.pathname, role]);
-	// useRedirectByRole();
-	return (
-		<>
-			{!hideNavbarRoutes.includes(location.pathname) && <Navbar />}
-
-			<Routes>
-				<Route path="/" element={<Home />} />
-				<Route path="/artisans" element={<Artisans />} />
-				<Route path="/artisans/:artisanId" element={<ArtisanProfile />} />
+    if (isAuthenticated() && location.pathname === "/") {
+      if (role() === "WORKER") {
+        navigate("/worker/dashboard");
+        return;
+      }
+      if (role() === "CLIENT") {
+        navigate(`/client/dashboard`);
+        return;
+      }
+      logout();
+    }
+  }, [isAuthenticated, navigate, location.pathname, role]);
+  return (
+    <>
+      {showNavbar && <Navbar />}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/artisans" element={<Artisans />} />
+        <Route path="/artisans/:artisanId" element={<ArtisanProfile />} />
 
         <Route path="/blog" element={<Blog />} />
         <Route path="*" element={<NotFound />} />
@@ -87,6 +80,9 @@ const App = () => {
         >
           <Route path="dashboard" element={<WorkerDashboard />} />
           <Route path="my-jobs" element={<MyJobs />} />
+          <Route path="my-services" element={<Services />} />
+          <Route path="user-profile" element={<Profile />} />
+          <Route path="messages" element={<Messages />} />
         </Route>
         <Route
           path="/client"

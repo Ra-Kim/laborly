@@ -9,10 +9,9 @@ export const useApiErrorHandler = (
 ) => {
   if (err.status_code === 401) {
     toast.error(`${err?.message}`);
-    localStorage.removeItem("token");
-    localStorage.removeItem("tenantData");
+    localStorage.clear();
     setTimeout(() => {
-      window.location.replace(`/auth/login`);
+      window.location.replace(`/auth/sign-in`);
     }, 1000);
   }
   if (toastId) {
