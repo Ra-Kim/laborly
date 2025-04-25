@@ -1,10 +1,10 @@
-<<<<<<< HEAD
+
 import React from "react";
 import { MdLocationPin } from "react-icons/md";
 import { useParams } from "react-router-dom";
-=======
+
 import { JobStatus } from "@/types/jobs";
->>>>>>> bbcc32b8a3e0b51290d56d11e82302e6608e2af8
+
 
 const JobDetail = () => {
 	const job = {
