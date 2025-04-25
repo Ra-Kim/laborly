@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { myServices, searchServices } from "./thunkActions";
+import { getMyServices, searchServices } from "./thunkActions";
 import { IService } from "@/types/service";
 
 export interface IState {
@@ -18,17 +18,17 @@ const ServiceSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers(builder) {
-    builder.addCase(myServices.pending, (state) => {
+    builder.addCase(getMyServices.pending, (state) => {
       return { ...state, loading: "loading" };
     });
-    builder.addCase(myServices.fulfilled, (state, action) => {
+    builder.addCase(getMyServices.fulfilled, (state, action) => {
       return {
         ...state,
         loading: "successful",
         myServices: action.payload,
       };
     });
-    builder.addCase(myServices.rejected, (state) => {
+    builder.addCase(getMyServices.rejected, (state) => {
       return { ...state, loading: "failed" };
     });
     builder.addCase(searchServices.pending, (state) => {

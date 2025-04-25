@@ -23,7 +23,7 @@ import Messages from "./Pages/worker/Messages";
 import ClientJobs from "./Pages/client/ClientJobs";
 import ClientMessages from "./Pages/client/ClientMessages";
 import ClientProfile from "./Pages/client/ClientProfile";
-
+import Services from "./Pages/worker/Services";
 const App = () => {
 	const location = useLocation();
 	const hideNavbarRoutes = [
@@ -37,40 +37,44 @@ const App = () => {
 		"/worker/profile",
 	];
 
-	// const { pathname } = useLocation();
+	const { pathname } = useLocation();
 
-	// const showNavbar = useMemo(() => {
-	//   if (pathname.includes("auth")) return false;
-	//   return true;
-	// }, [pathname]);
+	const showNavbar = useMemo(() => {
+		if (pathname.includes("auth")) return false;
+		if (pathname.includes("worker")) return false;
+		if (pathname.includes("client")) return false;
+		return true;
+	}, [pathname]);
 
-	// const { isAuthenticated, role, logout } = useAuth();
-	// const navigate = useNavigate();
-	// const location = useLocation();
+	const { isAuthenticated, role, logout } = useAuth();
+	const navigate = useNavigate();
+	useRedirectByRole();
 
-	// useEffect(() => {
-	//   if (!isAuthenticated() && !location.pathname.startsWith("/auth")) {
-	//     navigate("/auth/sign-in");
-	//   }
+	useEffect(() => {
+		if (!isAuthenticated() && !location.pathname.startsWith("/auth")) {
+			navigate("/auth/sign-in");
+		}
 
-	//   if (isAuthenticated() && location.pathname === "/") {
-	//     if (role === "WORKER") {
-	//       navigate("/worker/dashboard");
-	//       return;
-	//     }
-	//     if (role === "CLIENT") {
-	//       navigate(`/client/dashboard`);
-	//       return;
-	//     }
-	//     logout();
-	//   }
-	// }, [isAuthenticated, navigate, location.pathname, role]);
-	// useRedirectByRole();
+		if (isAuthenticated() && location.pathname === "/") {
+			if (role() === "WORKER") {
+				navigate("/worker/dashboard");
+				return;
+			}
+			if (role() === "CLIENT") {
+				navigate(`/client/dashboard`);
+				return;
+			}
+			logout();
+		}
+	}, [isAuthenticated, navigate, location.pathname, role]);
 	return (
 		<>
-			{!hideNavbarRoutes.includes(location.pathname) && <Navbar />}
-
+			{showNavbar && <Navbar />}
 			<Routes>
+				<Route path="/" element={<Home />} />
+				<Route path="/artisans" element={<Artisans />} />
+				<Route path="/artisans/:artisanId" element={<ArtisanProfile />} />
+
 				<Route path="/" element={<Home />} />
 				<Route path="/artisans" element={<Artisans />} />
 				<Route path="/artisans/:artisanId" element={<ArtisanProfile />} />
@@ -97,6 +101,26 @@ const App = () => {
 					<Route path="client-messages" element={<ClientMessages />} />
 					<Route path="client-profile" element={<ClientProfile />} />
 				</Route>
+
+				{/*  */}
+
+				<Route
+					path="/worker"
+					element={
+						<WorkerRoute>
+							<WorkerLayout />
+						</WorkerRoute>
+					}
+				></Route>
+
+				<Route
+					path="/client"
+					element={
+						<ClientRoute>
+							<ClientLayout />
+						</ClientRoute>
+					}
+				></Route>
 			</Routes>
 		</>
 	);

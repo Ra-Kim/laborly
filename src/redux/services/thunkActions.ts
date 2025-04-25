@@ -39,7 +39,7 @@ export const updateService = createAsyncThunk(
   async (data: { id: string; body: INewService }, thunkAPI) => {
     const toastId = toast.loading("Updating service...");
     const response = await useAxios({
-      url: `${BASE_URL}service/${data.id}`,
+      url: `${BASE_URL}services/${data.id}`,
       method: "PUT",
       data: data.body,
     });
@@ -67,7 +67,7 @@ export const deleteService = createAsyncThunk(
   async (data: string, thunkAPI) => {
     const toastId = toast.loading("Deleting service...");
     const response = await useAxios({
-      url: `${BASE_URL}service/${data}`,
+      url: `${BASE_URL}services/${data}`,
       method: "DELETE",
     });
 
@@ -89,7 +89,7 @@ export const deleteService = createAsyncThunk(
   }
 );
 
-export const myServices = createAsyncThunk(
+export const getMyServices = createAsyncThunk(
   "my-services",
   async (_: string, thunkAPI) => {
     const response = await useAxios({
