@@ -83,7 +83,7 @@ const App = () => {
 				<Route path="/worker" element={<WorkerLayout />}>
 					<Route index element={<WorkerDashboard />} />
 					<Route path="my-jobs" element={<MyJobs />} />
-					<Route path="profile" eldement={<Profile />} />
+					<Route path="profile" element={<Profile />} />
 					<Route path="messages" element={<Messages />} />
 				</Route>
 				<Route path="/client" element={<ClientLayout />}>

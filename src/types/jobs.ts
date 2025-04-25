@@ -14,3 +14,5 @@ export interface IJob {
     cancelled_at: string;
     cancel_reason: string;
   }
+
+export type JobStatus = "Pending" | "In Progress" | "Completed" | "Cancelled"

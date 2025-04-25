@@ -1,6 +1,10 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import JobDetail from "./JobDetails";
+<<<<<<< HEAD
 import { IoCloseOutline } from "react-icons/io5";
+=======
+import { JobStatus } from "@/types/jobs";
+>>>>>>> bbcc32b8a3e0b51290d56d11e82302e6608e2af8
 
 const jobs = [
 	{
@@ -20,6 +24,7 @@ const jobs = [
 		description: "Sink is leaking and may need new parts.",
 	},
 ];
+
 
 const statusColors = {
 	Pending: "bg-yellow-100 text-yellow-700",
@@ -52,8 +57,13 @@ const MyJobs = () => {
 							<p className="text-gray-700 mb-3">{job.description}</p>
 							<div className="flex justify-between items-center">
 								<span
+<<<<<<< HEAD
 									className={`text-[.6rem] sm:text-xs font-medium px-3 py-1 rounded-full ${
 										statusColors[job.status]
+=======
+									className={`text-xs font-medium px-3 py-1 rounded-full ${
+										statusColors[job.status as JobStatus]
+>>>>>>> bbcc32b8a3e0b51290d56d11e82302e6608e2af8
 									}`}
 								>
 									{job.status}
