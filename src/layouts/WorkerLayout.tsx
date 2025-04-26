@@ -13,7 +13,7 @@ import { IUser } from "@/types/auth";
 
 const WorkerLayout = () => {
   const navigate = useNavigate();
-  const location = useLocation()
+  const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
   const user: IUser = useMemo(() => {
     return JSON.parse(localStorage.getItem(`user`) || "{}");
@@ -113,9 +113,17 @@ const WorkerLayout = () => {
 
         {/* Menu Items */}
         <Menu className="text-sm overflow-hidden">
-          <SidebarLink to="/worker/dashboard" icon={<HiHome />} label="Dashboard" />
+          <SidebarLink
+            to="/worker/dashboard"
+            icon={<HiHome />}
+            label="Dashboard"
+          />
 
-          <SidebarLink to="/worker/my-jobs" icon={<FaTasks />} label="My Jobs" />
+          <SidebarLink
+            to="/worker/my-jobs"
+            icon={<FaTasks />}
+            label="My Jobs"
+          />
           <SidebarLink
             to="/worker/my-services"
             icon={<MdHomeRepairService />}
@@ -131,7 +139,7 @@ const WorkerLayout = () => {
             icon={<FaUserCircle />}
             label="Profile"
           />
-          <SidebarLink to="user-profile" icon={<BiSupport />} label="Support" />
+          <SidebarLink to="reviews" icon={<BiSupport />} label="Reviews" />
 
           <MenuItem icon={<FaSignOutAlt />} onClick={handleLogout}>
             Log out
@@ -143,7 +151,9 @@ const WorkerLayout = () => {
       <main className="flex-1 min-h-0 flex flex-col overflow-hidden transition-all duration-300 pl-2 sm:pl-8">
         {/* Top bar */}
         <div className="bg-white soft-shadow w-full p-4 rounded-lg sticky top-0 z-20 flex justify-between items-center">
-          <p className="text-darkPrimary font-bold text-lg">Welcome , {user.first_name} {user.last_name}</p>
+          <p className="text-darkPrimary font-bold text-lg">
+            Welcome , {user.first_name} {user.last_name}
+          </p>
           <div>
             <div className="relative inline-flex items-center justify-center w-10 h-10 rounded-full bg-white card-shadow mx-2">
               <IoNotifications className="text-xl text-secondary" />

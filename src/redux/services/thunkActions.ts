@@ -34,6 +34,26 @@ export const createService = createAsyncThunk(
   }
 );
 
+export const getServiceById = createAsyncThunk(
+  "get-service",
+  async (data: string, thunkAPI) => {
+    const response = await useAxios({
+      url: `${BASE_URL}services/${data}/public`,
+      method: "GET",
+    });
+
+    if (response.error) {
+      useApiErrorHandler({
+        status_code: response.status_code,
+        message: response.error,
+      });
+      return thunkAPI.rejectWithValue(response.error);
+    }
+
+    return response.data;
+  }
+);
+
 export const updateService = createAsyncThunk(
   "updateService",
   async (data: { id: string; body: INewService }, thunkAPI) => {

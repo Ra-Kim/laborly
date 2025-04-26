@@ -14,6 +14,10 @@ import {
   ResponsiveModalTitle,
 } from "@/Components/ui/responsiveModal";
 import CancelJob from "@/Components/modals/CancelJob";
+import { getClientById } from "@/redux/client/thunkActions";
+import { IClientProfile } from "@/types/client";
+import { IService } from "@/types/service";
+import { getServiceById } from "@/redux/services/thunkActions";
 
 const statusMap = {
   NEGOTIATING: "Negotiating",
@@ -22,7 +26,6 @@ const statusMap = {
   FINALIZED: "Finalized",
   CANCELLED: "Cancelled",
 };
-
 
 const statusStyles = {
   NEGOTIATING: "bg-yellow-100 text-yellow-800",
@@ -107,37 +110,7 @@ const WorkerJobs = () => {
               {jobList.length ? (
                 <div className="grid gap-4">
                   {jobList.map((job) => (
-                    <div
-                      key={job.id}
-                      onClick={() => openSidebar(job)}
-                      className="cursor-pointer bg-white rounded-xl border p-4 shadow hover:shadow-md transition"
-                    >
-                      <div className="flex flex-col lg:flex-row gap-4 lg:gap-0 justify-between items-start">
-                        <div>
-                          <p className="font-medium text-gray-800">Job ID</p>
-                          <p>{job.id}</p>
-                        </div>
-                        <div>
-                          <p className="font-medium text-gray-800">
-                            Service Title
-                          </p>
-                          <p>{job.service_id || "N/A"}</p>
-                        </div>
-                        <div>
-                          <p className="font-medium text-gray-800">
-                            Client name
-                          </p>
-                          <p>{job.client_id || "Nil"}</p>
-                        </div>
-                        <span
-                          className={`px-3 py-1 text-xs rounded-full font-medium ${
-                            statusStyles[job.status as jobStatus]
-                          }`}
-                        >
-                          {statusMap[job.status as jobStatus]}
-                        </span>
-                      </div>
-                    </div>
+                    <JobCard job={job} openSidebar={openSidebar} />
                   ))}
                 </div>
               ) : (
@@ -273,7 +246,8 @@ const WorkerJobs = () => {
                     )}
                   </div>
                 )}
-                {selectedJob.status !== "COMPLETED" && (
+                {(selectedJob.status === "ACCEPTED" ||
+                  selectedJob.status === "NEGOTIATING") && (
                   <div>
                     {role() === "CLIENT" && (
                       <ResponsiveModal
@@ -308,3 +282,62 @@ const WorkerJobs = () => {
 };
 
 export default WorkerJobs;
+
+const JobCard = ({
+  job,
+  openSidebar,
+}: {
+  job: IJob;
+  openSidebar: (job: IJob) => void;
+}) => {
+  const [service, setService] = useState<IService>();
+  const [client, setClient] = useState<IClientProfile>();
+  const dispatch = useAppThunkDispatch();
+  useEffect(() => {
+    dispatch(getClientById(job.worker_id)).then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        setClient(res.payload);
+      }
+    });
+  }, [dispatch, job.worker_id]);
+
+  useEffect(() => {
+    dispatch(getServiceById(job.service_id)).then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        setService(res.payload);
+      }
+    });
+  }, [dispatch, job.worker_id]);
+
+  return (
+    <div
+      key={job.id}
+      onClick={() => openSidebar(job)}
+      className="cursor-pointer bg-white rounded-xl border p-4 shadow hover:shadow-md transition"
+    >
+      <div className="flex flex-col lg:flex-row gap-4 lg:gap-0 justify-between items-start">
+        <div>
+          <p className="font-medium text-gray-800">Job ID</p>
+          <p>{job.id}</p>
+        </div>
+        <div>
+          <p className="font-medium text-gray-800">Service Title</p>
+          <p>{service?.title || "N/A"}</p>
+        </div>
+        <div>
+          <p className="font-medium text-gray-800">Client name</p>
+          <p>
+            {client?.first_name || "-"} {client?.last_name || "-"}
+          </p>
+        </div>
+        <span
+          className={`px-3 py-1 text-xs rounded-full font-medium ${
+            statusStyles[job.status as jobStatus]
+          }`}
+        >
+          {statusMap[job.status as jobStatus]}
+        </span>
+      </div>
+    </div>
+  );
+};

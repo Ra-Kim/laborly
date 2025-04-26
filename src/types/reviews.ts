@@ -1,5 +1,5 @@
 export interface ISubmitReview {
-  rating: 1 | 2 | 3 | 4 | 5;
+  rating: number
   text: string;
 }
 

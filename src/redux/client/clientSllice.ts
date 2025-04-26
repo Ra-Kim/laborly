@@ -4,6 +4,7 @@ import {
   getFavoriteWorkers,
   getClientJobDetail,
   getClientJobs,
+  getClientById,
 } from "./thunkActions";
 import { IClientProfile, IFavoriteWorker } from "@/types/client";
 import { IJob } from "@/types/jobs";
@@ -11,6 +12,7 @@ import { IJob } from "@/types/jobs";
 export interface IState {
   loading: "failed" | "loading" | "successful" | "idle";
   clientProfile: IClientProfile;
+  client: IClientProfile;
   favoriteWorkers: IFavoriteWorker[];
   jobs: IJob[];
   jobDetail: IJob;
@@ -18,6 +20,7 @@ export interface IState {
 const initialState: IState = {
   loading: "idle",
   clientProfile: {} as IClientProfile,
+  client: {} as IClientProfile,
   favoriteWorkers: [] as IFavoriteWorker[],
   jobs: [] as IJob[],
   jobDetail: {} as IJob,
@@ -39,6 +42,19 @@ const ClientSlice = createSlice({
       };
     });
     builder.addCase(getClientProfile.rejected, (state) => {
+      return { ...state, loading: "failed" };
+    });
+    builder.addCase(getClientById.pending, (state) => {
+      return { ...state, loading: "loading" };
+    });
+    builder.addCase(getClientById.fulfilled, (state, action) => {
+      return {
+        ...state,
+        loading: "successful",
+        client: action.payload,
+      };
+    });
+    builder.addCase(getClientById.rejected, (state) => {
       return { ...state, loading: "failed" };
     });
     builder.addCase(getFavoriteWorkers.pending, (state) => {

@@ -9,9 +9,29 @@ export const getClientProfile = createAsyncThunk(
   "get-client-profile",
   async (data: string, thunkAPI) => {
     const response = await useAxios({
-      url: `${BASE_URL}client/get/profile`,
+      url: `${BASE_URL}client/profile`,
       method: "GET",
       data,
+    });
+
+    if (response.error) {
+      useApiErrorHandler({
+        status_code: response.status_code,
+        message: response.error,
+      });
+      return thunkAPI.rejectWithValue(response.error);
+    }
+
+    return response.data;
+  }
+);
+
+export const getClientById = createAsyncThunk(
+  "get-client",
+  async (data: string, thunkAPI) => {
+    const response = await useAxios({
+      url: `${BASE_URL}client/${data}/public`,
+      method: "GET",
     });
 
     if (response.error) {

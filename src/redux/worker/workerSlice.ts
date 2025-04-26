@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
+  getWorkerById,
   getWorkerJobDetail,
   getWorkerJobs,
   getWorkerKYC,
@@ -11,6 +12,7 @@ import { IJob } from "@/types/jobs";
 export interface IState {
   loading: "failed" | "loading" | "successful" | "idle";
   workerProfile: IWorkerProfile;
+  worker: IWorkerProfile;
   workerKYCStatus: string;
   jobs: IJob[];
   jobDetail: IJob;
@@ -18,6 +20,7 @@ export interface IState {
 const initialState: IState = {
   loading: "idle",
   workerProfile: {} as IWorkerProfile,
+  worker: {} as IWorkerProfile,
   workerKYCStatus: "",
   jobs: [] as IJob[],
   jobDetail: {} as IJob,
@@ -39,6 +42,19 @@ const WorkerSlice = createSlice({
       };
     });
     builder.addCase(getWorkerProfile.rejected, (state) => {
+      return { ...state, loading: "failed" };
+    });
+    builder.addCase(getWorkerById.pending, (state) => {
+      return { ...state, loading: "loading" };
+    });
+    builder.addCase(getWorkerById.fulfilled, (state, action) => {
+      return {
+        ...state,
+        loading: "successful",
+        worker: action.payload,
+      };
+    });
+    builder.addCase(getWorkerById.rejected, (state) => {
       return { ...state, loading: "failed" };
     });
     builder.addCase(getWorkerKYC.pending, (state) => {

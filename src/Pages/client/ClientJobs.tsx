@@ -2,7 +2,7 @@ import { Button } from "@/Components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { acceptJob, completeJob } from "@/redux/jobs/thunkActions";
 import { useAppSelector, useAppThunkDispatch } from "@/redux/store";
-import { getWorkerJobs } from "@/redux/worker/thunkActions";
+import { getWorkerById, getWorkerJobs } from "@/redux/worker/thunkActions";
 import { IJob, jobStatus } from "@/types/jobs";
 import { ChevronUpIcon } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -14,6 +14,10 @@ import {
   ResponsiveModalTitle,
 } from "@/Components/ui/responsiveModal";
 import CancelJob from "@/Components/modals/CancelJob";
+import WriteReview from "@/Components/modals/WriteReview";
+import { IService } from "@/types/service";
+import { IWorkerProfile } from "@/types/worker";
+import { getServiceById } from "@/redux/services/thunkActions";
 
 const statusMap = {
   NEGOTIATING: "Negotiating",
@@ -106,37 +110,7 @@ const WorkerJobs = () => {
               {jobList.length ? (
                 <div className="grid gap-4">
                   {jobList.map((job) => (
-                    <div
-                      key={job.id}
-                      onClick={() => openSidebar(job)}
-                      className="cursor-pointer bg-white rounded-xl border p-4 shadow hover:shadow-md transition"
-                    >
-                      <div className="flex flex-col lg:flex-row gap-4 lg:gap-0 justify-between items-start">
-                        <div>
-                          <p className="font-medium text-gray-800">Job ID</p>
-                          <p>{job.id}</p>
-                        </div>
-                        <div>
-                          <p className="font-medium text-gray-800">
-                            Service Title
-                          </p>
-                          <p>{job.service_id || "N/A"}</p>
-                        </div>
-                        <div>
-                          <p className="font-medium text-gray-800">
-                            Worker Assigned
-                          </p>
-                          <p>{job.worker_id || "Unassigned"}</p>
-                        </div>
-                        <span
-                          className={`px-3 py-1 text-xs rounded-full font-medium ${
-                            statusStyles[job.status as jobStatus]
-                          }`}
-                        >
-                          {statusMap[job.status as jobStatus]}
-                        </span>
-                      </div>
-                    </div>
+                    <JobCard job={job} openSidebar={openSidebar} />
                   ))}
                 </div>
               ) : (
@@ -272,7 +246,8 @@ const WorkerJobs = () => {
                     )}
                   </div>
                 )}
-                {selectedJob.status !== "COMPLETED" && (
+                {(selectedJob.status === "ACCEPTED" ||
+                  selectedJob.status === "NEGOTIATING") && (
                   <div>
                     {role() === "CLIENT" && (
                       <ResponsiveModal
@@ -307,3 +282,76 @@ const WorkerJobs = () => {
 };
 
 export default WorkerJobs;
+
+const JobCard = ({
+  job,
+  openSidebar,
+}: {
+  job: IJob;
+  openSidebar: (job: IJob) => void;
+}) => {
+  const [reviewModal, setReviewModal] = useState(false);
+  const [service, setService] = useState<IService>();
+  const [worker, setWorker] = useState<IWorkerProfile>();
+  const dispatch = useAppThunkDispatch();
+  useEffect(() => {
+    dispatch(getWorkerById(job.worker_id)).then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        setWorker(res.payload);
+      }
+    });
+  }, [dispatch, job.worker_id]);
+
+  useEffect(() => {
+    dispatch(getServiceById(job.service_id)).then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        setService(res.payload);
+      }
+    });
+  }, [dispatch, job.worker_id]);
+
+  return (
+    <div
+      key={job.id}
+      onClick={() => openSidebar(job)}
+      className="cursor-pointer bg-white rounded-xl border p-4 shadow hover:shadow-md transition"
+    >
+      <div className="flex flex-col lg:flex-row gap-4 lg:gap-0 justify-between items-start">
+        <div>
+          <p className="font-medium text-gray-800">Job ID</p>
+          <p>{job.id}</p>
+        </div>
+        <div>
+          <p className="font-medium text-gray-800">Service Title</p>
+          <p>{service?.title || "N/A"}</p>
+        </div>
+        <div>
+          <p className="font-medium text-gray-800">Worker Assigned</p>
+          <p>
+            {worker?.first_name || "-"} {worker?.last_name || "-"}
+          </p>
+        </div>
+        <div>
+          <span
+            className={`px-3 py-1 text-xs rounded-full font-medium ${
+              statusStyles[job.status as jobStatus]
+            }`}
+          >
+            {statusMap[job.status as jobStatus]}
+          </span>
+          <ResponsiveModal open={reviewModal} onOpenChange={setReviewModal}>
+            <ResponsiveModalTrigger asChild>
+              <p>Write a review</p>
+            </ResponsiveModalTrigger>
+            <ResponsiveModalContent className="sm:max-w-[425px] lg:min-w-[600px] lg:min-h-[50vh]">
+              <ResponsiveModalHeader>
+                <ResponsiveModalTitle>Write a review</ResponsiveModalTitle>
+              </ResponsiveModalHeader>
+              <WriteReview setAddModalOpen={setReviewModal} job_id={job.id} />
+            </ResponsiveModalContent>
+          </ResponsiveModal>
+        </div>
+      </div>
+    </div>
+  );
+};

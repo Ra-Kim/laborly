@@ -30,7 +30,7 @@ export const getWorkerReviews = createAsyncThunk(
   "get-worker-reviews",
   async (data: string, thunkAPI) => {
     const response = await useAxios({
-      url: `${BASE_URL}reviews/worker/${data}`,
+      url: `${BASE_URL}reviews/worker/${data}/public`,
       method: "GET",
     });
 
