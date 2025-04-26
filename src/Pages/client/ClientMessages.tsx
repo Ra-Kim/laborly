@@ -1,123 +1,134 @@
-import  { useState } from "react";
-import MessageInput from "../../Components/ui/MessageInput";
-import { FaStar, FaRegStar } from "react-icons/fa";
-import { MdLocationPin } from "react-icons/md";
-import { profileData } from "@/lib/constants";
+import { useAppSelector, useAppThunkDispatch } from "@/redux/store";
+import Spinner from "@/Components/ui/Spinner";
+import MessageView from "@/fragments/thread/MessageView";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useMediaQuery } from "@mui/material";
+import {
+  Sheet,
+  SheetContent,
+  // SheetDescription,
+  SheetTitle,
+  SheetTrigger,
+} from "@/Components/ui/sheet";
+import { ChevronLeft, Hourglass } from "lucide-react";
+import { myThreads } from "@/redux/messages/thunkActions";
 
-const ClientMessages = () => {
-	const [messages, setMessages] = useState([
-		{
-			sender: "worker",
-			content: "Hello! How can I help you today?",
-			timestamp: new Date().toLocaleTimeString(),
-			thread: "123", // A unique thread ID for the conversation
-		},
-		{
-			sender: "client",
-			content: "Hi, I need a worker for my project.",
-			timestamp: new Date().toLocaleTimeString(),
-			thread: "123",
-		},
-	]);
+const Messages = () => {
+  const { threads, loading } = useAppSelector(({ message }) => message);
+  const searchParams = useSearchParams();
+  const thread_id = searchParams[0]?.get("thread_id") || "";
+  const dispatch = useAppThunkDispatch();
+  useEffect(() => {
+	dispatch(myThreads(""));
+  }, [dispatch]);
 
-	const addMessage = (message) => {
-		setMessages((prevMessages) => [
-			...prevMessages,
-			{ ...message, timestamp: new Date().toLocaleTimeString() },
-		]);
-	};
-
-	return (
-		<>
-			<div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-10">
-				{/* Chat section */}
-				<div className="col-span-2">
-					<div className="flex flex-col w-full bg-white shadow-lg rounded-l-lg border-l border-gray-300">
-						<div className="flex-grow p-4 overflow-y-auto">
-							{messages
-								.filter((msg) => msg.thread === "123") // Filter messages based on the current thread
-								.map((msg, index) => (
-									<div
-										key={index}
-										className={`flex mb-2 ${
-											msg.sender === "worker" ? "justify-start" : "justify-end"
-										}`}
-									>
-										<div
-											className={`p-3 rounded-lg max-w-xs ${
-												msg.sender === "worker"
-													? "bg-blue-100 text-blue-900"
-													: "bg-green-100 text-green-900"
-											}`}
-										>
-											<div>{msg.content}</div>
-											<div className="text-xs text-gray-500 mt-1">
-												<span>
-													{msg.sender === "worker" ? "Worker" : "Client"}
-												</span>{" "}
-												| <span>{msg.timestamp}</span>
-											</div>
-										</div>
-									</div>
-								))}
-						</div>
-						<MessageInput onSendMessage={addMessage} />
-					</div>
-				</div>
-
-				{/* Details Section */}
-				<div className="col-span-1 bg-gray-50">
-					{profileData.slice(0, 1).map((artisanInfo) => (
-						<div
-							key={artisanInfo.id}
-							className="cursor-pointer flex flex-row sm:flex-col items-center sm:items-start lg:flex-row lg:items-center gap-1 sm:gap-6 mt-10"
-						>
-							{/* Profile Image */}
-							<div className="relative  ">
-								<img
-									src={artisanInfo.image}
-									alt={artisanInfo.name}
-									className="w-28 max-w-[10rem] object-cover rounded-2xl"
-								/>
-							</div>
-
-							{/* Profile Details */}
-							<div className="flex flex-col gap-1">
-								{/* Name, Location, Experience */}
-								<div className="flex flex-col gap-1">
-									<h3 className="text-2xl font-semibold text-primary">
-										{artisanInfo.name}
-									</h3>
-									<p className="text-sm text-gray-500">
-										{artisanInfo.experience}
-									</p>
-									<p className="text-sm text-gray-500 flex items-center gap-2">
-										<MdLocationPin className="text-lg" /> {artisanInfo.location}
-									</p>
-
-									{/* Ratings  */}
-
-									<div className="flex text-xs">
-										{Array.from({ length: 5 }, (_, index) => (
-											<span key={index}>
-												{index < artisanInfo.rating ? (
-													<FaStar className="text-yellow-400" />
-												) : (
-													<FaRegStar className="text-yellow-400" />
-												)}
-											</span>
-										))}
-									</div>
-								</div>
-							</div>
-						</div>
-					))}
-				</div>
-
-
+  return (
+	<div className="grid lg:grid-cols-2 h-full">
+	  <div className="border-r-2">
+		<h2>Messages</h2>
+		<div>
+		  {loading === "loading" ? (
+			<div className="h-[60vh] w-full flex justify-center items-center">
+			  <Spinner />
 			</div>
-		</>
-	);
+		  ) : (
+			<>
+			  {threads.length === 0 ? (
+				<div className="h-[60vh] w-full flex flex-col gap-4 justify-center items-center text-lg text-darkPrimary font-medium">
+				  <p>No messages</p>
+				</div>
+			  ) : (
+				threads.map((thread) => (
+				  <ThreadCard
+					id={thread.id}
+					message={thread.messages[0]?.content}
+					timeStamp={thread.messages[0]?.timestamp}
+				  />
+				))
+			  )}
+			</>
+		  )}
+		</div>
+	  </div>
+	  <div className="hidden lg:block">
+		{thread_id ? (
+		  <MessageView thread_id={thread_id} />
+		) : (
+		  <div className="h-[70vh] w-full flex flex-col gap-4 justify-center items-center text-lg text-darkPrimary font-medium">
+			<Hourglass className="h-20 w-20" />
+			<p>No message to display</p>
+		  </div>
+		)}
+	  </div>
+	</div>
+  );
 };
 
-export default ClientMessages;
+export default Messages;
+
+const ThreadCard = ({
+  id,
+  message,
+  timeStamp,
+}: {
+  id: string;
+  message: string;
+  timeStamp: string;
+}) => {
+  const { workerProfile } = useAppSelector(({ worker }) => worker);
+  const [modalOpen, setModalOpen] = useState(false);
+  const isDesktop = useMediaQuery("(min-width: 768px)");
+  const navigate = useNavigate();
+  return (
+	<>
+	  <div
+		className="bg-white shadow-md rounded-2xl p-4 flex items-center gap-4 hover:shadow-lg transition"
+		onClick={
+		  isDesktop
+			? () => {
+				navigate(`/messages?thread_id+${id}`);
+			  }
+			: () => {
+				setModalOpen(true);
+			  }
+		}
+	  >
+		<img
+		  src={workerProfile.profile_picture || "/default-avatar.png"}
+		  alt="Profile"
+		  className="w-14 h-14 rounded-full object-cover"
+		/>
+		<div className="flex-1">
+		  <div className="flex justify-between items-center">
+			<h4 className="text-lg font-semibold text-gray-800">
+			  {workerProfile.first_name} {workerProfile.last_name}
+			</h4>
+			<span className="text-xs text-gray-500">
+			  {new Date(timeStamp).toLocaleString()}
+			</span>
+		  </div>
+		  <p className="text-sm text-gray-600 truncate">{message}</p>
+		  <p className="text-xs text-gray-400 mt-1">{workerProfile.location}</p>
+		</div>
+	  </div>
+	  <Sheet open={modalOpen} onOpenChange={setModalOpen}>
+		<SheetTrigger></SheetTrigger>
+		<SheetContent
+		  side={"right"}
+		  className="px-2 pt-0 w-full lg:min-w-[550px]"
+		>
+		  <SheetTitle className="flex gap-2 py-4 items-center">
+			<div onClick={() => setModalOpen(false)}>
+			  <ChevronLeft size={24} className="cursor-pointer w-6 h-6" />
+			</div>
+			<p className="">
+			  {workerProfile?.first_name} {workerProfile?.last_name}
+			</p>
+		  </SheetTitle>
+		  <MessageView thread_id={id} />
+		</SheetContent>
+	  </Sheet>
+	</>
+  );
+};
