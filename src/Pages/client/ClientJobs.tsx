@@ -2,7 +2,7 @@ import { Button } from "@/Components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { acceptJob, completeJob } from "@/redux/jobs/thunkActions";
 import { useAppSelector, useAppThunkDispatch } from "@/redux/store";
-import { getWorkerById, getWorkerJobs } from "@/redux/worker/thunkActions";
+import { getWorkerById } from "@/redux/worker/thunkActions";
 import { IJob, jobStatus } from "@/types/jobs";
 import { ChevronUpIcon } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -18,6 +18,7 @@ import WriteReview from "@/Components/modals/WriteReview";
 import { IService } from "@/types/service";
 import { IWorkerProfile } from "@/types/worker";
 import { getServiceById } from "@/redux/services/thunkActions";
+import { getClientJobs } from "@/redux/client/thunkActions";
 
 const statusMap = {
   NEGOTIATING: "Negotiating",
@@ -56,7 +57,7 @@ const WorkerJobs = () => {
 
   const dispatch = useAppThunkDispatch();
   useEffect(() => {
-    dispatch(getWorkerJobs(""));
+    dispatch(getClientJobs(""));
   }, [dispatch]);
 
   const acceptJobFunc = ({

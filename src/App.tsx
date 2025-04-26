@@ -84,12 +84,7 @@ const App = () => {
 
         {/*  */}
 
-        <Route path="/client" element={<ClientLayout />}>
-          <Route index element={<ClientDashboard />} />
-          <Route path="client-jobs" element={<ClientJobs />} />
-          <Route path="client-messages" element={<ClientMessages />} />
-          <Route path="client-profile" element={<ClientProfile />} />
-        </Route>
+        <Route path="/client" element={<ClientLayout />}></Route>
 
         {/*  */}
 
@@ -116,7 +111,13 @@ const App = () => {
               <ClientLayout />
             </ClientRoute>
           }
-        ></Route>
+        >
+          <Route index element={<ClientDashboard />} />
+          <Route path="dashboard" element={<ClientDashboard />} />
+          <Route path="jobs" element={<ClientJobs />} />
+          <Route path="messages" element={<ClientMessages />} />
+          <Route path="profile" element={<ClientProfile />} />
+        </Route>
       </Routes>
     </>
   );

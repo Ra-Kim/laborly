@@ -7,32 +7,26 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useState } from "react";
 import { Textarea } from "../ui/textarea";
 import { useAppSelector, useAppThunkDispatch } from "@/redux/store";
-import {
-  getWorkerProfile,
-  patchWorkerProfile,
-} from "@/redux/worker/thunkActions";
 import PhoneNumberInput from "../ui/phoneinput";
 import {
   formatPhoneNumber,
   isValidPhoneNumber,
 } from "react-phone-number-input";
-import { Switch } from "../ui/switch";
+import {
+  getClientProfile,
+  patchClientProfile,
+} from "@/redux/client/thunkActions";
 
 interface WorkerProfileFormValues {
-  bio: string; // Made required
-  years_experience: number;
-  availability_note: string | null;
-  is_available: boolean;
-  professional_skills: string;
-  work_experience: string;
+  profile_description: string;
+  address: string;
+  phone_number: string;
   first_name: string;
   last_name: string;
-  phone_number: string;
   location: string;
-  profile_picture?: string;
 }
 
-const UpdateWorkerProfile = ({
+const UpdateClientProfile = ({
   setAddModalOpen,
 }: {
   setAddModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -40,18 +34,14 @@ const UpdateWorkerProfile = ({
   const [loading, setLoading] = useState(false);
 
   const validationSchema = Yup.object({
-    bio: Yup.string(),
-    years_experience: Yup.number(),
-    availability_note: Yup.string(),
-    is_available: Yup.boolean().required(),
-    professional_skills: Yup.string(),
-    work_experience: Yup.string(),
+    address: Yup.string(),
+    profile_description: Yup.string(),
     first_name: Yup.string().required("Required"),
     last_name: Yup.string().required("Required"),
     phone_number: Yup.string().required("Required"),
     location: Yup.string().required("Required"),
   });
-  const { workerProfile } = useAppSelector(({ worker }) => worker);
+  const { clientProfile } = useAppSelector(({ client }) => client);
 
   const {
     // register,
@@ -65,19 +55,15 @@ const UpdateWorkerProfile = ({
     resolver: yupResolver(validationSchema) as any,
     mode: "onTouched",
     defaultValues: {
-      first_name: workerProfile?.first_name ?? "",
-      last_name: workerProfile?.last_name ?? "",
+      first_name: clientProfile?.first_name ?? "",
+      last_name: clientProfile?.last_name ?? "",
       phone_number: `${
         "+234" +
-        (workerProfile?.phone_number?.split("")?.splice(1)?.join("") ?? "")
+        (clientProfile?.phone_number?.split("")?.splice(1)?.join("") ?? "")
       }`,
-      location: workerProfile?.location ?? "",
-      bio: workerProfile?.bio ?? "",
-      years_experience: workerProfile?.years_experience ?? 0,
-      availability_note: workerProfile?.availability_note ?? "",
-      is_available: !!workerProfile?.is_available,
-      professional_skills: workerProfile?.professional_skills ?? "",
-      work_experience: workerProfile?.work_experience ?? "",
+      location: clientProfile?.location ?? "",
+      profile_description: clientProfile?.profile_description ?? "",
+      address: clientProfile?.address ?? "",
     },
   });
 
@@ -89,9 +75,9 @@ const UpdateWorkerProfile = ({
       ""
     );
     data = { ...data, phone_number: updatedPhoneNumber };
-    const res = await dispatch(patchWorkerProfile(data));
+    const res = await dispatch(patchClientProfile(data));
     if (res.meta.requestStatus === "fulfilled") {
-      dispatch(getWorkerProfile(""));
+      dispatch(getClientProfile(""));
       setAddModalOpen(false);
     }
     setLoading(false);
@@ -154,16 +140,16 @@ const UpdateWorkerProfile = ({
         <div className="">
           <Controller
             control={control}
-            name={`bio`}
+            name={`profile_description`}
             render={({ field: { onChange, value, name } }) => (
               <Textarea
                 className={
                   errors?.[name]?.message ? "border border-red-500" : ""
                 }
-                labelText="Bio"
+                labelText="Profile description"
                 id={name}
                 name={name}
-                placeholder="Bio"
+                placeholder="Profile description"
                 error={errors?.[name]?.message}
                 value={value || ""}
                 onChange={onChange}
@@ -226,109 +212,19 @@ const UpdateWorkerProfile = ({
         <div className="">
           <Controller
             control={control}
-            name={`years_experience`}
+            name={`address`}
             render={({ field: { onChange, value, name } }) => (
               <Input
                 className={
                   errors?.[name]?.message ? "border border-red-500" : ""
                 }
-                labelText="Years of experience"
-                type="number"
-                inputMode="numeric"
+                labelText="Address"
+                type="text"
                 id={name}
                 name={name}
-                placeholder="Years of experience"
+                placeholder="Address"
                 error={errors?.[name]?.message}
-                value={value || 0}
-                onChange={onChange}
-                autoComplete="off"
-                min={0}
-                // onBlur={handleBlur}
-              />
-            )}
-          />
-        </div>
-        <div className="">
-          <Controller
-            control={control}
-            name={`is_available`}
-            render={({ field: { onChange, value, name } }) => (
-              <div className="flex items-center justify-between px-2">
-                <p className="text-[#50555C99] font-semibold">
-                  Availability
-                  <span className="font-normal text-sm">
-                    {" "}
-                    (are you available)
-                  </span>
-                </p>
-                <Switch
-                  name={name}
-                  checked={!!value}
-                  onCheckedChange={onChange}
-                />
-              </div>
-            )}
-          />
-        </div>
-        <div className="">
-          <Controller
-            control={control}
-            name={`availability_note`}
-            render={({ field: { onChange, value, name } }) => (
-              <Textarea
-                className={
-                  errors?.[name]?.message ? "border border-red-500" : ""
-                }
-                labelText="Note"
-                id={name}
-                name={name}
-                placeholder="Note (note to clients)"
-                error={errors?.[name]?.message}
-                value={value || ""}
-                onChange={onChange}
-                autoComplete="off"
-                // onBlur={handleBlur}
-              />
-            )}
-          />
-        </div>
-        <div className="">
-          <Controller
-            control={control}
-            name={`professional_skills`}
-            render={({ field: { onChange, value, name } }) => (
-              <Textarea
-                className={
-                  errors?.[name]?.message ? "border border-red-500" : ""
-                }
-                labelText="Professional skills"
-                id={name}
-                name={name}
-                placeholder="Input your professional skills seperated by a comma e.g (Plumbing, Electrical work, HVAC)"
-                error={errors?.[name]?.message}
-                value={value || ""}
-                onChange={onChange}
-                autoComplete="off"
-                // onBlur={handleBlur}
-              />
-            )}
-          />
-        </div>
-        <div className="">
-          <Controller
-            control={control}
-            name={`work_experience`}
-            render={({ field: { onChange, value, name } }) => (
-              <Textarea
-                className={
-                  errors?.[name]?.message ? "border border-red-500" : ""
-                }
-                labelText="Work experience"
-                id={name}
-                name={name}
-                placeholder="Work experience ( a short note on previous jobs you have done)"
-                error={errors?.[name]?.message}
-                value={value || ""}
+                value={value}
                 onChange={onChange}
                 autoComplete="off"
                 // onBlur={handleBlur}
@@ -353,4 +249,4 @@ const UpdateWorkerProfile = ({
   );
 };
 
-export default UpdateWorkerProfile;
+export default UpdateClientProfile;

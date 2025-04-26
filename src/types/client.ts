@@ -2,9 +2,11 @@ export interface IClientProfile {
   business_name: string;
   id: string;
   user_id: string;
+  profile_description: string;
   email: string;
   phone_number: string;
   first_name: string;
+  address: string;
   last_name: string;
   location: string;
   profile_picture: string;

@@ -10,6 +10,7 @@ import logo from "../assets/laborly-logo.png";
 import { HiHome } from "react-icons/hi";
 import { MdHomeRepairService } from "react-icons/md";
 import { IUser } from "@/types/auth";
+import LogoutModal from "@/Components/modals/Logout";
 
 const WorkerLayout = () => {
   const navigate = useNavigate();
@@ -42,8 +43,9 @@ const WorkerLayout = () => {
     setCollapsed(!isMediumUp);
   }, [isMediumUp]);
 
+  const [logout, setLogout] = useState(false);
   const handleLogout = () => {
-    alert("Logging out...");
+    setLogout(!logout);
   };
 
   const SidebarLink = ({
@@ -169,6 +171,7 @@ const WorkerLayout = () => {
           <Outlet />
         </div>
       </main>
+      {logout && <LogoutModal setLogoutModal={setLogout} />}
     </div>
   );
 };

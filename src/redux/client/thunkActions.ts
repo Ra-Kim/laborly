@@ -51,7 +51,7 @@ export const patchClientProfile = createAsyncThunk(
   async (data: any, thunkAPI) => {
     const UPDATE_CLIENT_PROFILE = toast.loading("Updating profile...");
     const response = await useAxios({
-      url: `${BASE_URL}client/update/profile`,
+      url: `${BASE_URL}client/profile`,
       method: "PATCH",
       data,
     });
@@ -155,7 +155,7 @@ export const getClientJobs = createAsyncThunk(
   "get-client-jobs",
   async (data: string, thunkAPI) => {
     const response = await useAxios({
-      url: `${BASE_URL}client/list/jobs`,
+      url: `${BASE_URL}client/jobs`,
       method: "GET",
       data,
     });
