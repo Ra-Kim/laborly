@@ -42,7 +42,11 @@ const App = () => {
     if (!isAuthenticated() && location.pathname === "/") {
       navigate("/");
     }
-    if (!isAuthenticated() && !location.pathname.startsWith("/auth")) {
+    if (
+      !isAuthenticated() &&
+      !location.pathname.startsWith("/auth") &&
+      location.pathname !== "/"
+    ) {
       navigate("/auth/sign-in");
     }
 
