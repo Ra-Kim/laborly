@@ -17,3 +17,5 @@ export interface IWorkerProfile {
   location: string;
   profile_picture: string;
 }
+
+export type IWorkerKYCStatus = "PENDING" | "APPROVED" | "REJECTED"

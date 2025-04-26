@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import JobDetail from "../../fragments/jobs/JobDetails";
 import { IoCloseOutline } from "react-icons/io5";
+import { JobStatus } from "@/types/jobs";
 
 const jobs = [
 	{
@@ -53,7 +54,7 @@ const MyJobs = () => {
 							<div className="flex justify-between items-center">
 								<span
 									className={`text-[.6rem] sm:text-xs font-medium px-3 py-1 rounded-full ${
-										statusColors[job.status]
+										statusColors[job.status as JobStatus]
 									}`}
 								>
 									{job.status}

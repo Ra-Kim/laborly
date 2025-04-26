@@ -1,7 +1,6 @@
-import React, { useState } from "react";
-import MessageInput from "./MessageInput";
+import  { useState } from "react";
+import MessageInput from "../../Components/ui/MessageInput";
 import { FaStar, FaRegStar } from "react-icons/fa";
-import { IoIosSend } from "react-icons/io";
 import { MdLocationPin } from "react-icons/md";
 import { profileData } from "@/lib/constants";
 

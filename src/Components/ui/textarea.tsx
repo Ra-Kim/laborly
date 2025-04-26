@@ -34,7 +34,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         </label>
         <textarea
           className={cn(
-            "flex h-28 w-full rounded-[20px] font-medium border border-[#868686D9] bg-background px-3 py-2 text-[15px] ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-[#50555C99] focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 font-[Roboto]",
+            "flex h-28 w-full resize-none rounded-[20px] font-medium border border-[#868686D9] bg-background px-3 py-2 text-[15px] ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-[#50555C99] focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 font-[Roboto]",
             {
               "border-[#2563EB]": isFocused,
               "text-red-500 border-red-500": !!error,
@@ -42,7 +42,6 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
             className
           )}
           ref={ref}
-          id={id}
           aria-invalid={!!error}
           aria-describedby={error ? errorId : undefined}
           onFocus={() => setIsFocused(true)}

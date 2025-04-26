@@ -9,7 +9,7 @@ export const getWorkerProfile = createAsyncThunk(
   "get-worker-profile",
   async (data: string, thunkAPI) => {
     const response = await useAxios({
-      url: `${BASE_URL}worker/get/profile`,
+      url: `${BASE_URL}worker/profile`,
       method: "GET",
       data,
     });
@@ -30,7 +30,7 @@ export const patchWorkerProfile = createAsyncThunk(
   async (data: any, thunkAPI) => {
     const toastId = toast.loading("Updating profile...");
     const response = await useAxios({
-      url: `${BASE_URL}worker/update/profile`,
+      url: `${BASE_URL}worker/profile`,
       method: "PATCH",
       data,
     });
