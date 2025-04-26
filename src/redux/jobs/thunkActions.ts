@@ -36,10 +36,16 @@ export const createJob = createAsyncThunk(
 
 export const acceptJob = createAsyncThunk(
   "acceptJob",
-  async (data: any, thunkAPI) => {
+  async (
+    data: {
+      job_id: string;
+      worker_id: string;
+    },
+    thunkAPI
+  ) => {
     const toastId = toast.loading("Accepting...");
     const response = await useAxios({
-      url: `${BASE_URL}jobs/data`,
+      url: `${BASE_URL}jobs/accept`,
       method: "POST",
       data,
     });
@@ -91,11 +97,12 @@ export const completeJob = createAsyncThunk(
 
 export const cancelJob = createAsyncThunk(
   "cancelJob",
-  async (data: string, thunkAPI) => {
+  async (data: { id: string; body: { cancel_reason: string } }, thunkAPI) => {
     const toastId = toast.loading("Cancelling job...");
     const response = await useAxios({
-      url: `${BASE_URL}jobs/${data}/cancel`,
+      url: `${BASE_URL}jobs/${data.id}/cancel`,
       method: "PUT",
+      data: data.body,
     });
 
     if (response.error) {

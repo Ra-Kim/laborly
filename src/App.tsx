@@ -17,13 +17,13 @@ import { useAuth } from "./hooks/useAuth";
 import useRedirectByRole from "./hooks/useRedirectByRole";
 import WorkerRoute from "./routes/WorkerRoute";
 import ClientRoute from "./routes/ClientRoute";
-import MyJobs from "./Pages/worker/MyJobs";
 import Profile from "./Pages/worker/Profile";
 import Messages from "./Pages/worker/Messages";
 import ClientJobs from "./Pages/client/ClientJobs";
 import ClientMessages from "./Pages/client/ClientMessages";
 import ClientProfile from "./Pages/client/ClientProfile";
 import Services from "./Pages/worker/Services";
+import WorkerJobs from "./Pages/worker/WorkerJobs";
 const App = () => {
   const { pathname } = useLocation();
 
@@ -33,7 +33,6 @@ const App = () => {
     if (pathname.includes("client")) return false;
     return true;
   }, [pathname]);
-
   const { isAuthenticated, role, logout } = useAuth();
   const navigate = useNavigate();
   useRedirectByRole();
@@ -44,8 +43,8 @@ const App = () => {
     }
     if (
       !isAuthenticated() &&
-      !location.pathname.startsWith("/auth") &&
-      location.pathname !== "/"
+      (location.pathname.includes("/worker") ||
+        location.pathname.includes("client"))
     ) {
       navigate("/auth/sign-in");
     }
@@ -103,7 +102,7 @@ const App = () => {
         >
           <Route index element={<WorkerDashboard />} />
           <Route path="dashboard" element={<WorkerDashboard />} />
-          <Route path="my-jobs" element={<MyJobs />} />
+          <Route path="my-jobs" element={<WorkerJobs />} />
           <Route path="user-profile" element={<Profile />} />
           <Route path="messages" element={<Messages />} />
           <Route path="my-services" element={<Services />} />

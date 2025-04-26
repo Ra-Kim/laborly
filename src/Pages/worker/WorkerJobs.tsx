@@ -23,6 +23,7 @@ const statusMap = {
   CANCELLED: "Cancelled",
 };
 
+
 const statusStyles = {
   NEGOTIATING: "bg-yellow-100 text-yellow-800",
   ACCEPTED: "bg-blue-100 text-blue-800",
@@ -124,9 +125,9 @@ const WorkerJobs = () => {
                         </div>
                         <div>
                           <p className="font-medium text-gray-800">
-                            Worker Assigned
+                            Client name
                           </p>
-                          <p>{job.worker_id || "Unassigned"}</p>
+                          <p>{job.client_id || "Nil"}</p>
                         </div>
                         <span
                           className={`px-3 py-1 text-xs rounded-full font-medium ${

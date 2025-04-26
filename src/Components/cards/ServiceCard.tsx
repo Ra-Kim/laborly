@@ -8,7 +8,7 @@ import {
   ResponsiveModalTitle,
 } from "@/Components/ui/responsiveModal";
 import CreateService from "../modals/CreateService";
-import DeleteService from "../modals/DeleteService";
+import DeleteService from "../modals/DeleteModal";
 import { deleteService, getMyServices } from "@/redux/services/thunkActions";
 import { useState } from "react";
 
