@@ -39,6 +39,9 @@ const App = () => {
   useRedirectByRole();
 
   useEffect(() => {
+    if (!isAuthenticated() && location.pathname === "/") {
+      navigate("/");
+    }
     if (!isAuthenticated() && !location.pathname.startsWith("/auth")) {
       navigate("/auth/sign-in");
     }
