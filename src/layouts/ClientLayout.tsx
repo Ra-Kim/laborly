@@ -9,6 +9,7 @@ import logo from "../assets/laborly-logo.png";
 import { HiHome } from "react-icons/hi";
 import { IUser } from "@/types/auth";
 import LogoutModal from "@/Components/modals/Logout";
+import { BiSupport } from "react-icons/bi";
 
 const ClientLayout = () => {
   const navigate = useNavigate();
@@ -67,7 +68,7 @@ const ClientLayout = () => {
       >
         {!collapsed ? (
           <span
-            className={`text-sm ${isActive ? "text-primary font-medium" : ""}`}
+            className={`text-sm ${isActive ? "text-primary font-semibold" : ""}`}
           >
             {label}
           </span>
@@ -116,12 +117,12 @@ const ClientLayout = () => {
           <SidebarLink to="/client/dashboard" icon={<HiHome />} label="Home" />
           <SidebarLink to="jobs" icon={<FaTasks />} label="My Jobs" />
           <SidebarLink
-            to="messages"
+            to="/client/messages"
             icon={<BsChatDotsFill />}
             label="Messages"
           />
-          <SidebarLink to="profile" icon={<FaUserCircle />} label="Profile" />
-          {/* <SidebarLink to="user-profile" icon={<BiSupport />} label="Support" /> */}
+          <SidebarLink to="/client/profile" icon={<FaUserCircle />} label="Profile" />
+          <SidebarLink to="/client/reviews" icon={<BiSupport />} label="Support" />
 
           <MenuItem icon={<FaSignOutAlt />} onClick={handleLogout}>
             Log out

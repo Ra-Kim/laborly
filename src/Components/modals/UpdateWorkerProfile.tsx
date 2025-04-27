@@ -17,6 +17,13 @@ import {
   isValidPhoneNumber,
 } from "react-phone-number-input";
 import { Switch } from "../ui/switch";
+import { LOCATIONS } from "@/lib/constants";
+import {
+  Select,
+  SelectContent,
+  SelectTrigger,
+  SelectItem,
+} from "@/Components/ui/select";
 
 interface WorkerProfileFormValues {
   bio: string; // Made required
@@ -59,6 +66,7 @@ const UpdateWorkerProfile = ({
     setValue,
     setError,
     clearErrors,
+    watch,
     control,
     formState: { errors },
   } = useForm<WorkerProfileFormValues>({
@@ -204,22 +212,36 @@ const UpdateWorkerProfile = ({
           <Controller
             control={control}
             name={`location`}
-            render={({ field: { onChange, value, name } }) => (
-              <Input
-                className={
-                  errors?.[name]?.message ? "border border-red-500" : ""
-                }
-                labelText="Location"
-                type="text"
-                id={name}
-                name={name}
-                placeholder="Location"
-                error={errors?.[name]?.message}
+            render={({ field: { value, name } }) => (
+              <Select
                 value={value}
-                onChange={onChange}
-                autoComplete="off"
-                // onBlur={handleBlur}
-              />
+                onValueChange={(value) => {
+                  setValue(name, value);
+                  clearErrors(name);
+                }}
+                name={name}
+              >
+                <SelectTrigger
+                  className="h-10 w-full text-sm lg:w-[600px]"
+                  labelText="Location"
+                  value={value}
+                  error={!!errors?.[name]}
+                >
+                  {LOCATIONS?.find((val) => val.value === watch(name))
+                    ?.label || (
+                    <span className="text-[#50555C99] text-[15px] font-medium">
+                      Location
+                    </span>
+                  )}
+                </SelectTrigger>
+                <SelectContent className="max-h-[45vh]">
+                  {LOCATIONS?.map((item) => (
+                    <SelectItem key={item.value} value={`${item.value}`}>
+                      {item.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             )}
           />
         </div>

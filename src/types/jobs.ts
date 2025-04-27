@@ -1,6 +1,5 @@
 export interface ICreateJob {
   service_id: string;
-  worker_id: string;
   thread_id: string;
 }
 

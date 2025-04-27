@@ -1,18 +1,22 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getWorkerReviews, getWorkerSummary, myReviews } from "./thunkActions";
+import {
+  getMyReviews,
+  getWorkerReviews,
+  getWorkerSummary,
+} from "./thunkActions";
 import { IReview, IWorkerSummary } from "@/types/reviews";
 
 export interface IState {
   loading: "failed" | "loading" | "successful" | "idle";
   reviews: IReview[];
   myReviews: IReview[];
-  workerReviewSummary: IWorkerSummary
+  workerReviewSummary: IWorkerSummary;
 }
 const initialState: IState = {
   loading: "idle",
   reviews: [] as IReview[],
   myReviews: [] as IReview[],
-  workerReviewSummary: {} as IWorkerSummary
+  workerReviewSummary: {} as IWorkerSummary,
 };
 
 const ReviewSlice = createSlice({
@@ -33,17 +37,17 @@ const ReviewSlice = createSlice({
     builder.addCase(getWorkerReviews.rejected, (state) => {
       return { ...state, loading: "failed" };
     });
-    builder.addCase(myReviews.pending, (state) => {
+    builder.addCase(getMyReviews.pending, (state) => {
       return { ...state, loading: "loading" };
     });
-    builder.addCase(myReviews.fulfilled, (state, action) => {
+    builder.addCase(getMyReviews.fulfilled, (state, action) => {
       return {
         ...state,
         loading: "successful",
         myReviews: action.payload,
       };
     });
-    builder.addCase(myReviews.rejected, (state) => {
+    builder.addCase(getMyReviews.rejected, (state) => {
       return { ...state, loading: "failed" };
     });
     builder.addCase(getWorkerSummary.pending, (state) => {

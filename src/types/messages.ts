@@ -11,7 +11,12 @@ export interface IReplyConversation {
 export interface IMessage {
   content: string;
   id: string;
-  sender_id: string;
+  sender: {
+    id: string;
+    first_name: string;
+    last_name: string;
+    profile_picture: string | null;
+  };
   thread_id: string;
   timestamp: string;
 }
@@ -26,7 +31,7 @@ export interface IThread {
       id: string;
       first_name: string;
       last_name: string;
-      profile_picture: null;
+      profile_picture: string | null;
     };
   }[];
   messages: IMessage[];

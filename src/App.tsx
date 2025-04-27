@@ -24,6 +24,7 @@ import ClientProfile from "./Pages/client/ClientProfile";
 import Services from "./Pages/worker/Services";
 import WorkerJobs from "./Pages/worker/WorkerJobs";
 import Reviews from "./Pages/worker/WorkerReviews";
+import ClientReviews from "./Pages/client/ClientReviews";
 const App = () => {
   const { pathname } = useLocation();
 
@@ -82,11 +83,6 @@ const App = () => {
         </Route>
 
         {/*  */}
-
-        <Route path="/client" element={<ClientLayout />}></Route>
-
-        {/*  */}
-
         <Route
           path="/worker"
           element={
@@ -103,6 +99,8 @@ const App = () => {
           <Route path="my-services" element={<Services />} />
           <Route path="reviews" element={<Reviews />} />
         </Route>
+
+        {/*  */}
         <Route
           path="/client"
           element={
@@ -116,6 +114,7 @@ const App = () => {
           <Route path="jobs" element={<ClientJobs />} />
           <Route path="messages" element={<Messages />} />
           <Route path="profile" element={<ClientProfile />} />
+          <Route path="reviews" element={<ClientReviews />} />
         </Route>
       </Routes>
     </>

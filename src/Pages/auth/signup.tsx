@@ -88,7 +88,7 @@ const Signup = () => {
     dispatch(googleLogin("")).unwrap();
   };
   return (
-    <div className="py-4 w-4/5 justify-center mx-auto bg-white !font-[Roboto]">
+    <div className="py-4 w-[95%] lg:w-4/5 justify-center mx-auto bg-white !font-[Roboto]">
       <div className="flex justify-between items-center">
         {/* Logo */}
         <Logo />
@@ -102,7 +102,7 @@ const Signup = () => {
         </Button>
       </div>
       {/* form section */}
-      <div className="w-fit max-w-[80%] mx-auto mt-8">
+      <div className="lg:w-fit w-[95%] lg:max-w-4/5 mx-auto mt-8">
         <p className="font-medium text-[#121212E5] text-4xl">
           Create your Account
         </p>

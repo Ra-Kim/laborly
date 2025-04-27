@@ -42,11 +42,11 @@ export const getWorkerReviews = createAsyncThunk(
       return thunkAPI.rejectWithValue(response.error);
     }
 
-    return response.data;
+    return response.data.items;
   }
 );
 
-export const myReviews = createAsyncThunk(
+export const getMyReviews = createAsyncThunk(
   "my-reviews",
   async (_: string, thunkAPI) => {
     const response = await useAxios({
@@ -62,7 +62,7 @@ export const myReviews = createAsyncThunk(
       return thunkAPI.rejectWithValue(response.error);
     }
 
-    return response.data;
+    return response.data.items;
   }
 );
 

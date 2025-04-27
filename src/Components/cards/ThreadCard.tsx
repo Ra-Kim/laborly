@@ -1,6 +1,6 @@
 import MessageView from "@/fragments/thread/MessageView";
 import { useNavigate } from "react-router-dom";
-import {  useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useMediaQuery } from "@mui/material";
 import {
   Sheet,
@@ -13,6 +13,7 @@ import { ChevronLeft } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar";
 import { IThread } from "@/types/messages";
 import { IUser } from "@/types/auth";
+import { useAuth } from "@/hooks/useAuth";
 
 const ThreadCard = ({
   id,
@@ -39,13 +40,18 @@ const ThreadCard = ({
   const [modalOpen, setModalOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const navigate = useNavigate();
+  const { role } = useAuth();
   return (
     <>
       <div
         className="bg-white shadow-md rounded-2xl p-4 flex items-center gap-4 hover:shadow-lg transition w-[97%] cursor-pointer"
         onClick={() => {
           if (isDesktop) {
-            navigate(`/client/messages?thread_id=${id}`);
+            navigate(
+              `/${
+                role() === "CLIENT" ? "client" : "worker"
+              }/messages?thread_id=${id}`
+            );
           } else {
             setModalOpen(true);
           }
@@ -85,7 +91,7 @@ const ThreadCard = ({
               <ChevronLeft size={24} className="cursor-pointer w-6 h-6" />
             </div>
             <p className="">
-              {otherParticipant?.first_name} {otherParticipant?.last_name}
+              Messages
             </p>
           </SheetTitle>
           <MessageView thread_id={id} />

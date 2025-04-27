@@ -69,7 +69,7 @@ const WorkerLayout = () => {
       >
         {!collapsed ? (
           <span
-            className={`text-sm ${isActive ? "text-primary font-medium" : ""}`}
+            className={`text-sm ${isActive ? "text-primary font-semibold" : ""}`}
           >
             {label}
           </span>
@@ -141,7 +141,11 @@ const WorkerLayout = () => {
             icon={<FaUserCircle />}
             label="Profile"
           />
-          <SidebarLink to="reviews" icon={<BiSupport />} label="Reviews" />
+          <SidebarLink
+            to="/worker/reviews"
+            icon={<BiSupport />}
+            label="Reviews"
+          />
 
           <MenuItem icon={<FaSignOutAlt />} onClick={handleLogout}>
             Log out

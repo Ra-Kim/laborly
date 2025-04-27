@@ -340,17 +340,19 @@ const JobCard = ({
           >
             {statusMap[job.status as jobStatus]}
           </span>
-          <ResponsiveModal open={reviewModal} onOpenChange={setReviewModal}>
-            <ResponsiveModalTrigger asChild>
-              <p>Write a review</p>
-            </ResponsiveModalTrigger>
-            <ResponsiveModalContent className="sm:max-w-[425px] lg:min-w-[600px] lg:min-h-[50vh]">
-              <ResponsiveModalHeader>
-                <ResponsiveModalTitle>Write a review</ResponsiveModalTitle>
-              </ResponsiveModalHeader>
-              <WriteReview setAddModalOpen={setReviewModal} job_id={job.id} />
-            </ResponsiveModalContent>
-          </ResponsiveModal>
+          {statusMap[job.status as jobStatus] === "COMPLETED" && (
+            <ResponsiveModal open={reviewModal} onOpenChange={setReviewModal}>
+              <ResponsiveModalTrigger asChild>
+                <p>Write a review</p>
+              </ResponsiveModalTrigger>
+              <ResponsiveModalContent className="sm:max-w-[425px] lg:min-w-[600px] lg:min-h-[50vh]">
+                <ResponsiveModalHeader>
+                  <ResponsiveModalTitle>Write a review</ResponsiveModalTitle>
+                </ResponsiveModalHeader>
+                <WriteReview setAddModalOpen={setReviewModal} job_id={job.id} />
+              </ResponsiveModalContent>
+            </ResponsiveModal>
+          )}
         </div>
       </div>
     </div>

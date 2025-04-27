@@ -35,8 +35,12 @@ const Messages = () => {
                 threads.map((thread) => (
                   <ThreadCard
                     id={thread.id}
-                    message={thread.messages[0]?.content}
-                    timeStamp={thread.messages[0]?.timestamp}
+                    message={
+                      thread.messages[thread.messages.length - 1]?.content
+                    }
+                    timeStamp={
+                      thread.messages[thread.messages.length - 1]?.timestamp
+                    }
                     participants={thread.participants}
                   />
                 ))

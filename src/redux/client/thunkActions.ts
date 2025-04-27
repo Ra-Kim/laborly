@@ -77,7 +77,7 @@ export const patchClientProfile = createAsyncThunk(
 
 export const getFavoriteWorkers = createAsyncThunk(
   "get-favorite-workers",
-  async (_, thunkAPI) => {
+  async (_:string, thunkAPI) => {
     const response = await useAxios({
       url: `${BASE_URL}client/get/favorites`,
       method: "GET",

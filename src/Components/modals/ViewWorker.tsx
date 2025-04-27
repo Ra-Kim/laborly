@@ -13,6 +13,7 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useAppThunkDispatch } from "@/redux/store";
 import { startConversation } from "@/redux/messages/thunkActions";
 import Spinner from "../ui/Spinner";
+import { createJob } from "@/redux/jobs/thunkActions";
 
 const ViewWorker = ({
   service_id,
@@ -53,8 +54,17 @@ const ViewWorker = ({
       })
     );
     if (res.meta.requestStatus === "fulfilled") {
-      setThreadId(res.payload.thread_id);
-      setLoading(false);
+      dispatch(
+        createJob({
+          service_id: service_id,
+          thread_id: res.payload.thread_id,
+        })
+      ).then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          setThreadId(res.payload.thread_id);
+          setLoading(false);
+        }
+      });
     }
     setLoading(false);
   };
@@ -126,7 +136,11 @@ const ViewWorker = ({
             {/* Work experience */}
             <p className="mt-4">
               Work experience:{" "}
-              {workerProfile.work_experience || "No work experience added"}
+              {workerProfile.years_experience
+                ? `${workerProfile?.years_experience} year${
+                    workerProfile.years_experience > 1 ? "s" : ""
+                  } experience`
+                : "No experience added"}
             </p>
           </div>
           {/* Note to workers */}
@@ -152,52 +166,56 @@ const ViewWorker = ({
                 ))}
             </ul>
           </div>
-          {threadId ? (
-            <div className="flex gap-2 items-center justify-center mt-4">
-              <CheckCheck className="text-green-500" />
-              <p className="text-sm text-gray-700">
-                Message sent successfully! You can check your messages{" "}
-                <a
-                  href={`/client/messages?thread_id=${threadId}`}
-                  className="text-blue-500 underline"
+          {service_id && (
+            <>
+              {threadId ? (
+                <div className="flex gap-2 items-center justify-center mt-4">
+                  <CheckCheck className="text-green-500" />
+                  <p className="text-sm text-gray-700">
+                    Message sent successfully! You can check your messages{" "}
+                    <a
+                      href={`/client/messages?thread_id=${threadId}`}
+                      className="text-blue-500 underline"
+                    >
+                      here
+                    </a>
+                  </p>
+                </div>
+              ) : (
+                <form
+                  className="flex lg:grid lg:grid-cols-[80%,20%] gap-4 mt-4 flex-col lg:flex-row"
+                  onSubmit={handleSubmit(onSubmit)}
                 >
-                  here
-                </a>
-              </p>
-            </div>
-          ) : (
-            <form
-              className="flex lg:grid lg:grid-cols-[80%,20%] gap-4 mt-4 flex-col lg:flex-row"
-              onSubmit={handleSubmit(onSubmit)}
-            >
-              {/* CTA Button */}
-              <Controller
-                control={control}
-                name={`content`}
-                render={({ field: { onChange, value, name } }) => (
-                  <Textarea
-                    className={
-                      errors?.[name]?.message ? "border border-red-500" : ""
-                    }
-                    labelText=""
-                    id={name}
-                    name={name}
-                    placeholder="Initaite conversation with the worker"
-                    error={errors?.[name]?.message}
-                    value={value}
-                    onChange={onChange}
-                    autoComplete="off"
+                  {/* CTA Button */}
+                  <Controller
+                    control={control}
+                    name={`content`}
+                    render={({ field: { onChange, value, name } }) => (
+                      <Textarea
+                        className={
+                          errors?.[name]?.message ? "border border-red-500" : ""
+                        }
+                        labelText=""
+                        id={name}
+                        name={name}
+                        placeholder="Initaite conversation with the worker"
+                        error={errors?.[name]?.message}
+                        value={value}
+                        onChange={onChange}
+                        autoComplete="off"
+                      />
+                    )}
                   />
-                )}
-              />
-              <button
-                className="w-full  py-3 bg-primary text-white rounded-lg max-h-[45px] flex items-center justify-center gap-2 hover:scale-95"
-                disabled={loading}
-              >
-                Message{" "}
-                {loading ? <Spinner /> : <IoIosSend className="text-xl" />}
-              </button>
-            </form>
+                  <button
+                    className="w-full  py-3 bg-primary text-white rounded-lg max-h-[45px] flex items-center justify-center gap-2 hover:scale-95"
+                    disabled={loading}
+                  >
+                    Message{" "}
+                    {loading ? <Spinner /> : <IoIosSend className="text-xl" />}
+                  </button>
+                </form>
+              )}
+            </>
           )}
         </div>
       </div>
