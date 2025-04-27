@@ -13,7 +13,7 @@ createRoot(document.getElementById("root")!).render(
     <Provider store={store}>
       <AuthProvider>
         <BrowserRouter>
-          <ToastContainer />
+          <ToastContainer limit={2}/>
           <App />
         </BrowserRouter>
       </AuthProvider>

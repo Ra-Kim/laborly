@@ -49,6 +49,30 @@ export const ROLES = [
   },
 ];
 
+export const LOCATIONS = [
+  { value: "Agege", label: "Agege" },
+  { value: "Ajeromi-Ifelodun", label: "Ajeromi-Ifelodun" },
+  { value: "Alimosho", label: "Alimosho" },
+  { value: "Amuwo-Odofin", label: "Amuwo-Odofin" },
+  { value: "Apapa", label: "Apapa" },
+  { value: "Badagry", label: "Badagry" },
+  { value: "Epe", label: "Epe" },
+  { value: "Eti-Osa", label: "Eti-Osa" },
+  { value: "Ibeju-Lekki", label: "Ibeju-Lekki" },
+  { value: "Ifako-Ijaiye", label: "Ifako-Ijaiye" },
+  { value: "Ikeja", label: "Ikeja" },
+  { value: "Ikorodu", label: "Ikorodu" },
+  { value: "Kosofe", label: "Kosofe" },
+  { value: "Lagos Island", label: "Lagos Island" },
+  { value: "Lagos Mainland", label: "Lagos Mainland" },
+  { value: "Mushin", label: "Mushin" },
+  { value: "Ojo", label: "Ojo" },
+  { value: "Oshodi-Isolo", label: "Oshodi-Isolo" },
+  { value: "Somolu", label: "Somolu" },
+  { value: "Surulere", label: "Surulere" }
+];
+
+
 import {
   FaHammer,
   FaPaintRoller,

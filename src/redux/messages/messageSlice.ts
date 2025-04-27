@@ -1,5 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getSingleThread, myThreads, replyConversation } from "./thunkActions";
+import {
+  getSingleThread,
+  myThreads,
+  myThreadsSilent,
+  replyConversation,
+} from "./thunkActions";
 import { IMessage, IThread } from "@/types/messages";
 
 export interface IState {
@@ -34,6 +39,18 @@ const MessageSlice = createSlice({
     });
     builder.addCase(myThreads.rejected, (state) => {
       return { ...state, loading: "failed" };
+    });
+    builder.addCase(myThreadsSilent.pending, (state) => {
+      return { ...state };
+    });
+    builder.addCase(myThreadsSilent.fulfilled, (state, action) => {
+      return {
+        ...state,
+        threads: action.payload,
+      };
+    });
+    builder.addCase(myThreadsSilent.rejected, (state) => {
+      return { ...state };
     });
     builder.addCase(getSingleThread.pending, (state) => {
       return { ...state, sendLoading: "loading" };

@@ -101,7 +101,7 @@ const ClientProfile = () => {
               {/* Button */}
               <div className="mt-8 flex justify-center">
                 <Sheet open={updateProfile} onOpenChange={setUpdateProfile}>
-                  <SheetTrigger>
+                  <SheetTrigger asChild>
                     <button className="px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition">
                       Edit Profile
                     </button>

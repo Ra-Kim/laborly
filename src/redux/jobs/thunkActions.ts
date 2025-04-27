@@ -139,7 +139,7 @@ export const getJobs = createAsyncThunk(
       return thunkAPI.rejectWithValue(response.error);
     }
 
-    return response.data;
+    return response.data.items;
   }
 );
 

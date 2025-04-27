@@ -1,4 +1,8 @@
-import { getSingleThread, replyConversation } from "@/redux/messages/thunkActions";
+import {
+  getSingleThread,
+  myThreadsSilent,
+  replyConversation,
+} from "@/redux/messages/thunkActions";
 import { useAppSelector, useAppThunkDispatch } from "@/redux/store";
 import { useState } from "react";
 import { IoIosSend } from "react-icons/io";
@@ -15,7 +19,9 @@ const MessageInput = ({ thread_id }: { thread_id: string }) => {
       })
     ).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
-        dispatch(getSingleThread(thread_id))
+        dispatch(getSingleThread(thread_id));
+        dispatch(myThreadsSilent(""));
+        setMessage("");
       }
     });
   };
@@ -33,7 +39,7 @@ const MessageInput = ({ thread_id }: { thread_id: string }) => {
       <button
         onClick={handleSendMessage}
         className="bg-primary px-3 py-4 text-white flex items-center justify-center gap-2 text-sm rounded-r-lg ml-2"
-        disabled = {sendLoading === "loading"}
+        disabled={sendLoading === "loading"}
       >
         Send <IoIosSend />
       </button>

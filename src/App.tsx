@@ -18,9 +18,8 @@ import useRedirectByRole from "./hooks/useRedirectByRole";
 import WorkerRoute from "./routes/WorkerRoute";
 import ClientRoute from "./routes/ClientRoute";
 import Profile from "./Pages/worker/Profile";
-import Messages from "./Pages/worker/Messages";
+import Messages from "./Pages/Messages";
 import ClientJobs from "./Pages/client/ClientJobs";
-import ClientMessages from "./Pages/client/ClientMessages";
 import ClientProfile from "./Pages/client/ClientProfile";
 import Services from "./Pages/worker/Services";
 import WorkerJobs from "./Pages/worker/WorkerJobs";
@@ -115,7 +114,7 @@ const App = () => {
           <Route index element={<ClientDashboard />} />
           <Route path="dashboard" element={<ClientDashboard />} />
           <Route path="jobs" element={<ClientJobs />} />
-          <Route path="messages" element={<ClientMessages />} />
+          <Route path="messages" element={<Messages />} />
           <Route path="profile" element={<ClientProfile />} />
         </Route>
       </Routes>

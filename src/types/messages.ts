@@ -1,6 +1,7 @@
 export interface IStartConversation {
   content: string;
   service_id: string;
+  receiver_id: string;
 }
 
 export interface IReplyConversation {
@@ -21,7 +22,12 @@ export interface IThread {
   job_id: string;
   is_closed: true;
   participants: {
-    user_id: string;
+    user: {
+      id: string;
+      first_name: string;
+      last_name: string;
+      profile_picture: null;
+    };
   }[];
   messages: IMessage[];
 }

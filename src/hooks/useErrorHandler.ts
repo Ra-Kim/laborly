@@ -14,7 +14,13 @@ export const useApiErrorHandler = (
       window.location.replace(`/auth/sign-in`);
     }, 1000);
   }
+  if (err.status_code === 429) {
+    return;
+  }
   if (toastId) {
+    if (err.status_code === 429) {
+      toast.dismiss(toastId);
+    }
     toast.update(toastId, {
       render: err.message.includes(`not found`)
         ? "Network error-an error occurred"
@@ -22,7 +28,6 @@ export const useApiErrorHandler = (
       type: "error",
       isLoading: false,
       autoClose: 2000,
-      toastId: "error",
     });
   } else {
     toast.error(err.message);

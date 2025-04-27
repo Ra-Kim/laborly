@@ -3,10 +3,15 @@ import { MdLocationPin } from "react-icons/md";
 import MessageInput from "@/Components/ui/MessageInput";
 import { useEffect, useMemo } from "react";
 import { IUser } from "@/types/auth";
-import { profileData } from "@/lib/constants";
+import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar";
 import { useAppSelector, useAppThunkDispatch } from "@/redux/store";
 import { getSingleThread } from "@/redux/messages/thunkActions";
 import Spinner from "@/Components/ui/Spinner";
+import dayjs from "dayjs";
+import { IThread } from "@/types/messages";
+import { useAuth } from "@/hooks/useAuth";
+import { getWorkerById } from "@/redux/worker/thunkActions";
+import { getWorkerSummary } from "@/redux/reviews/thunkActions";
 
 const MessageView = ({ thread_id }: { thread_id: string }) => {
   const user: IUser = useMemo(() => {
@@ -15,70 +20,92 @@ const MessageView = ({ thread_id }: { thread_id: string }) => {
   const dispatch = useAppThunkDispatch();
   useEffect(() => {
     dispatch(getSingleThread(thread_id));
-  }, [dispatch]);
+  }, [dispatch, thread_id]);
   const {
-    thread: { messages },
+    thread: { participants, messages },
     sendLoading,
   } = useAppSelector(({ message }) => message);
-  // const { clientProfile } = useAppSelector(({ client }) => client);
+  function getOtherParticipant(
+    participants: IThread["participants"],
+    loggedInUserId: string
+  ) {
+    const other = participants?.find((p) => p.user.id !== loggedInUserId);
+    return other ? other.user : null;
+  }
+  const otherParticipant = getOtherParticipant(participants, user.id);
+  const { role } = useAuth();
+  useEffect(() => {
+    if (otherParticipant?.id) {
+      if (role() === "CLIENT") {
+        dispatch(getWorkerById(otherParticipant.id));
+        dispatch(getWorkerSummary(otherParticipant.id));
+      }
+    }
+  }, [otherParticipant?.id, role()]);
+  const { worker } = useAppSelector(({ worker }) => worker);
+  const { workerReviewSummary } = useAppSelector(({ review }) => review);
 
   return (
-    <div className="grid grid-cols-1 gap-2 sm:gap-10">
+    <div className="grid grid-cols-1 gap-2">
       {/* Details Section */}
-      <div className="col-span-1 bg-gray-50">
-        {profileData.slice(0, 1).map((artisanInfo) => (
-          <div
-            key={artisanInfo.id}
-            className="cursor-pointer flex flex-row sm:flex-col items-center sm:items-start lg:flex-row lg:items-center gap-1 sm:gap-6 mt-10"
-          >
-            {/* Profile Image */}
-            <div className="relative  ">
-              <img
-                src={artisanInfo.image}
-                alt={artisanInfo.name}
-                className="w-28 max-w-[10rem] object-cover rounded-2xl"
+      <div className="bg-gray-50 pl-3 w-full">
+        <div className="cursor-pointer flex flex-row sm:flex-col items-center sm:items-start lg:flex-row lg:items-center gap-1 sm:gap-6 mt-10">
+          {/* Profile Image */}
+          <div className="relative  ">
+            <Avatar className="w-[10rem] h-[10rem]">
+              <AvatarImage
+                src={otherParticipant?.profile_picture || ""}
+                alt="pic"
               />
-            </div>
+              <AvatarFallback>
+                {otherParticipant?.first_name?.charAt(0)}
+                {otherParticipant?.last_name?.charAt(0)}
+              </AvatarFallback>
+            </Avatar>
+          </div>
 
-            {/* Profile Details */}
+          {/* Profile Details */}
+          <div className="flex flex-col gap-1">
+            {/* Name, Location, Experience */}
             <div className="flex flex-col gap-1">
-              {/* Name, Location, Experience */}
-              <div className="flex flex-col gap-1">
-                <h3 className="text-2xl font-semibold text-primary">
-                  {artisanInfo.name}
-                </h3>
-                <p className="text-sm text-gray-500">
-                  {artisanInfo.experience}
-                </p>
-                <p className="text-sm text-gray-500 flex items-center gap-2">
-                  <MdLocationPin className="text-lg" /> {artisanInfo.location}
-                </p>
+              <h3 className="text-2xl font-semibold text-primary">
+                {otherParticipant?.first_name} {otherParticipant?.last_name}
+              </h3>
+              {role() === "CLIENT" && (
+                <>
+                  <p className="text-sm text-gray-500">
+                    {worker.years_experience}
+                  </p>
+                  <p className="text-sm text-gray-500 flex items-center gap-2">
+                    <MdLocationPin className="text-lg" /> {worker.location}
+                  </p>
 
-                {/* Ratings  */}
+                  {/* Ratings  */}
 
-                <div className="flex text-xs">
-                  {Array.from({ length: 5 }, (_, index) => (
-                    <span key={index}>
-                      {index < artisanInfo.rating ? (
-                        <FaStar className="text-yellow-400" />
-                      ) : (
-                        <FaRegStar className="text-yellow-400" />
-                      )}
-                    </span>
-                  ))}
-                </div>
-              </div>
+                  <div className="flex text-xs">
+                    {Array.from({ length: 5 }, (_, index) => (
+                      <span key={index}>
+                        {index < workerReviewSummary.average_rating ? (
+                          <FaStar className="text-yellow-400" />
+                        ) : (
+                          <FaRegStar className="text-yellow-400" />
+                        )}
+                      </span>
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
           </div>
-        ))}
+        </div>
       </div>
       {/* Chat section */}
       <div className="col-span-2">
         <div className="flex flex-col w-full bg-white shadow-lg rounded-l-lg border-l border-gray-300">
           <div className="flex-grow p-4 overflow-y-auto">
-            {messages.map((msg, index) => (
+            {messages?.map((msg) => (
               <div
-                key={index}
+                key={msg.id}
                 className={`flex mb-2 ${
                   msg.sender_id === user.id ? "justify-start" : "justify-end"
                 }`}
@@ -95,7 +122,7 @@ const MessageView = ({ thread_id }: { thread_id: string }) => {
                     <span>
                       {msg.sender_id === user.id ? "Worker" : "Client"}
                     </span>{" "}
-                    | <span>{msg.timestamp}</span>
+                    | <span>{dayjs(msg.timestamp).toString()}</span>
                   </div>
                 </div>
               </div>

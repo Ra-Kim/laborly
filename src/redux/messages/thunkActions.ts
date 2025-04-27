@@ -5,60 +5,103 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-export const startConversation = createAsyncThunk("startConversation", async (data: { id: string; body: IStartConversation }, thunkAPI) => {
-  const response = await useAxios({
-    url: `${BASE_URL}messages/${data.id}`,
-    method: "POST",
-    data: data.body,
-  });
+export const startConversation = createAsyncThunk(
+  "startConversation",
+  async (data: IStartConversation, thunkAPI) => {
+    const response = await useAxios({
+      url: `${BASE_URL}messages/initiate`,
+      method: "POST",
+      data: data,
+    });
 
-  if (response.error) {
-    useApiErrorHandler({ status_code: response.status_code, message: response.error });
-    return thunkAPI.rejectWithValue(response.error);
+    if (response.error) {
+      useApiErrorHandler({
+        status_code: response.status_code,
+        message: response.error,
+      });
+      return thunkAPI.rejectWithValue(response.error);
+    }
+
+    return response.data;
   }
+);
 
-  return response.data;
-});
+export const replyConversation = createAsyncThunk(
+  "replyConversation",
+  async (data: { id: string; body: IReplyConversation }, thunkAPI) => {
+    const response = await useAxios({
+      url: `${BASE_URL}messages/${data.id}/reply`,
+      method: "POST",
+      data: data.body,
+    });
 
-export const replyConversation = createAsyncThunk("replyConversation", async (data: { id: string; body: IReplyConversation }, thunkAPI) => {
-  const response = await useAxios({
-    url: `${BASE_URL}messages/${data.id}/reply`,
-    method: "POST",
-    data: data.body,
-  });
+    if (response.error) {
+      useApiErrorHandler({
+        status_code: response.status_code,
+        message: response.error,
+      });
+      return thunkAPI.rejectWithValue(response.error);
+    }
 
-  if (response.error) {
-    useApiErrorHandler({ status_code: response.status_code, message: response.error });
-    return thunkAPI.rejectWithValue(response.error);
+    return response.data;
   }
+);
 
-  return response.data;
-});
+export const myThreads = createAsyncThunk(
+  "my-threads",
+  async (_: string, thunkAPI) => {
+    const response = await useAxios({
+      url: `${BASE_URL}messages/threads`,
+      method: "GET",
+    });
 
-export const myThreads = createAsyncThunk("my-threads", async (_: string, thunkAPI) => {
-  const response = await useAxios({
-    url: `${BASE_URL}messages/threads`,
-    method: "GET",
-  });
+    if (response.error) {
+      useApiErrorHandler({
+        status_code: response.status_code,
+        message: response.error,
+      });
+      return thunkAPI.rejectWithValue(response.error);
+    }
 
-  if (response.error) {
-    useApiErrorHandler({ status_code: response.status_code, message: response.error });
-    return thunkAPI.rejectWithValue(response.error);
+    return response.data.items;
   }
+);
 
-  return response.data;
-});
+export const myThreadsSilent = createAsyncThunk(
+  "my-threads-silent",
+  async (_: string, thunkAPI) => {
+    const response = await useAxios({
+      url: `${BASE_URL}messages/threads`,
+      method: "GET",
+    });
 
-export const getSingleThread = createAsyncThunk("get-single-thread", async (data: string, thunkAPI) => {
-  const response = await useAxios({
-    url: `${BASE_URL}messages/threads/${data}`,
-    method: "GET",
-  });
+    if (response.error) {
+      useApiErrorHandler({
+        status_code: response.status_code,
+        message: response.error,
+      });
+      return thunkAPI.rejectWithValue(response.error);
+    }
 
-  if (response.error) {
-    useApiErrorHandler({ status_code: response.status_code, message: response.error });
-    return thunkAPI.rejectWithValue(response.error);
+    return response.data.items;
   }
+);
+export const getSingleThread = createAsyncThunk(
+  "get-single-thread",
+  async (data: string, thunkAPI) => {
+    const response = await useAxios({
+      url: `${BASE_URL}messages/threads/${data}`,
+      method: "GET",
+    });
 
-  return response.data;
-});
+    if (response.error) {
+      useApiErrorHandler({
+        status_code: response.status_code,
+        message: response.error,
+      });
+      return thunkAPI.rejectWithValue(response.error);
+    }
+
+    return response.data;
+  }
+);

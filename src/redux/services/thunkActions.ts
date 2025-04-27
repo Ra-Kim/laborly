@@ -125,7 +125,7 @@ export const getMyServices = createAsyncThunk(
       return thunkAPI.rejectWithValue(response.error);
     }
 
-    return response.data;
+    return response.data.items;
   }
 );
 
@@ -145,6 +145,6 @@ export const searchServices = createAsyncThunk(
       return thunkAPI.rejectWithValue(response.error);
     }
 
-    return response.data;
+    return response.data.items;
   }
 );

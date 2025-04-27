@@ -113,7 +113,7 @@ const ClientLayout = () => {
 
         {/* Menu Items */}
         <Menu className="text-sm overflow-hidden">
-          <SidebarLink to="/" icon={<HiHome />} label="Home" />
+          <SidebarLink to="/client/dashboard" icon={<HiHome />} label="Home" />
           <SidebarLink to="jobs" icon={<FaTasks />} label="My Jobs" />
           <SidebarLink
             to="messages"
