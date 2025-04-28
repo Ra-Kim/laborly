@@ -3,9 +3,7 @@ import { getWorkerSummary } from "@/redux/reviews/thunkActions";
 import { useAppSelector, useAppThunkDispatch } from "@/redux/store";
 import { getWorkerById } from "@/redux/worker/thunkActions";
 import { IWorkerSummary } from "@/types/reviews";
-import { IService } from "@/types/service";
 import { IWorkerProfile } from "@/types/worker";
-import { SearchIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { FaRegStar, FaStar } from "react-icons/fa";
 import { IoEyeOutline } from "react-icons/io5";
@@ -28,6 +26,12 @@ const WorkerFragment = () => {
   useEffect(() => {
     dispatch(getFavoriteWorkers(""));
   }, [dispatch, location]);
+
+  // const faves: IFavoriteWorker[] = [
+  //   {
+
+  //   }
+  // ]
 
   return (
     <div>
