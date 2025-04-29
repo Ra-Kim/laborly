@@ -269,7 +269,7 @@ const WorkerJobs = () => {
                         <ResponsiveModalContent className="sm:max-w-[425px] lg:min-w-[600px] lg:min-h-[50vh]">
                           <ResponsiveModalHeader>
                             <ResponsiveModalTitle>
-                              Update service
+                             Cancel Job
                             </ResponsiveModalTitle>
                           </ResponsiveModalHeader>
                           <CancelJob
