@@ -6,7 +6,8 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useState } from "react";
 import { Textarea } from "@/Components/ui/textarea";
 import { useAppThunkDispatch } from "@/redux/store";
-import { cancelJob, getJobs } from "@/redux/jobs/thunkActions";
+import { cancelJob } from "@/redux/jobs/thunkActions";
+import { getClientJobs } from "@/redux/client/thunkActions";
 
 const CancelJob = ({
   setAddModalOpen,
@@ -45,7 +46,7 @@ const CancelJob = ({
     );
     if (res.meta.requestStatus === "fulfilled") {
       setAddModalOpen(false);
-      dispatch(getJobs(""));
+      dispatch(getClientJobs(""));
     }
     setLoading(false);
   };

@@ -50,7 +50,7 @@ const WorkerJobs = () => {
   const { jobs } = useAppSelector(({ worker }) => worker);
   const groupedJobs = useMemo(() => {
     return Object.keys(statusMap).reduce((acc, status) => {
-      acc[status as jobStatus] = jobs?.filter((job) => job.status === status);
+      acc[status as jobStatus] = jobs.filter((job) => job.status === status);
       return acc;
     }, {} as Record<jobStatus, IJob[]>);
   }, [jobs]);
@@ -74,6 +74,8 @@ const WorkerJobs = () => {
     dispatch(acceptJob({ job_id: job_id, worker_id: worker_id })).then(() => {
       if (selectedJob) {
         setSelectedJob({ ...selectedJob, status: "ACCEPTED" });
+        dispatch(getWorkerJobs(""));
+        setActiveView("ACCEPTED");
       }
     });
   };
@@ -82,6 +84,8 @@ const WorkerJobs = () => {
     dispatch(completeJob(job_id)).then(() => {
       if (selectedJob) {
         setSelectedJob({ ...selectedJob, status: "COMPLETED" });
+        dispatch(getWorkerJobs(""));
+        setActiveView("COMPLETED");
       }
     });
   };

@@ -5,7 +5,7 @@ import { useAppSelector, useAppThunkDispatch } from "@/redux/store";
 import { getWorkerById } from "@/redux/worker/thunkActions";
 import { IJob, jobStatus } from "@/types/jobs";
 import { ChevronUpIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   ResponsiveModal,
   ResponsiveModalTrigger,
@@ -49,10 +49,12 @@ const WorkerJobs = () => {
   };
 
   const { jobs } = useAppSelector(({ client }) => client);
-  const groupedJobs = Object.keys(statusMap).reduce((acc, status) => {
-    acc[status as jobStatus] = jobs?.filter((job) => job.status === status);
-    return acc;
-  }, {} as Record<jobStatus, IJob[]>);
+   const groupedJobs = useMemo(() => {
+      return Object.keys(statusMap).reduce((acc, status) => {
+        acc[status as jobStatus] = jobs.filter((job) => job.status === status);
+        return acc;
+      }, {} as Record<jobStatus, IJob[]>);
+    }, [jobs]);
   const [activeView, setActiveView] = useState<string | null>(null);
 
   const dispatch = useAppThunkDispatch();
