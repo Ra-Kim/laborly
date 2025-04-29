@@ -264,7 +264,7 @@ const WorkerJobs = () => {
                         onOpenChange={setCancelModal}
                       >
                         <ResponsiveModalTrigger asChild>
-                          <Button className="w-full">CANCEL JOB</Button>
+                          <Button className="w-full bg-red-500">CANCEL JOB</Button>
                         </ResponsiveModalTrigger>
                         <ResponsiveModalContent className="sm:max-w-[425px] lg:min-w-[600px] lg:min-h-[50vh]">
                           <ResponsiveModalHeader>
