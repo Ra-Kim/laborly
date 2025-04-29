@@ -62,11 +62,11 @@ const WriteReview = ({
         <p>Set job rating here</p>
         <div className=" text-sm flex items-center justify-center m-auto my-2 text-center text-secondary">
           {Array.from({ length: 5 }, (_, index) => (
-            <span key={index} onClick={() => setRating(index)}>
+            <span key={index} onClick={() => setRating(index + 1)}>
               {index < rating ? (
-                <FaStar className="text-center" />
+                <FaStar className="text-center text-lg text-yellow-500" />
               ) : (
-                <FaRegStar className="text-center" />
+                <FaRegStar className="text-center text-lg" />
               )}
             </span>
           ))}
@@ -101,7 +101,7 @@ const WriteReview = ({
           Cancel
         </Button>
         <Button className={`w-full lg:w-36`} type="submit" disabled={loading}>
-          Cancel
+         Post
         </Button>
       </div>
     </form>

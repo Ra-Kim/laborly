@@ -9,9 +9,11 @@ import { emailRegex } from "@/lib/regex";
 import { useNavigate } from "react-router-dom";
 import Logo from "@/Components/common/Logo";
 import { useAppThunkDispatch } from "@/redux/store";
-import { googleLogin, login } from "@/redux/auth/thunkActions";
+import { login } from "@/redux/auth/thunkActions";
 import { SVGS } from "@/assets/svgs";
 import { redirectToDashboard } from "@/lib/utils";
+
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const Login = () => {
   const navigate = useNavigate();
@@ -47,8 +49,9 @@ const Login = () => {
 
   const GoogleIcon = SVGS.google;
   // google sign in
-  const googleSignin = () => {
-    dispatch(googleLogin("")).unwrap();
+  const googleSignIn = () => {
+    const googleLoginURL = BASE_URL + "auth/google/login";
+    window.open(googleLoginURL ,"_blank");
   };
   return (
     <div className="py-4 w-[95%] lg:w-4/5 justify-center mx-auto bg-white !font-[Roboto]">
@@ -125,9 +128,10 @@ const Login = () => {
             Or Sign in with
           </p>
         </div>
+
         <Button
           className="grid grid-cols-[auto,1fr] w-full"
-          onClick={googleSignin}
+          onClick={googleSignIn}
         >
           <div className="h-full w-fit p-1 bg-white rounded-full">
             <GoogleIcon />

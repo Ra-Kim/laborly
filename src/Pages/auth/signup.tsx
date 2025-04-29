@@ -20,10 +20,19 @@ import {
   formatPhoneNumber,
   // formatPhoneNumberIntl,
 } from "react-phone-number-input";
+import {
+  ResponsiveModal,
+  ResponsiveModalTrigger,
+  ResponsiveModalContent,
+  ResponsiveModalHeader,
+  ResponsiveModalTitle,
+} from "@/Components/ui/responsiveModal";
 import Logo from "@/Components/common/Logo";
 import { useAppThunkDispatch } from "@/redux/store";
-import { googleLogin, signUp } from "@/redux/auth/thunkActions";
+import {  signUp } from "@/redux/auth/thunkActions";
 import { SVGS } from "@/assets/svgs";
+import { useState } from "react";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -84,8 +93,18 @@ const Signup = () => {
 
   const GoogleIcon = SVGS.google;
   // google sign in
+  const [googleModal, setGoogleModal] = useState(false);
+  const [role, setRole] = useState("");
   const googleSignUp = () => {
-    dispatch(googleLogin("")).unwrap();
+    const googleLoginURL = BASE_URL + "auth/google/login";
+    if (role) {
+      window.open(
+        googleLoginURL + `?role=${encodeURIComponent(role)}`,
+        "_blank"
+      );
+    } else {
+      alert("Please select a role to proceed");
+    }
   };
   return (
     <div className="py-4 w-[95%] lg:w-4/5 justify-center mx-auto bg-white !font-[Roboto]">
@@ -259,17 +278,62 @@ const Signup = () => {
             Or Sign up with
           </p>
         </div>
-        <Button
-          className="grid grid-cols-[auto,1fr] w-full"
-          onClick={googleSignUp}
-        >
-          <div className="h-full w-fit p-1 bg-white rounded-full">
-            <GoogleIcon />
-          </div>
-          <div className="flex items-center justify-center ">
-            Sign up with Google
-          </div>
-        </Button>
+        <ResponsiveModal open={googleModal} onOpenChange={setGoogleModal}>
+          <ResponsiveModalTrigger asChild>
+            <Button className="grid grid-cols-[auto,1fr] w-full">
+              <div className="h-full w-fit p-1 bg-white rounded-full">
+                <GoogleIcon />
+              </div>
+              <div className="flex items-center justify-center ">
+                Sign up with Google
+              </div>
+            </Button>
+          </ResponsiveModalTrigger>
+          <ResponsiveModalContent className="sm:max-w-[425px] lg:min-w-[600px] lg:min-h-[50vh]">
+            <ResponsiveModalHeader>
+              <ResponsiveModalTitle>Select role</ResponsiveModalTitle>
+            </ResponsiveModalHeader>
+            <div>
+              <p className="text-[#50555CD9] px-4 -mt-2 text center">
+                What are you doing on Laborly?
+              </p>
+              <div className="flex flex-col gap-4 mt-4">
+                {ROLES?.map((item) => (
+                  <Button
+                    key={item.value}
+                    variant={"outline"}
+                    className={`w-full ${
+                      item.value === role
+                        ? "border-primary border-2 bg-blue-200"
+                        : ""
+                    }`}
+                    onClick={() => {
+                      setRole(item.value);
+                    }}
+                  >
+                    {item.label}
+                  </Button>
+                ))}
+              </div>
+              <div className="my-4 flex gap-4 justify-end">
+                <Button
+                  className={`w-18 border border-border hidden lg:block`}
+                  onClick={() => setGoogleModal(false)}
+                  variant={"ghost"}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  className={`w-full lg:w-40`}
+                  onClick={googleSignUp}
+                  disabled={!role}
+                >
+                  Proceed
+                </Button>
+              </div>
+            </div>
+          </ResponsiveModalContent>
+        </ResponsiveModal>
       </div>
     </div>
   );

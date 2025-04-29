@@ -78,7 +78,11 @@ const MessageView = ({ thread_id }: { thread_id: string }) => {
                 {role() === "CLIENT" && (
                   <>
                     <p className="text-sm text-gray-500">
-                      {worker.years_experience}
+                      {worker.years_experience
+                        ? `${worker?.years_experience} year${
+                            worker.years_experience > 1 ? "s" : ""
+                          } experience`
+                        : "No experience added"}
                     </p>
                     <p className="text-sm text-gray-500 flex items-center gap-2">
                       <MdLocationPin className="text-lg" /> {worker.location}

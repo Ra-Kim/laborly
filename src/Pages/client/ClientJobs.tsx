@@ -38,51 +38,24 @@ const statusStyles = {
 
 const WorkerJobs = () => {
   const [selectedJob, setSelectedJob] = useState<IJob | null>(null);
-  const [cancelModal, setCancelModal] = useState(false);
-  const { role } = useAuth();
+
   const openSidebar = (job: IJob) => {
     setSelectedJob(job);
   };
 
-  const closeSidebar = () => {
-    setSelectedJob(null);
-  };
-
   const { jobs } = useAppSelector(({ client }) => client);
-   const groupedJobs = useMemo(() => {
-      return Object.keys(statusMap).reduce((acc, status) => {
-        acc[status as jobStatus] = jobs.filter((job) => job.status === status);
-        return acc;
-      }, {} as Record<jobStatus, IJob[]>);
-    }, [jobs]);
+  const groupedJobs = useMemo(() => {
+    return Object.keys(statusMap).reduce((acc, status) => {
+      acc[status as jobStatus] = jobs.filter((job) => job.status === status);
+      return acc;
+    }, {} as Record<jobStatus, IJob[]>);
+  }, [jobs]);
   const [activeView, setActiveView] = useState<string | null>(null);
 
   const dispatch = useAppThunkDispatch();
   useEffect(() => {
     dispatch(getClientJobs(""));
   }, [dispatch]);
-
-  const acceptJobFunc = ({
-    job_id,
-    worker_id,
-  }: {
-    job_id: string;
-    worker_id: string;
-  }) => {
-    dispatch(acceptJob({ job_id: job_id, worker_id: worker_id })).then(() => {
-      if (selectedJob) {
-        setSelectedJob({ ...selectedJob, status: "ACCEPTED" });
-      }
-    });
-  };
-
-  const completeJobFunc = (job_id: string) => {
-    dispatch(completeJob(job_id)).then(() => {
-      if (selectedJob) {
-        setSelectedJob({ ...selectedJob, status: "COMPLETED" });
-      }
-    });
-  };
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen relative">
@@ -128,163 +101,235 @@ const WorkerJobs = () => {
 
       {/* Sidebar Modal */}
       {selectedJob && (
-        <>
-          <div
-            className="fixed inset-0 bg-black bg-opacity-30 z-30"
-            onClick={closeSidebar}
-          ></div>
-          <div className="fixed right-0 top-0 w-full sm:w-[400px] h-full bg-white z-40 shadow-lg transition-transform duration-300 ease-in-out transform translate-x-0">
-            <div className="p-6 h-full flex flex-col justify-between">
-              <div>
-                <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-xl font-semibold">Job Details</h3>
-                  <button
-                    onClick={closeSidebar}
-                    className="text-gray-500 hover:text-red-500 text-lg font-bold"
-                  >
-                    &times;
-                  </button>
-                </div>
-                <div className="flex-1 overflow-y-auto space-y-4 text-sm text-gray-700">
-                  <div>
-                    <p className="text-gray-500">Job ID</p>
-                    <p className="font-medium text-gray-800">
-                      {selectedJob.id}
-                    </p>
-                  </div>
-
-                  <div>
-                    <p className="text-gray-500">Service Title</p>
-                    <p className="font-medium text-gray-800">
-                      {selectedJob.service_id || "N/A"}
-                    </p>
-                  </div>
-
-                  <div>
-                    <p className="text-gray-500">Worker Assigned</p>
-                    <p className="font-medium text-gray-800">
-                      {selectedJob.worker_id || "Unassigned"}
-                    </p>
-                  </div>
-
-                  <div>
-                    <p className="text-gray-500">Status</p>
-                    <span
-                      className={`inline-block px-3 py-1 text-xs rounded-full font-medium ${
-                        statusStyles[selectedJob.status as jobStatus]
-                      }`}
-                    >
-                      {statusMap[selectedJob.status as jobStatus]}
-                    </span>
-                  </div>
-
-                  <div>
-                    <p className="text-gray-500">Started At</p>
-                    <p>
-                      {selectedJob.started_at
-                        ? new Date(selectedJob.started_at).toLocaleString()
-                        : "Not started"}
-                    </p>
-                  </div>
-
-                  <div>
-                    <p className="text-gray-500">Completed At</p>
-                    <p>
-                      {selectedJob.completed_at
-                        ? new Date(selectedJob.completed_at).toLocaleString()
-                        : "Not completed"}
-                    </p>
-                  </div>
-
-                  {selectedJob.status === "CANCELLED" && (
-                    <>
-                      <div>
-                        <p className="text-gray-500">Cancelled At</p>
-                        <p>
-                          {selectedJob.cancelled_at
-                            ? new Date(
-                                selectedJob.cancelled_at
-                              ).toLocaleString()
-                            : "—"}
-                        </p>
-                      </div>
-
-                      <div>
-                        <p className="text-gray-500">Cancel Reason</p>
-                        <p className="italic text-red-600">
-                          {selectedJob.cancel_reason || "No reason provided"}
-                        </p>
-                      </div>
-                    </>
-                  )}
-                </div>
-              </div>
-              <div>
-                {selectedJob.status === "NEGOTIATING" && (
-                  <div>
-                    {role() === "WORKER" && (
-                      <Button
-                        className="w-full bg-green-500"
-                        onClick={() =>
-                          acceptJobFunc({
-                            job_id: selectedJob.id,
-                            worker_id: selectedJob?.worker_id,
-                          })
-                        }
-                      >
-                        ACCEPT JOB
-                      </Button>
-                    )}
-                  </div>
-                )}
-                {selectedJob.status === "ACCEPTED" && (
-                  <div>
-                    {role() === "WORKER" && (
-                      <Button
-                        className="w-full"
-                        onClick={() => completeJobFunc(selectedJob.id)}
-                      >
-                        MARK AS COMPLETE
-                      </Button>
-                    )}
-                  </div>
-                )}
-                {(selectedJob.status === "ACCEPTED" ||
-                  selectedJob.status === "NEGOTIATING") && (
-                  <div>
-                    {role() === "CLIENT" && (
-                      <ResponsiveModal
-                        open={cancelModal}
-                        onOpenChange={setCancelModal}
-                      >
-                        <ResponsiveModalTrigger asChild>
-                          <Button className="w-full bg-red-500">CANCEL JOB</Button>
-                        </ResponsiveModalTrigger>
-                        <ResponsiveModalContent className="sm:max-w-[425px] lg:min-w-[600px] lg:min-h-[50vh]">
-                          <ResponsiveModalHeader>
-                            <ResponsiveModalTitle>
-                              Cancel Job
-                            </ResponsiveModalTitle>
-                          </ResponsiveModalHeader>
-                          <CancelJob
-                            setAddModalOpen={setCancelModal}
-                            job_id={selectedJob.id}
-                          />
-                        </ResponsiveModalContent>
-                      </ResponsiveModal>
-                    )}
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </>
+        <SelectedJob
+          selectedJob={selectedJob}
+          setSelectedJob={setSelectedJob}
+        />
       )}
     </div>
   );
 };
 
 export default WorkerJobs;
+
+const SelectedJob = ({
+  selectedJob,
+  setSelectedJob,
+}: {
+  selectedJob: IJob;
+  setSelectedJob: React.Dispatch<React.SetStateAction<IJob | null>>;
+}) => {
+  const [reviewModal, setReviewModal] = useState(false);
+  const [cancelModal, setCancelModal] = useState(false);
+  const dispatch = useAppThunkDispatch();
+  const { role } = useAuth();
+
+  const [service, setService] = useState<IService>();
+  const [worker, setWorker] = useState<IWorkerProfile>();
+  useEffect(() => {
+    dispatch(getWorkerById(selectedJob.worker_id)).then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        setWorker(res.payload);
+      }
+    });
+  }, [dispatch, selectedJob.worker_id]);
+
+  useEffect(() => {
+    dispatch(getServiceById(selectedJob.service_id)).then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        setService(res.payload);
+      }
+    });
+  }, [dispatch, selectedJob.worker_id]);
+
+  const closeSidebar = () => {
+    setSelectedJob(null);
+  };
+  const acceptJobFunc = ({
+    job_id,
+    worker_id,
+  }: {
+    job_id: string;
+    worker_id: string;
+  }) => {
+    dispatch(acceptJob({ job_id: job_id, worker_id: worker_id })).then(() => {
+      if (selectedJob) {
+        setSelectedJob({ ...selectedJob, status: "ACCEPTED" });
+      }
+    });
+  };
+
+  const completeJobFunc = (job_id: string) => {
+    dispatch(completeJob(job_id)).then(() => {
+      if (selectedJob) {
+        setSelectedJob({ ...selectedJob, status: "COMPLETED" });
+      }
+    });
+  };
+  return (
+    <>
+      <div
+        className="fixed inset-0 bg-black bg-opacity-30 z-30"
+        onClick={closeSidebar}
+      ></div>
+      <div className="fixed right-0 top-0 w-full sm:w-[400px] h-full bg-white z-40 shadow-lg transition-transform duration-300 ease-in-out transform translate-x-0">
+        <div className="p-6 h-full flex flex-col justify-between">
+          <div>
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-xl font-semibold">Job Details</h3>
+              <button
+                onClick={closeSidebar}
+                className="text-gray-500 hover:text-red-500 text-lg font-bold"
+              >
+                &times;
+              </button>
+            </div>
+            <div className="flex-1 overflow-y-auto space-y-4 text-sm text-gray-700">
+              <div>
+                <p className="text-gray-500">Job ID</p>
+                <p className="font-medium text-gray-800">{selectedJob.id}</p>
+              </div>
+
+              <div>
+                <p className="text-gray-500">Service Title</p>
+                <p className="font-medium text-gray-800">
+                  {service?.title || "N/A"}
+                </p>
+              </div>
+
+              <div>
+                <p className="text-gray-500">Worker Assigned</p>
+                <p className="font-medium text-gray-800">
+                  {worker?.first_name || "-"} {worker?.last_name || "-"}
+                </p>
+              </div>
+
+              <div>
+                <p className="text-gray-500">Status</p>
+                <span
+                  className={`inline-block px-3 py-1 text-xs rounded-full font-medium ${
+                    statusStyles[selectedJob.status as jobStatus]
+                  }`}
+                >
+                  {statusMap[selectedJob.status as jobStatus]}
+                </span>
+              </div>
+
+              <div>
+                <p className="text-gray-500">Started At</p>
+                <p>
+                  {selectedJob.started_at
+                    ? new Date(selectedJob.started_at).toLocaleString()
+                    : "Not started"}
+                </p>
+              </div>
+
+              <div>
+                <p className="text-gray-500">Completed At</p>
+                <p>
+                  {selectedJob.completed_at
+                    ? new Date(selectedJob.completed_at).toLocaleString()
+                    : "Not completed"}
+                </p>
+              </div>
+
+              {selectedJob.status === "CANCELLED" && (
+                <>
+                  <div>
+                    <p className="text-gray-500">Cancelled At</p>
+                    <p>
+                      {selectedJob.cancelled_at
+                        ? new Date(selectedJob.cancelled_at).toLocaleString()
+                        : "—"}
+                    </p>
+                  </div>
+
+                  <div>
+                    <p className="text-gray-500">Cancel Reason</p>
+                    <p className="italic text-red-600">
+                      {selectedJob.cancel_reason || "No reason provided"}
+                    </p>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+          <div>
+            {selectedJob.status === "NEGOTIATING" && (
+              <div>
+                {role() === "WORKER" && (
+                  <Button
+                    className="w-full bg-green-500"
+                    onClick={() =>
+                      acceptJobFunc({
+                        job_id: selectedJob.id,
+                        worker_id: selectedJob?.worker_id,
+                      })
+                    }
+                  >
+                    ACCEPT JOB
+                  </Button>
+                )}
+              </div>
+            )}
+            {selectedJob.status === "ACCEPTED" && (
+              <div>
+                {role() === "WORKER" && (
+                  <Button
+                    className="w-full"
+                    onClick={() => completeJobFunc(selectedJob.id)}
+                  >
+                    MARK AS COMPLETE
+                  </Button>
+                )}
+              </div>
+            )}
+            {(selectedJob.status === "ACCEPTED" ||
+              selectedJob.status === "NEGOTIATING") && (
+              <div>
+                {role() === "CLIENT" && (
+                  <ResponsiveModal
+                    open={cancelModal}
+                    onOpenChange={setCancelModal}
+                  >
+                    <ResponsiveModalTrigger asChild>
+                      <Button className="w-full bg-red-500">CANCEL JOB</Button>
+                    </ResponsiveModalTrigger>
+                    <ResponsiveModalContent className="sm:max-w-[425px] lg:min-w-[600px] lg:min-h-[50vh]">
+                      <ResponsiveModalHeader>
+                        <ResponsiveModalTitle>Cancel Job</ResponsiveModalTitle>
+                      </ResponsiveModalHeader>
+                      <CancelJob
+                        setAddModalOpen={setCancelModal}
+                        job_id={selectedJob.id}
+                      />
+                    </ResponsiveModalContent>
+                  </ResponsiveModal>
+                )}
+              </div>
+            )}
+            {selectedJob.status === "COMPLETED" && (
+              <ResponsiveModal open={reviewModal} onOpenChange={setReviewModal}>
+                <ResponsiveModalTrigger asChild>
+                  <Button className="w-full">POST REVIEW</Button>
+                </ResponsiveModalTrigger>
+                <ResponsiveModalContent className="sm:max-w-[425px] lg:min-w-[600px] lg:min-h-[50vh]">
+                  <ResponsiveModalHeader>
+                    <ResponsiveModalTitle>Write a review</ResponsiveModalTitle>
+                  </ResponsiveModalHeader>
+                  <WriteReview
+                    setAddModalOpen={setReviewModal}
+                    job_id={selectedJob.id}
+                  />
+                </ResponsiveModalContent>
+              </ResponsiveModal>
+            )}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
 
 const JobCard = ({
   job,
@@ -293,10 +338,9 @@ const JobCard = ({
   job: IJob;
   openSidebar: (job: IJob) => void;
 }) => {
-  const [reviewModal, setReviewModal] = useState(false);
+  const dispatch = useAppThunkDispatch();
   const [service, setService] = useState<IService>();
   const [worker, setWorker] = useState<IWorkerProfile>();
-  const dispatch = useAppThunkDispatch();
   useEffect(() => {
     dispatch(getWorkerById(job.worker_id)).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
@@ -342,19 +386,6 @@ const JobCard = ({
           >
             {statusMap[job.status as jobStatus]}
           </span>
-          {statusMap[job.status as jobStatus] === "COMPLETED" && (
-            <ResponsiveModal open={reviewModal} onOpenChange={setReviewModal}>
-              <ResponsiveModalTrigger asChild>
-                <p>Write a review</p>
-              </ResponsiveModalTrigger>
-              <ResponsiveModalContent className="sm:max-w-[425px] lg:min-w-[600px] lg:min-h-[50vh]">
-                <ResponsiveModalHeader>
-                  <ResponsiveModalTitle>Write a review</ResponsiveModalTitle>
-                </ResponsiveModalHeader>
-                <WriteReview setAddModalOpen={setReviewModal} job_id={job.id} />
-              </ResponsiveModalContent>
-            </ResponsiveModal>
-          )}
         </div>
       </div>
     </div>

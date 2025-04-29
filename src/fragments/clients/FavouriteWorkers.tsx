@@ -42,11 +42,19 @@ const WorkerFragment = () => {
             <Spinner />
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 p-8">
-            {favoriteWorkers?.map((worker) => (
-              <Worker key={worker.id} worker={worker} />
-            ))}
-          </div>
+          <>
+            {favoriteWorkers.length === 0 ? (
+              <div className="h-[60vh] w-full flex flex-col gap-4 justify-center items-center text-lg text-darkPrimary font-medium">
+                <p>No workers have been added to favoorites</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 p-8">
+                {favoriteWorkers?.map((worker) => (
+                  <Worker key={worker.id} worker={worker} />
+                ))}
+              </div>
+            )}
+          </>
         )}
       </section>
     </div>

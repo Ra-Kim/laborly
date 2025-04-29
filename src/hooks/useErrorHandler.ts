@@ -14,11 +14,12 @@ export const useApiErrorHandler = (
       window.location.replace(`/auth/sign-in`);
     }, 1000);
   }
-  if (err.status_code === 429) {
-    return;
+  if (err.status_code === 429 || err.status_code === 404) {
+    toast.clearWaitingQueue();
+    return
   }
   if (toastId) {
-    if (err.status_code === 429) {
+    if (err.status_code === 429 || err.status_code === 404) {
       toast.dismiss(toastId);
     }
     toast.update(toastId, {

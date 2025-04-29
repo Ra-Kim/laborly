@@ -79,7 +79,7 @@ export const getFavoriteWorkers = createAsyncThunk(
   "get-favorite-workers",
   async (_:string, thunkAPI) => {
     const response = await useAxios({
-      url: `${BASE_URL}client/get/favorites`,
+      url: `${BASE_URL}client/favorites`,
       method: "GET",
     });
 
@@ -91,7 +91,7 @@ export const getFavoriteWorkers = createAsyncThunk(
       return thunkAPI.rejectWithValue(response.error);
     }
 
-    return response.data;
+    return response.data.items;
   }
 );
 

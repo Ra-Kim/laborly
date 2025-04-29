@@ -122,7 +122,7 @@ const ClientLayout = () => {
             label="Messages"
           />
           <SidebarLink to="/client/profile" icon={<FaUserCircle />} label="Profile" />
-          <SidebarLink to="/client/reviews" icon={<BiSupport />} label="Support" />
+          <SidebarLink to="/client/reviews" icon={<BiSupport />} label="Reviews" />
 
           <MenuItem icon={<FaSignOutAlt />} onClick={handleLogout}>
             Log out

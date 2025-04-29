@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import ServiceFragment from "@/fragments/clients/Services";
+import WorkerFragment from "@/fragments/clients/FavouriteWorkers";
 
 const ClientDashboard = () => {
   const [params, setSearchParams] = useSearchParams();
@@ -36,7 +37,7 @@ const ClientDashboard = () => {
       </div>
       <div className="py-4">
         {viewState === "Services" && <ServiceFragment />}
-        {viewState === "Workers" && <>W</>}
+        {viewState === "Workers" && <WorkerFragment/>}
       </div>
     </div>
   );
