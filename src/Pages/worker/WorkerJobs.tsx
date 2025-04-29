@@ -50,7 +50,7 @@ const WorkerJobs = () => {
   const { jobs } = useAppSelector(({ worker }) => worker);
   const groupedJobs = useMemo(() => {
     return Object.keys(statusMap).reduce((acc, status) => {
-      acc[status as jobStatus] = jobs.filter((job) => job.status === status);
+      acc[status as jobStatus] = jobs?.filter((job) => job.status === status);
       return acc;
     }, {} as Record<jobStatus, IJob[]>);
   }, [jobs]);
