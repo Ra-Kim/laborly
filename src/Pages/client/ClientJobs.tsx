@@ -48,7 +48,7 @@ const WorkerJobs = () => {
     setSelectedJob(null);
   };
 
-  const { jobs } = useAppSelector(({ job }) => job);
+  const { jobs } = useAppSelector(({ client }) => client);
   const groupedJobs = Object.keys(statusMap).reduce((acc, status) => {
     acc[status as jobStatus] = jobs.filter((job) => job.status === status);
     return acc;

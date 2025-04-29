@@ -12,9 +12,9 @@ export interface IJob {
   completed_at: string | null;
   cancelled_at: string | null;
   cancel_reason: string | null;
-  client_id: "3fa85f64-5717-4562-b3fc-2c963f66afa6";
-  created_at: "2025-04-26T13:44:46.934Z";
-  updated_at: "2025-04-26T13:44:46.934Z";
+  client_id: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export type jobStatus =

@@ -5,7 +5,7 @@ import { useAppSelector, useAppThunkDispatch } from "@/redux/store";
 import { getWorkerJobs } from "@/redux/worker/thunkActions";
 import { IJob, jobStatus } from "@/types/jobs";
 import { ChevronUpIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   ResponsiveModal,
   ResponsiveModalTrigger,
@@ -47,11 +47,16 @@ const WorkerJobs = () => {
     setSelectedJob(null);
   };
 
-  const { jobs } = useAppSelector(({ job }) => job);
-  const groupedJobs = Object.keys(statusMap).reduce((acc, status) => {
-    acc[status as jobStatus] = jobs.filter((job) => job.status === status);
-    return acc;
-  }, {} as Record<jobStatus, IJob[]>);
+  const { jobs } = useAppSelector(({ worker }) => worker);
+  const groupedJobs = useMemo(() => {
+    return Object.keys(statusMap).reduce((acc, status) => {
+      acc[status as jobStatus] = jobs.filter((job) => job.status === status);
+      return acc;
+    }, {} as Record<jobStatus, IJob[]>);
+  }, [jobs]);
+  useEffect(() => {
+    console.log(groupedJobs)
+  },[jobs])
   const [activeView, setActiveView] = useState<string | null>(null);
 
   const dispatch = useAppThunkDispatch();
@@ -294,12 +299,12 @@ const JobCard = ({
   const [client, setClient] = useState<IClientProfile>();
   const dispatch = useAppThunkDispatch();
   useEffect(() => {
-    dispatch(getClientById(job.worker_id)).then((res) => {
+    dispatch(getClientById(job.client_id)).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
         setClient(res.payload);
       }
     });
-  }, [dispatch, job.worker_id]);
+  }, [dispatch, job.client_id]);
 
   useEffect(() => {
     dispatch(getServiceById(job.service_id)).then((res) => {
@@ -307,7 +312,7 @@ const JobCard = ({
         setService(res.payload);
       }
     });
-  }, [dispatch, job.worker_id]);
+  }, [dispatch, job.service_id]);
 
   return (
     <div

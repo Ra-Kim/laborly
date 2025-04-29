@@ -122,7 +122,7 @@ export const getWorkerJobs = createAsyncThunk(
       return thunkAPI.rejectWithValue(response.error);
     }
 
-    return response.data;
+    return response.data.items;
   }
 );
 

@@ -34,6 +34,7 @@ const ViewWorker = ({
     // register,
     handleSubmit,
     control,
+    setValue,
     formState: { errors },
   } = useForm<Yup.InferType<typeof validationSchema>>({
     mode: "onTouched",
@@ -54,6 +55,7 @@ const ViewWorker = ({
       })
     );
     if (res.meta.requestStatus === "fulfilled") {
+      setValue("content","")
       dispatch(
         createJob({
           service_id: service_id,
@@ -62,6 +64,7 @@ const ViewWorker = ({
       ).then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
           setThreadId(res.payload.thread_id);
+          
           setLoading(false);
         }
       });
@@ -211,7 +214,7 @@ const ViewWorker = ({
                     disabled={loading}
                   >
                     Message{" "}
-                    {loading ? <Spinner /> : <IoIosSend className="text-xl" />}
+                    {loading ? <Spinner className="text-white"/> : <IoIosSend className="text-xl" />}
                   </button>
                 </form>
               )}

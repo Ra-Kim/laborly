@@ -135,7 +135,7 @@ const CreateService = ({
               name={name}
             >
               <SelectTrigger
-                className="h-10 w-full text-sm lg:w-[600px]"
+                className="h-10 w-full text-sm"
                 labelText="Location"
                 value={value}
                 error={!!errors?.[name]}
