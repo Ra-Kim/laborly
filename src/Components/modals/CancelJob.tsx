@@ -77,18 +77,18 @@ const CancelJob = ({
       </div>
       <div className="my-4 flex flex-col lg:flex-row gap-4 justify-end">
         <Button
-          className={`lg:w-24 w-full border border-border bg-red-500`}
+          className={`lg:w-24 w-full border border-border`}
           onClick={() => setAddModalOpen(false)}
           variant={"ghost"}
         >
-          Cancel
+         Close
         </Button>
         <Button
           className={`w-full lg:w-36 bg-red-500`}
           type="submit"
           disabled={loading}
         >
-          Cancel
+          Cancel Job
         </Button>
       </div>
     </form>
