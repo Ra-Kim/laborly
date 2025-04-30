@@ -57,10 +57,13 @@ export const patchClientProfile = createAsyncThunk(
     });
 
     if (response.error) {
-      useApiErrorHandler({
-        status_code: response.status_code,
-        message: response.error,
-      }, UPDATE_CLIENT_PROFILE);
+      useApiErrorHandler(
+        {
+          status_code: response.status_code,
+          message: response.error,
+        },
+        UPDATE_CLIENT_PROFILE
+      );
       return thunkAPI.rejectWithValue(response.error);
     }
 
@@ -77,7 +80,7 @@ export const patchClientProfile = createAsyncThunk(
 
 export const getFavoriteWorkers = createAsyncThunk(
   "get-favorite-workers",
-  async (_:string, thunkAPI) => {
+  async (_: string, thunkAPI) => {
     const response = await useAxios({
       url: `${BASE_URL}client/favorites`,
       method: "GET",
@@ -97,18 +100,21 @@ export const getFavoriteWorkers = createAsyncThunk(
 
 export const addFavoriteWorker = createAsyncThunk(
   "addFavoriteWorker",
-  async (data: any, thunkAPI) => {
+  async (data: string, thunkAPI) => {
     const ADD_FAVORITE_WORKER = toast.loading("Adding favorite...");
     const response = await useAxios({
-      url: `${BASE_URL}client/add/favorites${data}`,
+      url: `${BASE_URL}client/favorites/${data}`,
       method: "POST",
     });
 
     if (response.error) {
-      useApiErrorHandler({
-        status_code: response.status_code,
-        message: response.error,
-      }, ADD_FAVORITE_WORKER);
+      useApiErrorHandler(
+        {
+          status_code: response.status_code,
+          message: response.error,
+        },
+        ADD_FAVORITE_WORKER
+      );
       return thunkAPI.rejectWithValue(response.error);
     }
 
@@ -125,10 +131,9 @@ export const addFavoriteWorker = createAsyncThunk(
 
 export const deleteFavoriteWorker = createAsyncThunk(
   "deleteFavoriteWorker",
-  async (data: any, thunkAPI) => {
-    const DELETE_FAVORITE_WORKER = toast.loading("Removing from favorite...");
+  async (data: string, thunkAPI) => {
     const response = await useAxios({
-      url: `${BASE_URL}client/delete/favorites${data}`,
+      url: `${BASE_URL}client/favorites/${data}`,
       method: "DELETE",
     });
 
@@ -136,16 +141,9 @@ export const deleteFavoriteWorker = createAsyncThunk(
       useApiErrorHandler({
         status_code: response.status_code,
         message: response.error,
-      }, DELETE_FAVORITE_WORKER);
+      });
       return thunkAPI.rejectWithValue(response.error);
     }
-
-    toast.update(DELETE_FAVORITE_WORKER, {
-      render: "Removed from favorites",
-      type: "success",
-      isLoading: false,
-      autoClose: 2000,
-    });
 
     return response.data;
   }
@@ -191,4 +189,3 @@ export const getClientJobDetail = createAsyncThunk(
     return response.data;
   }
 );
-;

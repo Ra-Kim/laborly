@@ -162,6 +162,7 @@ const Worker = ({ worker }: { worker: IFavoriteWorker }) => {
           {workerData && rating && (
             <ViewWorker
               service_id={""}
+              worker_id={workerData?.id}
               workerProfile={workerData}
               workerReviewSummary={rating}
             />

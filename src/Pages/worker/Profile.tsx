@@ -16,10 +16,12 @@ import {
 import UpdateProfile from "@/Components/modals/UpdateWorkerProfile";
 import { IWorkerKYCStatus } from "@/types/worker";
 import Spinner from "@/Components/ui/Spinner";
+import UpdateKYC from "@/Components/modals/UpdateKYC";
 
 const Profile = () => {
   const stockPhoto = profileData[0]?.image;
   const [updateProfile, setUpdateProfile] = useState(false);
+  const [updateKYC, setUpdateKYC] = useState(false);
   const { workerProfile, workerKYCStatus, loading } = useAppSelector(
     ({ worker }) => worker
   );
@@ -48,10 +50,18 @@ const Profile = () => {
         <div>
           <div className="flex justify-end items-center gap-4">
             <div
-              className={`text-[.6rem] sm:text-xs font-medium px-3 py-1 rounded-full ${
+              onClick={() => {
+                if (
+                  workerKYCStatus !== "APPROVED" &&
+                  workerKYCStatus !== "PENDING"
+                ) {
+                  setUpdateKYC(true);
+                }
+              }}
+              className={`text-[.6rem] sm:text-xs font-medium px-3 py-1 rounded-full cursor-pointer ${
                 workerKYCStatus
                   ? statusColors[workerKYCStatus as IWorkerKYCStatus]
-                  : "bg-blue-100 text-blue-700"
+                  : "bg-red-100 text-red-700"
               }`}
             >
               KYC: {workerKYCStatus || "Not verified"}
@@ -157,6 +167,21 @@ const Profile = () => {
               </div>
             </div>
           </div>
+          <Sheet open={updateKYC} onOpenChange={setUpdateKYC}>
+            <SheetTrigger></SheetTrigger>
+            <SheetContent
+              side={"right"}
+              className="px-2 pt-0 w-full lg:min-w-[550px]"
+            >
+              <SheetTitle className="flex gap-2 py-4 items-center">
+                <div onClick={() => setUpdateKYC(false)}>
+                  <ChevronLeft size={24} className="cursor-pointer w-6 h-6" />
+                </div>
+                <p className="">Update KYC</p>
+              </SheetTitle>
+              <UpdateKYC setAddModalOpen={setUpdateKYC} />
+            </SheetContent>
+          </Sheet>
           <Sheet open={updateProfile} onOpenChange={setUpdateProfile}>
             <SheetTrigger></SheetTrigger>
             <SheetContent

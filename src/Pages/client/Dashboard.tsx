@@ -18,7 +18,7 @@ const ClientDashboard = () => {
     <div>
       <div className="flex justify-between items-center">
         <div className="flex flex-row gap-10 lg:gap-10 pt-5 pb-2 px-0 title-small text-[#475569] overflow-x-auto whitespace-nowrap">
-          {["Services", "Workers"].map((tab) => {
+          {["Services", "Favourite Workers"].map((tab) => {
             return (
               <div
                 key={tab}
@@ -37,7 +37,7 @@ const ClientDashboard = () => {
       </div>
       <div className="py-4">
         {viewState === "Services" && <ServiceFragment />}
-        {viewState === "Workers" && <WorkerFragment/>}
+        {viewState === "Favourite Workers" && <WorkerFragment/>}
       </div>
     </div>
   );

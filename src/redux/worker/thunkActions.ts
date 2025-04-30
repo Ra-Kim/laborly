@@ -15,9 +15,10 @@ export const getWorkerProfile = createAsyncThunk(
     });
 
     if (response.error) {
-      useApiErrorHandler(
-        { status_code: response.status_code, message: response.error }
-      );
+      useApiErrorHandler({
+        status_code: response.status_code,
+        message: response.error,
+      });
       return thunkAPI.rejectWithValue(response.error);
     }
 
@@ -44,7 +45,6 @@ export const getWorkerById = createAsyncThunk(
     return response.data;
   }
 );
-
 
 export const patchWorkerProfile = createAsyncThunk(
   "patch-worker-profile",
@@ -83,7 +83,10 @@ export const getWorkerKYC = createAsyncThunk(
     });
 
     if (response.error) {
-      useApiErrorHandler({ status_code: response.status_code, message: response.error });
+      useApiErrorHandler({
+        status_code: response.status_code,
+        message: response.error,
+      });
       return thunkAPI.rejectWithValue(response.error);
     }
 
@@ -94,16 +97,34 @@ export const getWorkerKYC = createAsyncThunk(
 export const submitKYC = createAsyncThunk(
   "submitKYC",
   async (data: FormData, thunkAPI) => {
+    const toastId = toast.loading("Uploading KYC Information...");
+
     const response = await useAxios({
       url: `${BASE_URL}worker/kyc`,
       method: "POST",
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
       data,
     });
 
     if (response.error) {
-      useApiErrorHandler({ status_code: response.status_code, message: response.error });
+      useApiErrorHandler(
+        {
+          status_code: response.status_code,
+          message: response.error,
+        },
+        toastId
+      );
       return thunkAPI.rejectWithValue(response.error);
     }
+
+    toast.update(toastId, {
+      render: "Successfully uploaded KYC information",
+      type: "success",
+      isLoading: false,
+      autoClose: 2000,
+    });
 
     return response.data;
   }
@@ -118,7 +139,10 @@ export const getWorkerJobs = createAsyncThunk(
     });
 
     if (response.error) {
-      useApiErrorHandler({ status_code: response.status_code, message: response.error });
+      useApiErrorHandler({
+        status_code: response.status_code,
+        message: response.error,
+      });
       return thunkAPI.rejectWithValue(response.error);
     }
 
@@ -135,7 +159,10 @@ export const getWorkerJobDetail = createAsyncThunk(
     });
 
     if (response.error) {
-      useApiErrorHandler({ status_code: response.status_code, message: response.error });
+      useApiErrorHandler({
+        status_code: response.status_code,
+        message: response.error,
+      });
       return thunkAPI.rejectWithValue(response.error);
     }
 

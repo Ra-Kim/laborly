@@ -14,13 +14,16 @@ import { useAppThunkDispatch } from "@/redux/store";
 import { startConversation } from "@/redux/messages/thunkActions";
 import Spinner from "../ui/Spinner";
 import { createJob } from "@/redux/jobs/thunkActions";
+import FavouriteWorker from "../app/FavouriteWorker";
 
 const ViewWorker = ({
   service_id,
   workerProfile,
   workerReviewSummary,
+  worker_id
 }: {
   service_id: string;
+  worker_id: string;
   workerProfile: IWorkerProfile;
   workerReviewSummary: IWorkerSummary;
 }) => {
@@ -55,7 +58,7 @@ const ViewWorker = ({
       })
     );
     if (res.meta.requestStatus === "fulfilled") {
-      setValue("content","")
+      setValue("content", "");
       dispatch(
         createJob({
           service_id: service_id,
@@ -64,7 +67,7 @@ const ViewWorker = ({
       ).then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
           setThreadId(res.payload.thread_id);
-          
+
           setLoading(false);
         }
       });
@@ -90,14 +93,17 @@ const ViewWorker = ({
           {/* Name, Location, Experience */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h3 className="text-2xl font-semibold text-primary">
-                {workerProfile?.first_name} {workerProfile.last_name}
-                <span>
-                  {workerProfile?.is_verified && (
-                    <CheckCircle2Icon className="text-green-500" />
-                  )}
-                </span>
-              </h3>
+              <div className="flex items-center gap-2">
+                <h3 className="text-2xl font-semibold text-primary">
+                  {workerProfile?.first_name} {workerProfile.last_name}
+                  <span>
+                    {workerProfile?.is_verified && (
+                      <CheckCircle2Icon className="text-green-500" />
+                    )}
+                  </span>
+                </h3>
+                <FavouriteWorker worker_id={worker_id} />
+              </div>
               <p className="text-sm text-gray-500 mt-1">
                 {workerProfile.years_experience
                   ? `${workerProfile?.years_experience} year${
@@ -214,7 +220,11 @@ const ViewWorker = ({
                     disabled={loading}
                   >
                     Message{" "}
-                    {loading ? <Spinner className="text-white"/> : <IoIosSend className="text-xl" />}
+                    {loading ? (
+                      <Spinner className="text-white" />
+                    ) : (
+                      <IoIosSend className="text-xl" />
+                    )}
                   </button>
                 </form>
               )}

@@ -225,6 +225,7 @@ const Service = ({ service }: { service: IService }) => {
             <ViewWorker
               service_id={service.id}
               workerProfile={worker}
+              worker_id={service.worker_id}
               workerReviewSummary={rating}
             />
           )}
