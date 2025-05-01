@@ -1,0 +1,52 @@
+name: Build and Deploy Lexlance Frontend to CloudFront
+on:
+  push:
+    branches: [main]
+jobs:
+  build-and-deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    env:
+      BUCKET: laborly.xyz
+      # DIST: build
+      REGION: us-east-1
+      DIST_ID: E1RFVGU31UPY18
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_MAIN }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_MAIN }}
+          aws-region: ${{ env.REGION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "18"
+
+      - name: Create env file
+        run: |
+          echo "VITE_BASE_URL=${{ secrets.VITE_BASE_URL }}" >> .env.production
+
+      - name: Install Dependencies
+        run: |
+          node --version
+          npm ci
+
+      - name: Build Static Website
+        run: npm run build
+
+        
+      - name: Copy files to the production website with the AWS CLI
+        run: |
+          aws s3 sync --delete dist s3://${{ env.BUCKET }}
+
+      - name: Copy files to the production website with the AWS CLI
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ env.DIST_ID }} \
+            --paths "/*"
