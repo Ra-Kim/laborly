@@ -28,8 +28,8 @@ const WorkerHamMenu = () => {
   }, []);
   const [logout, setLogout] = useState(false);
   const handleLogout = () => {
-      setLogout(!logout);
-      setMenu(false)
+    setLogout(!logout);
+    setMenu(false);
   };
 
   const SidebarLink = ({
@@ -85,7 +85,7 @@ const WorkerHamMenu = () => {
               <img
                 src={logo}
                 alt="Laborly Logo"
-                className="w-[80%] sm:w-full max-w-[100px] mx-auto"
+                className="sm:w-full max-w-[100px] mx-8"
               />
             </div>
 

@@ -76,7 +76,10 @@ const ThreadCard = ({
               {new Date(timeStamp).toLocaleString()}
             </span>
           </div>
-          <p className="text-sm text-gray-600 truncate">{message}</p>
+          <p className="text-sm text-gray-600 truncate">
+            {message.slice(0, 30)}
+            {message.length > 29 && <span>...</span>}
+          </p>
           {/* <p className="text-xs text-gray-400 mt-1">{otherParticipant?.location}</p> */}
         </div>
       </div>
@@ -90,9 +93,7 @@ const ThreadCard = ({
             <div onClick={() => setModalOpen(false)}>
               <ChevronLeft size={24} className="cursor-pointer w-6 h-6" />
             </div>
-            <p className="">
-              Messages
-            </p>
+            <p className="">Messages</p>
           </SheetTitle>
           <MessageView thread_id={id} />
         </SheetContent>

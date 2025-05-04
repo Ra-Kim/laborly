@@ -85,7 +85,7 @@ const ClientHamMenu = () => {
               <img
                 src={logo}
                 alt="Laborly Logo"
-                className="w-[80%] sm:w-full max-w-[100px] mx-auto"
+                className="sm:w-full max-w-[100px] mx-8"
               />
             </div>
 
