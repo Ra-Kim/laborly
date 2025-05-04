@@ -26,6 +26,27 @@ export const getClientProfile = createAsyncThunk(
   }
 );
 
+export const getClientProfilePicture = createAsyncThunk(
+  "get-client-profile-picture",
+  async (data: string, thunkAPI) => {
+    const response = await useAxios({
+      url: `${BASE_URL}client/profile/picture-url`,
+      method: "GET",
+      data,
+    });
+
+    if (response.error) {
+      useApiErrorHandler({
+        status_code: response.status_code,
+        message: response.error,
+      });
+      return thunkAPI.rejectWithValue(response.error);
+    }
+
+    return response.data;
+  }
+);
+
 export const getClientById = createAsyncThunk(
   "get-client",
   async (data: string, thunkAPI) => {
@@ -69,6 +90,38 @@ export const patchClientProfile = createAsyncThunk(
 
     toast.update(UPDATE_CLIENT_PROFILE, {
       render: "Successfully updated profile",
+      type: "success",
+      isLoading: false,
+      autoClose: 2000,
+    });
+
+    return response.data;
+  }
+);
+
+export const patchClientProfilePic = createAsyncThunk(
+  "patch-client-profile-pic",
+  async (data: FormData, thunkAPI) => {
+    const UPDATE_CLIENT_PROFILE = toast.loading("Updating profile picture...");
+    const response = await useAxios({
+      url: `${BASE_URL}client/profile/picture`,
+      method: "PATCH",
+      data,
+    });
+
+    if (response.error) {
+      useApiErrorHandler(
+        {
+          status_code: response.status_code,
+          message: response.error,
+        },
+        UPDATE_CLIENT_PROFILE
+      );
+      return thunkAPI.rejectWithValue(response.error);
+    }
+
+    toast.update(UPDATE_CLIENT_PROFILE, {
+      render: "Successfully updated",
       type: "success",
       isLoading: false,
       autoClose: 2000,

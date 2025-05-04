@@ -1,5 +1,5 @@
 import Spinner from "@/Components/ui/Spinner";
-import { getClientProfile } from "@/redux/client/thunkActions";
+import { getClientProfile, getClientProfilePicture } from "@/redux/client/thunkActions";
 import { useAppSelector, useAppThunkDispatch } from "@/redux/store";
 import { useEffect, useState } from "react";
 import {
@@ -9,18 +9,22 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/Components/ui/sheet";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, Pencil } from "lucide-react";
 import UpdateClientProfile from "@/Components/modals/UpdateClientProfile";
+import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar";
+import UpdateProfilePicture from "@/Components/modals/UpdateProfilePicture";
 
 const ClientProfile = () => {
-  const { clientProfile: profile, loading } = useAppSelector(
+  const { clientProfile: profile, loading , clientProfilePicture} = useAppSelector(
     ({ client }) => client
   );
   const [updateProfile, setUpdateProfile] = useState(false);
+  const [updatePic, setUpdatePic] = useState(false);
 
   const dispatch = useAppThunkDispatch();
   useEffect(() => {
     dispatch(getClientProfile(""));
+    dispatch(getClientProfilePicture(""));
   }, [dispatch]);
   return (
     <>
@@ -34,9 +38,22 @@ const ClientProfile = () => {
             <div className="bg-white p-8 rounded-2xl shadow-xl">
               <div className="flex flex-col items-center">
                 {/* Avatar */}
-                <div className="h-24 w-24 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white text-3xl font-bold mb-4">
-                  {profile.first_name?.charAt(0)}
-                  {profile.last_name?.charAt(0)}
+                <div className="relative w-[6rem] h-[6rem]">
+                  <Avatar className="w-full h-full">
+                    <AvatarImage src={clientProfilePicture} alt="pic" />
+                    <AvatarFallback className="rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white text-3xl font-bold">
+                      {profile.first_name?.charAt(0)}
+                      {profile.last_name?.charAt(0)}
+                    </AvatarFallback>
+                  </Avatar>
+
+                  {/* Edit Button */}
+                  <button
+                    onClick={() => setUpdatePic(true)} // define this function
+                    className="absolute bottom-0 right-0 bg-white rounded-full p-1 shadow hover:bg-gray-100"
+                  >
+                    <Pencil className="w-4 h-4 text-gray-600" />
+                  </button>
                 </div>
 
                 {/* Name and Title */}
@@ -127,6 +144,21 @@ const ClientProfile = () => {
           </div>
         </div>
       )}
+      <Sheet open={updatePic} onOpenChange={setUpdatePic}>
+        <SheetTrigger></SheetTrigger>
+        <SheetContent
+          side={"right"}
+          className="px-2 pt-0 w-full lg:min-w-[550px]"
+        >
+          <SheetTitle className="flex gap-2 py-4 items-center">
+            <div onClick={() => setUpdatePic(false)}>
+              <ChevronLeft size={24} className="cursor-pointer w-6 h-6" />
+            </div>
+            <p className="">Update Profile Picture</p>
+          </SheetTitle>
+          <UpdateProfilePicture setAddModalOpen={setUpdatePic} />
+        </SheetContent>
+      </Sheet>
     </>
   );
 };

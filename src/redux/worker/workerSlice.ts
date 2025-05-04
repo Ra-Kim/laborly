@@ -5,6 +5,7 @@ import {
   getWorkerJobs,
   getWorkerKYC,
   getWorkerProfile,
+  getWorkerProfilePicture,
 } from "./thunkActions";
 import { IWorkerProfile } from "@/types/worker";
 import { IJob } from "@/types/jobs";
@@ -13,6 +14,7 @@ export interface IState {
   loading: "failed" | "loading" | "successful" | "idle";
   workerProfile: IWorkerProfile;
   worker: IWorkerProfile;
+  workerProfilePicture: string;
   workerKYCStatus: string;
   jobs: IJob[];
   jobDetail: IJob;
@@ -20,6 +22,7 @@ export interface IState {
 const initialState: IState = {
   loading: "idle",
   workerProfile: {} as IWorkerProfile,
+  workerProfilePicture: "",
   worker: {} as IWorkerProfile,
   workerKYCStatus: "",
   jobs: [] as IJob[],
@@ -42,6 +45,19 @@ const WorkerSlice = createSlice({
       };
     });
     builder.addCase(getWorkerProfile.rejected, (state) => {
+      return { ...state, loading: "failed" };
+    });
+    builder.addCase(getWorkerProfilePicture.pending, (state) => {
+      return { ...state, loading: "loading" };
+    });
+    builder.addCase(getWorkerProfilePicture.fulfilled, (state, action) => {
+      return {
+        ...state,
+        loading: "successful",
+        clientProfilePicture: action.payload,
+      };
+    });
+    builder.addCase(getWorkerProfilePicture.rejected, (state) => {
       return { ...state, loading: "failed" };
     });
     builder.addCase(getWorkerById.pending, (state) => {

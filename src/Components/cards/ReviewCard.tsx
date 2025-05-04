@@ -8,13 +8,14 @@ import { useEffect, useState } from "react";
 import { FaRegStar, FaStar } from "react-icons/fa";
 import { RiAccountPinCircleFill } from "react-icons/ri";
 import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar";
+import { IWorkerProfile } from "@/types/worker";
 
 const ReviewCard = ({ review }: { review: IReview }) => {
   const [clientData, setClientData] = useState<IClientProfile>(
     {} as IClientProfile
   );
-  const [workerData, setWorkerData] = useState<IClientProfile>(
-    {} as IClientProfile
+  const [workerData, setWorkerData] = useState<IWorkerProfile>(
+    {} as IWorkerProfile
   );
   const dispatch = useAppThunkDispatch();
   const { role } = useAuth();
@@ -39,10 +40,7 @@ const ReviewCard = ({ review }: { review: IReview }) => {
       {/* Image container */}
       <div className="w-14 h-14 flex items-center justify-center m-auto rounded-full border-4 border-white shadow-lg  ">
         <Avatar className="w-[1.5rem] h-[1.5rem]">
-          <AvatarImage
-            src={workerData.profile_picture || clientData.profile_picture}
-            alt="pic"
-          />
+          <AvatarImage src={workerData.profile_picture} alt="pic" />
           <AvatarFallback>
             <RiAccountPinCircleFill className="text-2xl" />
           </AvatarFallback>

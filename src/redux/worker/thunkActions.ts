@@ -26,6 +26,27 @@ export const getWorkerProfile = createAsyncThunk(
   }
 );
 
+export const getWorkerProfilePicture = createAsyncThunk(
+  "get-worker-profile-picture",
+  async (data: string, thunkAPI) => {
+    const response = await useAxios({
+      url: `${BASE_URL}worker/profile/picture-url`,
+      method: "GET",
+      data,
+    });
+
+    if (response.error) {
+      useApiErrorHandler({
+        status_code: response.status_code,
+        message: response.error,
+      });
+      return thunkAPI.rejectWithValue(response.error);
+    }
+
+    return response.data;
+  }
+);
+
 export const getWorkerById = createAsyncThunk(
   "get-worker",
   async (data: string, thunkAPI) => {
@@ -70,6 +91,38 @@ export const patchWorkerProfile = createAsyncThunk(
       isLoading: false,
       autoClose: 2000,
     });
+    return response.data;
+  }
+);
+
+export const patchWorkerProfilePic = createAsyncThunk(
+  "patch-worker-profile-pic",
+  async (data: FormData, thunkAPI) => {
+    const UPDATE_WORKER_PROFILE = toast.loading("Updating profile picture...");
+    const response = await useAxios({
+      url: `${BASE_URL}worker/profile/picture`,
+      method: "PATCH",
+      data,
+    });
+
+    if (response.error) {
+      useApiErrorHandler(
+        {
+          status_code: response.status_code,
+          message: response.error,
+        },
+        UPDATE_WORKER_PROFILE
+      );
+      return thunkAPI.rejectWithValue(response.error);
+    }
+
+    toast.update(UPDATE_WORKER_PROFILE, {
+      render: "Successfully updated",
+      type: "success",
+      isLoading: false,
+      autoClose: 2000,
+    });
+
     return response.data;
   }
 );

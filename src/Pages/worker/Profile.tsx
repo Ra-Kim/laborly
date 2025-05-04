@@ -1,4 +1,3 @@
-import { profileData } from "@/lib/constants";
 import { getWorkerSummary } from "@/redux/reviews/thunkActions";
 import { useAppSelector, useAppThunkDispatch } from "@/redux/store";
 import { getWorkerKYC, getWorkerProfile } from "@/redux/worker/thunkActions";
@@ -17,14 +16,15 @@ import UpdateProfile from "@/Components/modals/UpdateWorkerProfile";
 import { IWorkerKYCStatus } from "@/types/worker";
 import Spinner from "@/Components/ui/Spinner";
 import UpdateKYC from "@/Components/modals/UpdateKYC";
+import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar";
+import UpdateProfilePicture from "@/Components/modals/UpdateProfilePicture";
 
 const Profile = () => {
-  const stockPhoto = profileData[0]?.image;
   const [updateProfile, setUpdateProfile] = useState(false);
   const [updateKYC, setUpdateKYC] = useState(false);
-  const { workerProfile, workerKYCStatus, loading } = useAppSelector(
-    ({ worker }) => worker
-  );
+  const [updatePic, setUpdatePic] = useState(false);
+  const { workerProfile, workerKYCStatus, loading, workerProfilePicture } =
+    useAppSelector(({ worker }) => worker);
   const { workerReviewSummary } = useAppSelector(({ review }) => review);
   const dispatch = useAppThunkDispatch();
   useEffect(() => {
@@ -75,12 +75,22 @@ const Profile = () => {
           </div>
           <div className="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border group cursor-pointer flex flex-col md:flex-row gap-6 mt-10">
             {/* Profile Image */}
-            <div className="relative w-full md:w-80 h-72 md:h-80 mx-auto md:mx-0">
-              <img
-                src={workerProfile?.profile_picture || stockPhoto}
-                alt={workerProfile?.first_name}
-                className="w-full h-full object-cover rounded-2xl group-hover:scale-105 transition-transform duration-300"
-              />
+            <div className="relative w-[6rem] h-[6rem]">
+              <Avatar className="w-full h-full">
+                <AvatarImage src={workerProfilePicture} alt="pic" />
+                <AvatarFallback className="rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white text-3xl font-bold">
+                  {workerProfile.first_name?.charAt(0)}
+                  {workerProfile.last_name?.charAt(0)}
+                </AvatarFallback>
+              </Avatar>
+
+              {/* Edit Button */}
+              <button
+                onClick={() => setUpdatePic(true)} // define this function
+                className="absolute bottom-0 right-0 bg-white rounded-full p-1 shadow hover:bg-gray-100"
+              >
+                <Pencil className="w-4 h-4 text-gray-600" />
+              </button>
             </div>
 
             {/* Profile Details */}
@@ -199,6 +209,21 @@ const Profile = () => {
           </Sheet>
         </div>
       )}
+      <Sheet open={updatePic} onOpenChange={setUpdatePic}>
+        <SheetTrigger></SheetTrigger>
+        <SheetContent
+          side={"right"}
+          className="px-2 pt-0 w-full lg:min-w-[550px]"
+        >
+          <SheetTitle className="flex gap-2 py-4 items-center">
+            <div onClick={() => setUpdatePic(false)}>
+              <ChevronLeft size={24} className="cursor-pointer w-6 h-6" />
+            </div>
+            <p className="">Update Profile Picture</p>
+          </SheetTitle>
+          <UpdateProfilePicture setAddModalOpen={setUpdatePic} />
+        </SheetContent>
+      </Sheet>
     </>
   );
 };

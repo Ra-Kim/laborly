@@ -9,7 +9,6 @@ export interface IClientProfile {
   address: string;
   last_name: string;
   location: string;
-  profile_picture: string;
   created_at: string;
   updated_at: string;
 }

@@ -11,9 +11,13 @@ import { HiHome } from "react-icons/hi";
 import { MdHomeRepairService } from "react-icons/md";
 import { IUser } from "@/types/auth";
 import LogoutModal from "@/Components/modals/Logout";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import WorkerHamMenu from "@/Components/common/WorkerHamMenu";
 
 const WorkerLayout = () => {
   const navigate = useNavigate();
+  const isDesktop = useMediaQuery("(min-width: 768px)");
+
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
   const user: IUser = useMemo(() => {
@@ -69,7 +73,9 @@ const WorkerLayout = () => {
       >
         {!collapsed ? (
           <span
-            className={`text-sm ${isActive ? "text-primary font-semibold" : ""}`}
+            className={`text-sm ${
+              isActive ? "text-primary font-semibold" : ""
+            }`}
           >
             {label}
           </span>
@@ -89,70 +95,71 @@ const WorkerLayout = () => {
   return (
     <div className="relative flex h-screen overflow-hidden">
       {/* Sidebar */}
-      <Sidebar
-        collapsed={collapsed}
-        onMouseEnter={() => isMediumUp && setCollapsed(false)}
-        onMouseLeave={() => isMediumUp && setCollapsed(true)}
-        className={`bg-white soft-shadow text-darkPrimary transition-all duration-300 
+      {isDesktop && (
+        <Sidebar
+          collapsed={collapsed}
+          onMouseEnter={() => isMediumUp && setCollapsed(false)}
+          onMouseLeave={() => isMediumUp && setCollapsed(true)}
+          className={`bg-white soft-shadow text-darkPrimary transition-all duration-300 
                 ${collapsed ? "w-10" : isMediumUp ? "w-[250px]" : "w-[80px]"} 
                 fixed md:relative z-30 h-full overflow-hidden`}
-      >
-        <div className="mt-4 py-3">
-          <img
-            src={logo}
-            alt="Laborly Logo"
-            className="w-[80%] sm:w-full max-w-[100px] mx-auto"
-          />
-        </div>
+        >
+          <div className="mt-4 py-3">
+            <img
+              src={logo}
+              alt="Laborly Logo"
+              className="w-[80%] sm:w-full max-w-[100px] mx-auto"
+            />
+          </div>
 
-        <div className="max-w-[80%] mx-auto my-5 text-center">
-          <img
-            src={profilePhoto}
-            alt="Profile"
-            className="rounded-full w-16 h-16 object-cover mx-auto"
-          />
-        </div>
+          <div className="max-w-[80%] mx-auto my-5 text-center">
+            <img
+              src={profilePhoto}
+              alt="Profile"
+              className="rounded-full w-16 h-16 object-cover mx-auto"
+            />
+          </div>
 
-        {/* Menu Items */}
-        <Menu className="text-sm overflow-hidden">
-          <SidebarLink
-            to="/worker/dashboard"
-            icon={<HiHome />}
-            label="Dashboard"
-          />
+          {/* Menu Items */}
+          <Menu className="text-sm overflow-hidden">
+            <SidebarLink
+              to="/worker/dashboard"
+              icon={<HiHome />}
+              label="Dashboard"
+            />
 
-          <SidebarLink
-            to="/worker/my-jobs"
-            icon={<FaTasks />}
-            label="My Jobs"
-          />
-          <SidebarLink
-            to="/worker/my-services"
-            icon={<MdHomeRepairService />}
-            label="Services"
-          />
-          <SidebarLink
-            to="/worker/messages"
-            icon={<BsChatDotsFill />}
-            label="Messages"
-          />
-          <SidebarLink
-            to="/worker/user-profile"
-            icon={<FaUserCircle />}
-            label="Profile"
-          />
-          <SidebarLink
-            to="/worker/reviews"
-            icon={<BiSupport />}
-            label="Reviews"
-          />
+            <SidebarLink
+              to="/worker/my-jobs"
+              icon={<FaTasks />}
+              label="My Jobs"
+            />
+            <SidebarLink
+              to="/worker/my-services"
+              icon={<MdHomeRepairService />}
+              label="Services"
+            />
+            <SidebarLink
+              to="/worker/messages"
+              icon={<BsChatDotsFill />}
+              label="Messages"
+            />
+            <SidebarLink
+              to="/worker/user-profile"
+              icon={<FaUserCircle />}
+              label="Profile"
+            />
+            <SidebarLink
+              to="/worker/reviews"
+              icon={<BiSupport />}
+              label="Reviews"
+            />
 
-          <MenuItem icon={<FaSignOutAlt />} onClick={handleLogout}>
-            Log out
-          </MenuItem>
-        </Menu>
-      </Sidebar>
-
+            <MenuItem icon={<FaSignOutAlt />} onClick={handleLogout}>
+              Log out
+            </MenuItem>
+          </Menu>
+        </Sidebar>
+      )}
       {/* Main Content */}
       <main className="flex-1 min-h-0 flex flex-col overflow-hidden transition-all duration-300 pl-2 sm:pl-8">
         {/* Top bar */}
@@ -161,12 +168,11 @@ const WorkerLayout = () => {
             Welcome , {user.first_name} {user.last_name}
           </p>
           <div>
-            <div className="relative inline-flex items-center justify-center w-10 h-10 rounded-full bg-white card-shadow mx-2">
-              <IoNotifications className="text-xl text-secondary" />
-              <span className="absolute top-0 right-0 transform translate-x-1/3 -translate-y-1/3 bg-primary text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full border-2 border-white shadow-sm">
-                5
-              </span>
-            </div>
+            {!isDesktop && (
+              <div>
+                <WorkerHamMenu />
+              </div>
+            )}
           </div>
         </div>
 
