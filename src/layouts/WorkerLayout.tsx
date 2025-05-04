@@ -4,8 +4,6 @@ import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { FaUserCircle, FaSignOutAlt, FaTasks } from "react-icons/fa";
 import { BiSupport } from "react-icons/bi";
 import { BsChatDotsFill } from "react-icons/bs";
-import { IoNotifications } from "react-icons/io5";
-import profilePhoto from "../assets/user-photo.png";
 import logo from "../assets/laborly-logo.png";
 import { HiHome } from "react-icons/hi";
 import { MdHomeRepairService } from "react-icons/md";
@@ -13,16 +11,25 @@ import { IUser } from "@/types/auth";
 import LogoutModal from "@/Components/modals/Logout";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import WorkerHamMenu from "@/Components/common/WorkerHamMenu";
+import { getWorkerProfilePicture } from "@/redux/worker/thunkActions";
+import { useAppThunkDispatch, useAppSelector } from "@/redux/store";
+import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar";
 
 const WorkerLayout = () => {
   const navigate = useNavigate();
   const isDesktop = useMediaQuery("(min-width: 768px)");
+  const { workerProfilePicture } = useAppSelector(({ worker }) => worker);
 
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
   const user: IUser = useMemo(() => {
     return JSON.parse(localStorage.getItem(`user`) || "{}");
   }, []);
+
+  const dispatch = useAppThunkDispatch();
+  useEffect(() => {
+    dispatch(getWorkerProfilePicture(""));
+  }, [dispatch]);
 
   // Handle screen size for collapsibility
   function useIsMediumUp() {
@@ -112,12 +119,14 @@ const WorkerLayout = () => {
             />
           </div>
 
-          <div className="max-w-[80%] mx-auto my-5 text-center">
-            <img
-              src={profilePhoto}
-              alt="Profile"
-              className="rounded-full w-16 h-16 object-cover mx-auto"
-            />
+          <div className="rounded-full w-16 h-16 mx-auto">
+            <Avatar className="w-full h-full">
+              <AvatarImage src={workerProfilePicture} alt="pic" />
+              <AvatarFallback className="rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white text-3xl font-bold">
+                {user.first_name?.charAt(0)}
+                {user.last_name?.charAt(0)}
+              </AvatarFallback>
+            </Avatar>
           </div>
 
           {/* Menu Items */}

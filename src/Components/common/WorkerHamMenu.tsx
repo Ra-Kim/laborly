@@ -6,11 +6,11 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/Components/ui/sheet";
-import { ReactNode, useEffect, useMemo, useState } from "react";
+import { ReactNode, useMemo, useState } from "react";
 import { Sidebar, MenuItem, Menu } from "react-pro-sidebar";
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/laborly-logo.png";
-import { useAppSelector, useAppThunkDispatch } from "@/redux/store";
+import { useAppSelector } from "@/redux/store";
 import { IUser } from "@/types/auth";
 import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar";
 import { FaUserCircle, FaSignOutAlt, FaTasks } from "react-icons/fa";
@@ -22,15 +22,14 @@ import { MdHomeRepairService } from "react-icons/md";
 
 const WorkerHamMenu = () => {
   const [menu, setMenu] = useState(false);
-  const dispatch = useAppThunkDispatch();
-  useEffect(() => {}, [dispatch]);
-  const { clientProfilePicture } = useAppSelector(({ client }) => client);
+  const { workerProfilePicture } = useAppSelector(({ worker }) => worker);
   const user: IUser = useMemo(() => {
     return JSON.parse(localStorage.getItem(`user`) || "{}");
   }, []);
   const [logout, setLogout] = useState(false);
   const handleLogout = () => {
-    setLogout(!logout);
+      setLogout(!logout);
+      setMenu(false)
   };
 
   const SidebarLink = ({
@@ -71,7 +70,7 @@ const WorkerHamMenu = () => {
         </SheetTrigger>
         <SheetContent
           side={"right"}
-          className="px-2 pt-0 w-full lg:min-w-[550px]"
+          className="px-2 pt-0 w-[250px] lg:min-w-[550px]"
         >
           <SheetTitle className="flex gap-2 py-4 items-center">
             <div onClick={() => setMenu(false)}>
@@ -90,9 +89,9 @@ const WorkerHamMenu = () => {
               />
             </div>
 
-            <div className="relative w-[6rem] h-[6rem]">
+            <div className="rounded-full w-16 h-16 mx-auto">
               <Avatar className="w-full h-full">
-                <AvatarImage src={clientProfilePicture} alt="pic" />
+                <AvatarImage src={workerProfilePicture} alt="pic" />
                 <AvatarFallback className="rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white text-3xl font-bold">
                   {user.first_name?.charAt(0)}
                   {user.last_name?.charAt(0)}

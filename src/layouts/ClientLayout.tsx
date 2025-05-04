@@ -4,18 +4,25 @@ import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { FaUserCircle, FaSignOutAlt, FaTasks } from "react-icons/fa";
 import { BsChatDotsFill } from "react-icons/bs";
 import { HiHome } from "react-icons/hi";
-import profilePhoto from "../assets/user-photo.png";
+import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar";
 import logo from "../assets/laborly-logo.png";
 import { IUser } from "@/types/auth";
 import LogoutModal from "@/Components/modals/Logout";
 import { BiSupport } from "react-icons/bi";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import ClientHamMenu from "@/Components/common/ClientHamMenu";
+import { useAppSelector, useAppThunkDispatch } from "@/redux/store";
+import { getClientProfilePicture } from "@/redux/client/thunkActions";
 
 const ClientLayout = () => {
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
+  const dispatch = useAppThunkDispatch();
+  useEffect(() => {
+    dispatch(getClientProfilePicture(""));
+  }, [dispatch]);
+  const { clientProfilePicture } = useAppSelector(({ client }) => client);
 
   const user: IUser = useMemo(() => {
     return JSON.parse(localStorage.getItem(`user`) || "{}");
@@ -110,12 +117,14 @@ const ClientLayout = () => {
             />
           </div>
 
-          <div className="max-w-[80%] mx-auto my-5 text-center">
-            <img
-              src={profilePhoto}
-              alt="Profile"
-              className="rounded-full w-16 h-16 object-cover mx-auto"
-            />
+          <div className="rounded-full w-16 h-16 mx-auto">
+            <Avatar className="w-full h-full">
+              <AvatarImage src={clientProfilePicture} alt="pic" />
+              <AvatarFallback className="rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white text-3xl font-bold">
+                {user.first_name?.charAt(0)}
+                {user.last_name?.charAt(0)}
+              </AvatarFallback>
+            </Avatar>
           </div>
 
           {/* Menu Items */}

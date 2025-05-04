@@ -64,7 +64,7 @@ const ServiceFragment = () => {
   return (
     <div>
       <section className="">
-        <div className="flex gap-4 px-8 lg:flex-row flex-col">
+        <div className="flex gap-4 lg:px-8 lg:flex-row flex-col">
           <div className="p-2 border-2 rounded flex items-center gap-3 h-9 w-full lg:w-[18rem]">
             <SearchIcon className="w-4 h-4" />
             <input
@@ -111,7 +111,7 @@ const ServiceFragment = () => {
             <Spinner />
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 p-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:p-8 p-2">
             {searchedServices?.map((service) => (
               <Service key={service.id} service={service} />
             ))}
