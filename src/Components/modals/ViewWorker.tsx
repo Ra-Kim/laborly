@@ -7,7 +7,7 @@ import { MdLocationPin } from "react-icons/md";
 import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar";
 import { IoIosSend } from "react-icons/io";
 import { Textarea } from "../ui/textarea";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useAppThunkDispatch } from "@/redux/store";
@@ -15,12 +15,14 @@ import { startConversation } from "@/redux/messages/thunkActions";
 import Spinner from "../ui/Spinner";
 import { createJob } from "@/redux/jobs/thunkActions";
 import FavouriteWorker from "../app/FavouriteWorker";
+import { useAuth } from "@/hooks/useAuth";
+import { toast } from "react-toastify";
 
 const ViewWorker = ({
   service_id,
   workerProfile,
   workerReviewSummary,
-  worker_id
+  worker_id,
 }: {
   service_id: string;
   worker_id: string;
@@ -38,12 +40,21 @@ const ViewWorker = ({
     handleSubmit,
     control,
     setValue,
+    watch,
     formState: { errors },
   } = useForm<Yup.InferType<typeof validationSchema>>({
     mode: "onTouched",
     resolver: yupResolver(validationSchema) as any,
     defaultValues: {},
   });
+  const { isAuthenticated } = useAuth();
+
+  useEffect(() => {
+    if (!isAuthenticated() && watch(`content`)) {
+      toast.info("Please login to send a message");
+      setValue("content", "");
+    }
+  }, [isAuthenticated(), watch("content")]);
 
   const dispatch = useAppThunkDispatch();
   const onSubmit: SubmitHandler<
@@ -102,7 +113,7 @@ const ViewWorker = ({
                     )}
                   </span>
                 </h3>
-                <FavouriteWorker worker_id={worker_id} />
+                {isAuthenticated() && <FavouriteWorker worker_id={worker_id} />}
               </div>
               <p className="text-sm text-gray-500 mt-1">
                 {workerProfile.years_experience
@@ -216,8 +227,12 @@ const ViewWorker = ({
                     )}
                   />
                   <button
-                    className="w-full  py-3 bg-primary text-white rounded-lg max-h-[45px] flex items-center justify-center gap-2 hover:scale-95"
-                    disabled={loading}
+                    className={`w-full  py-3 bg-primary text-white rounded-lg max-h-[45px] flex items-center justify-center gap-2 hover:scale-95 ${
+                      !isAuthenticated() || loading
+                        ? "cursor-not-allowed opacity-75"
+                        : ""
+                    }`}
+                    disabled={loading || !isAuthenticated()}
                   >
                     Message{" "}
                     {loading ? (

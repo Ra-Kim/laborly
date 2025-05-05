@@ -124,7 +124,7 @@ const ServiceFragment = () => {
 
 export default ServiceFragment;
 
-const Service = ({ service }: { service: IService }) => {
+export const Service = ({ service }: { service: IService }) => {
   //   const navigate = useNavigate();
   const dispatch = useAppThunkDispatch();
   const [worker, setWorker] = useState<IWorkerProfile>();

@@ -31,7 +31,7 @@ export const signUp = createAsyncThunk(
       render: response.data.detail || "Account created successfully!",
       type: "success",
       isLoading: false,
-      autoClose: 2000,
+      autoClose: 5000,
     });
 
     return response.data;
@@ -76,6 +76,44 @@ export const login = createAsyncThunk(
 
     const response = await useAxios({
       url: `${BASE_URL}auth/login/json`,
+      method: "POST",
+      data,
+    });
+
+    if (response.error) {
+      useApiErrorHandler(
+        {
+          status_code: response.status_code,
+          message: response.error,
+        },
+        LOG_IN
+      );
+      return thunkAPI.rejectWithValue(response.error);
+    }
+
+    const res: ISignUpRes = response.data;
+    localStorage.setItem("token", res.access_token);
+    localStorage.setItem("role", res.user.role);
+    localStorage.setItem("user", JSON.stringify(res.user));
+
+    toast.update(LOG_IN, {
+      render: "Login successful!",
+      type: "success",
+      isLoading: false,
+      autoClose: 2000,
+    });
+
+    return response.data;
+  }
+);
+
+export const exchangeCode = createAsyncThunk(
+  "exchange-code",
+  async (data: { code: string; state: string }, thunkAPI) => {
+    const LOG_IN = toast.loading("Logging in...");
+
+    const response = await useAxios({
+      url: `${BASE_URL}auth/google/exchange-code`,
       method: "POST",
       data,
     });
