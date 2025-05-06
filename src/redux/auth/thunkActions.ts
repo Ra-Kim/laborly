@@ -41,10 +41,10 @@ export const signUp = createAsyncThunk(
 export const verifyEmail = createAsyncThunk(
   "verifyEmail",
   async (data: string, thunkAPI) => {
-    const CREATE_USER = toast.loading("Creating account, please wait...");
+    const CREATE_USER = toast.loading("Verifying email, please wait...");
     const response = await useAxios({
       url: `${BASE_URL}auth/verify-email?token=${data}`,
-      method: "POST",
+      method: "GET",
     });
 
     if (response.error) {
@@ -59,7 +59,7 @@ export const verifyEmail = createAsyncThunk(
     }
 
     toast.update(CREATE_USER, {
-      render: response.data.detail || "Account created successfully!",
+      render: response.data.detail || "Account verified!",
       type: "success",
       isLoading: false,
       autoClose: 2000,
