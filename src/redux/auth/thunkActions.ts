@@ -40,10 +40,41 @@ export const signUp = createAsyncThunk(
 
 export const verifyEmail = createAsyncThunk(
   "verifyEmail",
-  async (data: ISignUp, thunkAPI) => {
+  async (data: string, thunkAPI) => {
     const CREATE_USER = toast.loading("Creating account, please wait...");
     const response = await useAxios({
       url: `${BASE_URL}auth/verify-email?token=${data}`,
+      method: "POST",
+    });
+
+    if (response.error) {
+      useApiErrorHandler(
+        {
+          status_code: response.status_code,
+          message: response.error,
+        },
+        CREATE_USER
+      );
+      return thunkAPI.rejectWithValue(response.error);
+    }
+
+    toast.update(CREATE_USER, {
+      render: response.data.detail || "Account created successfully!",
+      type: "success",
+      isLoading: false,
+      autoClose: 2000,
+    });
+
+    return response.data;
+  }
+);
+
+export const resendEmail = createAsyncThunk(
+  "resendEmail",
+  async (data: string, thunkAPI) => {
+    const CREATE_USER = toast.loading("Resending email, please wait...");
+    const response = await useAxios({
+      url: `${BASE_URL}auth/request-verification-email?email=${data}`,
       method: "POST",
     });
 

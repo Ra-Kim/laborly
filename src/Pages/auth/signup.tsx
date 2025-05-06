@@ -83,6 +83,7 @@ const Signup = () => {
       " ",
       ""
     );
+    localStorage.setItem("email", data.email)
     data = { ...data, phone_number: updatedPhoneNumber };
     await dispatch(signUp(data)).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {

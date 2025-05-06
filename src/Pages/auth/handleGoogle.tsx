@@ -1,12 +1,11 @@
 import { Button } from "@/Components/ui/button";
-import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
+import {  useNavigate, useSearchParams } from "react-router-dom";
 import Logo from "@/Components/common/Logo";
 import { useAppThunkDispatch } from "@/redux/store";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
 import { exchangeCode } from "@/redux/auth/thunkActions";
 
-const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const HandleGoogle = () => {
   const searchParams = useSearchParams();

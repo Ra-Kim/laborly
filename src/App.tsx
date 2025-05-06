@@ -26,6 +26,7 @@ import WorkerJobs from "./Pages/worker/WorkerJobs";
 import Reviews from "./Pages/worker/WorkerReviews";
 import ClientReviews from "./Pages/client/ClientReviews";
 import HandleGoogle from "./Pages/auth/handleGoogle";
+import VerifyEmail from "./Pages/auth/verifyEmail";
 const App = () => {
   const { pathname } = useLocation();
 
@@ -81,6 +82,7 @@ const App = () => {
         <Route path="/auth" element={<AuthLayout />}>
           <Route path="sign-in" element={<Login />} />
           <Route path="sign-up" element={<Signup />} />
+          <Route path="verify-email" element={<VerifyEmail />} />
           <Route path="google/handle" element={<HandleGoogle />} />
         </Route>
 
