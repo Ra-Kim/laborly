@@ -1,7 +1,7 @@
 import { IWorkerSummary } from "@/types/reviews";
 import * as Yup from "yup";
 import { IWorkerProfile } from "@/types/worker";
-import { CheckCheck, CheckCircle2Icon } from "lucide-react";
+import { CheckCheck, CheckCircle2Icon, ChevronLeft } from "lucide-react";
 import { FaRegStar, FaStar } from "react-icons/fa";
 import { MdLocationPin } from "react-icons/md";
 import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar";
@@ -17,6 +17,14 @@ import { createJob } from "@/redux/jobs/thunkActions";
 import FavouriteWorker from "../app/FavouriteWorker";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "react-toastify";
+import {
+  Sheet,
+  SheetContent,
+  // SheetDescription,
+  SheetTitle,
+  SheetTrigger,
+} from "@/Components/ui/sheet";
+import ReviewsModal from "./ReviewsModal";
 
 const ViewWorker = ({
   service_id,
@@ -34,6 +42,7 @@ const ViewWorker = ({
   const validationSchema = Yup.object({
     content: Yup.string().required("Required"),
   });
+  const [reviewOpen, setReviewOpen] = useState(false);
 
   const {
     // register,
@@ -87,7 +96,7 @@ const ViewWorker = ({
   };
   return (
     <div>
-      <div className="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border group cursor-pointer flex flex-col md:flex-row gap-6 mt-10">
+      <div className="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border group flex flex-col md:flex-row gap-6 mt-10">
         {/* Profile Image */}
         <div className="relative mb-4">
           <Avatar className="w-[10rem] h-[10rem]">
@@ -132,7 +141,10 @@ const ViewWorker = ({
             </div>
 
             {/* Ratings & Jobs */}
-            <div className="flex flex-col sm:items-end">
+            <div
+              className="flex flex-col sm:items-end cursor-pointer"
+              onClick={() => setReviewOpen(true)}
+            >
               <span className="text-sm text-gray-600">
                 Total reviews: {workerReviewSummary.total_reviews}
               </span>
@@ -247,6 +259,21 @@ const ViewWorker = ({
           )}
         </div>
       </div>
+      <Sheet open={reviewOpen} onOpenChange={setReviewOpen}>
+        <SheetTrigger></SheetTrigger>
+        <SheetContent
+          side={"right"}
+          className="px-2 pt-0 w-full lg:min-w-[550px]"
+        >
+          <SheetTitle className="flex gap-2 py-4 items-center">
+            <div onClick={() => setReviewOpen(false)}>
+              <ChevronLeft size={24} className="cursor-pointer w-6 h-6" />
+            </div>
+            <p className="">Reviews</p>
+          </SheetTitle>
+          <ReviewsModal workerId={worker_id} />
+        </SheetContent>
+      </Sheet>
     </div>
   );
 };

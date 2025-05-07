@@ -58,9 +58,15 @@ const NavBar = () => {
         <div className="flex items-center justify-center gap-4 sm:gap-8">
           <button
             onClick={() => navigate("/auth/sign-up")}
-            className="btn btn-primary"
+            className="btn btn-primary hidden lg:block"
           >
             Create an Account <IoIosSend />
+          </button>
+          <button
+            onClick={() => navigate("/auth/sign-in")}
+            className="btn hidden lg:inline-block border border-darkPrimary text-darkPrimary hover:scale-90 transition-all duration-300 px-4 py-2 rounded-md"
+          >
+            Sign in
           </button>
 
           {/* Menu Icon */}
@@ -98,14 +104,12 @@ const NavBar = () => {
             </NavLink>
             <NavLink to="" onClick={toggleNavbar}>
               <li className="flex justify-between items-center group hover:text-secondary transition duration-300">
-                Post a Job{" "}
-                <HiChevronRight className="text-lg group-hover:translate-x-1 transition-transform duration-300" />
+                Create Account{" "}
               </li>
             </NavLink>
-            <NavLink to="blog" onClick={toggleNavbar}>
-              <li className="flex justify-between items-center group hover:text-secondary transition duration-300">
-                Blog{" "}
-                <HiChevronRight className="text-lg group-hover:translate-x-1 transition-transform duration-300" />
+            <NavLink to="auth/sign-in" onClick={toggleNavbar}>
+              <li className="flex justify-between items-center group hover:text-secondary transition duration-300 ">
+                Sign in{" "}
               </li>
             </NavLink>
           </ul>
