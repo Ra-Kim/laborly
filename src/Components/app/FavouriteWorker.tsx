@@ -6,17 +6,22 @@ import {
 import { useAppSelector, useAppThunkDispatch } from "@/redux/store";
 import { Heart } from "lucide-react";
 import React, { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 
 const FavouriteWorker = ({ worker_id }: { worker_id: string }) => {
   const dispatch = useAppThunkDispatch();
+  const params = useSearchParams();
+  const view = params[0].get("view") || "";
   const [favourite, setFavourite] = React.useState(false);
   useEffect(() => {
-    dispatch(getFavoriteWorkers(""));
+    if (!view.toLocaleLowerCase().includes("favourite")) {
+      dispatch(getFavoriteWorkers(""));
+    }
   }, []);
   const { favoriteWorkers } = useAppSelector(({ client }) => client);
   useEffect(() => {
     const isFavourite = favoriteWorkers?.some(
-      (worker) => worker.worker_id === worker_id
+      (worker) => worker.worker.id === worker_id
     );
     setFavourite(isFavourite);
   }, [favoriteWorkers, worker_id]);

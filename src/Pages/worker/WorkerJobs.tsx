@@ -130,6 +130,7 @@ const SelectedJob = ({
     dispatch(acceptJob({ job_id: job_id, worker_id: worker_id })).then(() => {
       if (selectedJob) {
         setSelectedJob({ ...selectedJob, status: "ACCEPTED" });
+        dispatch(getWorkerJobs(""));
       }
     });
   };
@@ -138,6 +139,7 @@ const SelectedJob = ({
     dispatch(completeJob(job_id)).then(() => {
       if (selectedJob) {
         setSelectedJob({ ...selectedJob, status: "COMPLETED" });
+        dispatch(getWorkerJobs(""));
       }
     });
   };

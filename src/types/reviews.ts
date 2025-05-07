@@ -1,9 +1,29 @@
 export interface ISubmitReview {
-  rating: number
+  rating: number;
   text: string;
 }
 
 export interface IReview {
+  client: {
+    id: string;
+    first_name: string;
+    last_name: string;
+  };
+  worker: {
+    id: string;
+    first_name: string;
+    last_name: string;
+  };
+  job: {
+    id: string;
+    status: string;
+    service: {
+      title: string;
+      description: string;
+      location: string;
+      id: string;
+    };
+  };
   id: string;
   reviewer_id: string;
   worker_id: string;

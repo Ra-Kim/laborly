@@ -1,3 +1,5 @@
+import { IWorkerProfile } from "./worker";
+
 export interface IClientProfile {
   business_name: string;
   id: string;
@@ -14,10 +16,8 @@ export interface IClientProfile {
 }
 
 export interface IFavoriteWorker {
-  worker_id: string;
+  worker: IWorkerProfile;
   id: string;
   client_id: string;
   created_at: string;
 }
-
-

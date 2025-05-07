@@ -5,7 +5,9 @@ import { useAppSelector, useAppThunkDispatch } from "@/redux/store";
 import { useEffect } from "react";
 
 const ClientReviews = () => {
-  const { myReviews:reviews, loading } = useAppSelector(({ review }) => review);
+  const { myReviews: reviews, loading } = useAppSelector(
+    ({ review }) => review
+  );
   const dispatch = useAppThunkDispatch();
   useEffect(() => {
     dispatch(getMyReviews(""));
@@ -26,7 +28,7 @@ const ClientReviews = () => {
               <p>No reviews found</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-4 py-8">
+            <div className="flex flex-wrap lg:grid lg:grid-cols-2 gap-6 px-4 py-8">
               {reviews.map((review) => {
                 return <ReviewCard key={review.id} review={review} />;
               })}

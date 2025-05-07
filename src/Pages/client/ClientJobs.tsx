@@ -15,6 +15,7 @@ import {
 import CancelJob from "@/Components/modals/CancelJob";
 import WriteReview from "@/Components/modals/WriteReview";
 import { getClientJobs } from "@/redux/client/thunkActions";
+import FavouriteWorker from "@/Components/app/FavouriteWorker";
 
 const statusMap = {
   NEGOTIATING: "Negotiating",
@@ -134,6 +135,7 @@ const SelectedJob = ({
     dispatch(acceptJob({ job_id: job_id, worker_id: worker_id })).then(() => {
       if (selectedJob) {
         setSelectedJob({ ...selectedJob, status: "ACCEPTED" });
+        dispatch(getClientJobs(""))
       }
     });
   };
@@ -142,6 +144,7 @@ const SelectedJob = ({
     dispatch(completeJob(job_id)).then(() => {
       if (selectedJob) {
         setSelectedJob({ ...selectedJob, status: "COMPLETED" });
+        dispatch(getClientJobs(""))
       }
     });
   };
@@ -336,9 +339,12 @@ const JobCard = ({
         </div>
         <div>
           <p className="font-medium text-gray-800">Worker Assigned</p>
-          <p>
-            {worker?.first_name || "-"} {worker?.last_name || "-"}
-          </p>
+          <div className="flex items-center gap-2">
+            <p>
+              {worker?.first_name || "-"} {worker?.last_name || "-"}
+            </p>
+            <FavouriteWorker worker_id={worker.id} />
+          </div>
         </div>
         <div>
           <span

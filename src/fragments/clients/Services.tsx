@@ -164,9 +164,11 @@ export const Service = ({ service }: { service: IService }) => {
 
       {/* Name & Location */}
       <div className="mb-4">
-        <h2 className="text-lg font-semibold text-darkPrimary">
-          {worker?.first_name} {worker?.last_name}
-        </h2>
+        <div className="flex items-center gap-2 justify-center">
+          <h2 className="text-lg font-semibold text-darkPrimary">
+            {worker?.first_name} {worker?.last_name}
+          </h2>
+        </div>
         <h3 className="text-2xl font-semibold text-primary">{service.title}</h3>
         <p className="text-sm text-gray-500">{service?.location}</p>
         <div className=" text-sm flex items-center justify-center m-auto my-2 text-center text-secondary">

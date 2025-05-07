@@ -1,9 +1,7 @@
 import Spinner from "@/Components/ui/Spinner";
 import { getWorkerSummary } from "@/redux/reviews/thunkActions";
 import { useAppSelector, useAppThunkDispatch } from "@/redux/store";
-import { getWorkerById } from "@/redux/worker/thunkActions";
 import { IWorkerSummary } from "@/types/reviews";
-import { IWorkerProfile } from "@/types/worker";
 import { useEffect, useState } from "react";
 import { FaRegStar, FaStar } from "react-icons/fa";
 import { IoEyeOutline } from "react-icons/io5";
@@ -66,23 +64,21 @@ export default WorkerFragment;
 const Worker = ({ worker }: { worker: IFavoriteWorker }) => {
   //   const navigate = useNavigate();
   const dispatch = useAppThunkDispatch();
-  const [workerData, setWorkerData] = useState<IWorkerProfile>();
+  const { worker: workerData } = worker;
   const [rating, setRating] = useState<IWorkerSummary>();
   const [viewWorker, setViewWorker] = useState(false);
   useEffect(() => {
-    if (worker.worker_id) {
-      dispatch(getWorkerSummary(worker.worker_id)).then((res) => {
+    console.log("viewWorker changed:", viewWorker);
+  }, [viewWorker]);
+  useEffect(() => {
+    if (worker.worker.id) {
+      dispatch(getWorkerSummary(worker.worker.id)).then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
           setRating(res.payload);
         }
       });
-      dispatch(getWorkerById(worker.worker_id)).then((res) => {
-        if (res.meta.requestStatus === "fulfilled") {
-          setWorkerData(res.payload);
-        }
-      });
     }
-  }, [dispatch, worker.worker_id]);
+  }, [dispatch, worker.worker.id]);
   return (
     <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border group cursor-pointer flex flex-col items-center text-center">
       {/* Profile Image */}
@@ -117,7 +113,7 @@ const Worker = ({ worker }: { worker: IFavoriteWorker }) => {
 
       {/*  */}
       <div className="border-t-2 border-b-2 py-4">
-        <p className="text-sm mt-2">{workerData?.bio.slice(0, 50)}... </p>
+        <p className="text-sm mt-2">{workerData?.bio?.slice(0, 50)}... </p>
       </div>
 
       {/* Skills */}
@@ -144,7 +140,7 @@ const Worker = ({ worker }: { worker: IFavoriteWorker }) => {
       <ResponsiveModal open={viewWorker} onOpenChange={setViewWorker}>
         <ResponsiveModalTrigger asChild>
           <button
-            // onClick={() => navigate(`/artisans/${profile.id}`)}
+            onClick={() => setViewWorker(true)}
             key={workerData?.id}
             className="mt-auto btn btn-primary w-full group-hover:bg-white group-hover:text-primary group-hover:border group-hover:border-primary transition-all"
           >
@@ -155,10 +151,7 @@ const Worker = ({ worker }: { worker: IFavoriteWorker }) => {
           <ResponsiveModalHeader>
             <ResponsiveModalTitle>Profile</ResponsiveModalTitle>
           </ResponsiveModalHeader>
-          {/* <CreateService
-            setAddModalOpen={setAddModal}
-            service={myServices.find((service) => service.id === id)}
-          /> */}
+
           {workerData && rating && (
             <ViewWorker
               service_id={""}
