@@ -3,6 +3,7 @@ import { AuthContext } from "./AuthContext";
 import { useAppThunkDispatch } from "@/redux/store";
 import { logOut } from "@/redux/auth/thunkActions";
 import { toast } from "react-toastify";
+import { clearCookies } from "@/lib/utils";
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -13,6 +14,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const dispatch = useAppThunkDispatch();
     try {
       await dispatch(logOut("")).unwrap();
+      clearCookies();
       localStorage.removeItem("token");
       window.location.href = "/auth/sign-in";
     } catch (error: any) {
@@ -26,7 +28,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   }
 
   function checkRole() {
-    return localStorage.getItem("role") || ""
+    return localStorage.getItem("role") || "";
   }
 
   return (

@@ -10,3 +10,10 @@ export const redirectToDashboard = (navigate: any, role: string | null) => {
   else if (role === "CLIENT") navigate("/client/dashboard");
   else navigate("/auth/sign-in");
 };
+
+ export const clearCookies = () => {
+  document.cookie.split(";").forEach((cookie) => {
+    const name = cookie.split("=")[0].trim();
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+  });
+};

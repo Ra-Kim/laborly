@@ -3,19 +3,34 @@ import { IReview } from "@/types/reviews";
 import { FaRegStar, FaStar } from "react-icons/fa";
 import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar";
 import { formatDistanceToNow } from "date-fns";
+import { useAppThunkDispatch } from "@/redux/store";
+import { useEffect, useState } from "react";
+import { getUserProfilePicture } from "@/redux/admin/thunkActions";
 
 const ReviewCard = ({ review }: { review: IReview }) => {
   const { client, worker, text, rating, created_at, job } = review;
   const { role } = useAuth();
   const isWorker = role() === "WORKER";
   const user = isWorker ? client : worker;
+  const dispatch = useAppThunkDispatch();
+  const [profilePicture, setProfilePicture] = useState<string | null>(null);
+  useEffect(() => {
+    dispatch(getUserProfilePicture(client?.id || "")).then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        setProfilePicture(res.payload.url);
+      }
+    });
+  }, [dispatch, client.id]);
 
   return (
     <div className="flex flex-col  sm:flex-1 w-full  max-w-full bg-white rounded-2xl shadow-md p-6 gap-4">
       {/* Header with avatar and name */}
       <div className="flex items-center gap-4">
         <Avatar className="w-12 h-12">
-          <AvatarImage src={""} alt={`${user.first_name} ${user.last_name}`} />
+          <AvatarImage
+            src={profilePicture || ""}
+            alt={`${user.first_name} ${user.last_name}`}
+          />
           <AvatarFallback>
             {user.first_name.charAt(0)}
             {user.last_name.charAt(0)}
@@ -39,11 +54,7 @@ const ReviewCard = ({ review }: { review: IReview }) => {
       {/* Rating */}
       <div className="flex gap-1 text-yellow-500">
         {Array.from({ length: 5 }, (_, index) =>
-          index < rating ? (
-            <FaStar key={index} />
-          ) : (
-            <FaRegStar key={index} />
-          )
+          index < rating ? <FaStar key={index} /> : <FaRegStar key={index} />
         )}
       </div>
 

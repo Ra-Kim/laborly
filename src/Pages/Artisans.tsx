@@ -23,7 +23,7 @@ const Artisans = () => {
   const [title, setTitle] = useState("");
   const dispatch = useAppThunkDispatch();
   useEffect(() => {
-    dispatch(searchServices({ location: "", title: "" }));
+    dispatch(searchServices({ location: "", query: "" }));
   }, [dispatch]);
 
   useEffect(() => {
@@ -35,10 +35,15 @@ const Artisans = () => {
         : searchedServices.filter((data) => {
             const matchesLocation =
               location === "" || data.location === location;
-            const includesTitle =
+            const includesValue =
               title === "" ||
-              data.title.toLowerCase().includes(title.toLowerCase());
-            return matchesLocation && includesTitle;
+              data.title.toLowerCase().includes(title.toLowerCase()) ||
+              data.worker.first_name
+                .toLowerCase()
+                .includes(title.toLowerCase()) ||
+              data.worker.last_name.toLowerCase().includes(title.toLowerCase());
+
+            return matchesLocation && includesValue;
           });
     setFilterItems(filteredItems);
   }, [location, title, searchedServices]);

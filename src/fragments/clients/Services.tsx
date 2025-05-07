@@ -25,7 +25,7 @@ import {
 } from "@/Components/ui/responsiveModal";
 import ViewWorker from "@/Components/modals/ViewWorker";
 import { useInView } from "react-intersection-observer";
-import { getWorkerProfilePicture } from "@/redux/worker/thunkActions";
+import { getUserProfilePicture } from "@/redux/admin/thunkActions";
 
 const ServiceFragment = () => {
   const { searchedServices, loading } = useAppSelector(
@@ -33,7 +33,7 @@ const ServiceFragment = () => {
   );
 
   const [location, setLocation] = useState("");
-  const [title, setTitle] = useState("");
+  const [query, setQuery] = useState("");
   const dispatch = useAppThunkDispatch();
   // Handle title with debounce
   useEffect(() => {
@@ -41,13 +41,13 @@ const ServiceFragment = () => {
       dispatch(
         searchServices({
           location,
-          title,
+          query
         })
       );
     }, 500); // 500ms debounce for title
 
     return () => clearTimeout(delayDebounce);
-  }, [dispatch, title]);
+  }, [dispatch, query]);
 
   // Handle location instantly
   useEffect(() => {
@@ -55,7 +55,7 @@ const ServiceFragment = () => {
     dispatch(
       searchServices({
         location,
-        title,
+        query,
       })
     );
   }, [dispatch, location]);
@@ -70,10 +70,10 @@ const ServiceFragment = () => {
             <input
               type="search"
               id="search"
-              placeholder="Search title"
-              value={title}
+              placeholder="Search"
+              value={query}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setTitle(e.target.value)
+                setQuery(e.target.value)
               }
               className="border-none outline-none w-[18rem]"
             />
@@ -139,7 +139,7 @@ export const Service = ({ service }: { service: IService }) => {
           setRating(res.payload);
         }
       });
-      dispatch(getWorkerProfilePicture(service.worker_id)).then((res) => {
+      dispatch(getUserProfilePicture(service.worker_id)).then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
           setWorkerProfilePicture(res.payload.url);
         }

@@ -1,3 +1,4 @@
+import { clearCookies } from "@/lib/utils";
 import { Id, toast } from "react-toastify";
 
 export const useApiErrorHandler = (
@@ -7,7 +8,8 @@ export const useApiErrorHandler = (
   },
   toastId?: Id
 ) => {
-  if (err.status_code === 401) {
+  if (err.status_code === 401 || err.status_code === 403) {
+    clearCookies();
     toast.error(`${err?.message}`);
     localStorage.clear();
     setTimeout(() => {
@@ -16,7 +18,7 @@ export const useApiErrorHandler = (
   }
   if (err.status_code === 429 || err.status_code === 404) {
     toast.clearWaitingQueue();
-    return
+    return;
   }
   if (toastId) {
     if (err.status_code === 429 || err.status_code === 404) {

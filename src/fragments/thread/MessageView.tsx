@@ -1,7 +1,7 @@
 import { FaStar, FaRegStar } from "react-icons/fa";
 import { MdLocationPin } from "react-icons/md";
 import MessageInput from "@/Components/ui/MessageInput";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { IUser } from "@/types/auth";
 import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar";
 import { useAppSelector, useAppThunkDispatch } from "@/redux/store";
@@ -12,6 +12,7 @@ import { IThread } from "@/types/messages";
 import { useAuth } from "@/hooks/useAuth";
 import { getWorkerById } from "@/redux/worker/thunkActions";
 import { getWorkerSummary } from "@/redux/reviews/thunkActions";
+import { getUserProfilePicture } from "@/redux/admin/thunkActions";
 // import { Button } from "@/Components/ui/button";
 // import CreateJobModal from "@/Components/modals/CreateJobModal";
 // import { createJob } from "@/redux/jobs/thunkActions";
@@ -37,14 +38,22 @@ const MessageView = ({ thread_id }: { thread_id: string }) => {
   }
   const otherParticipant = getOtherParticipant(participants, user.id);
   const { role } = useAuth();
+  const [profilePicture, setProfilePicture] = useState<string | null>(null);
   useEffect(() => {
     if (otherParticipant?.id) {
+      dispatch(getUserProfilePicture(otherParticipant?.id || "")).then(
+        (res) => {
+          if (res.meta.requestStatus === "fulfilled") {
+            setProfilePicture(res.payload.url);
+          }
+        }
+      );
       if (role() === "CLIENT") {
         dispatch(getWorkerById(otherParticipant.id));
         dispatch(getWorkerSummary(otherParticipant.id));
       }
     }
-  }, [otherParticipant?.id, role()]);
+  }, [otherParticipant?.id, role(), thread_id, dispatch]);
   const { worker } = useAppSelector(({ worker }) => worker);
   const { workerReviewSummary } = useAppSelector(({ review }) => review);
 
@@ -57,10 +66,7 @@ const MessageView = ({ thread_id }: { thread_id: string }) => {
             {/* Profile Image */}
             <div className="relative  ">
               <Avatar className="w-[3rem] h-[3rem]">
-                <AvatarImage
-                  src={otherParticipant?.profile_picture || ""}
-                  alt="pic"
-                />
+                <AvatarImage src={profilePicture || ""} alt="pic" />
                 <AvatarFallback>
                   {otherParticipant?.first_name?.charAt(0)}
                   {otherParticipant?.last_name?.charAt(0)}

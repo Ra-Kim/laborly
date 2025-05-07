@@ -1,6 +1,6 @@
 import MessageView from "@/fragments/thread/MessageView";
 import { useNavigate } from "react-router-dom";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useMediaQuery } from "@mui/material";
 import {
   Sheet,
@@ -14,6 +14,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar";
 import { IThread } from "@/types/messages";
 import { IUser } from "@/types/auth";
 import { useAuth } from "@/hooks/useAuth";
+import {  useAppThunkDispatch } from "@/redux/store";
+import { getUserProfilePicture } from "@/redux/admin/thunkActions";
 
 const ThreadCard = ({
   id,
@@ -41,6 +43,15 @@ const ThreadCard = ({
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const navigate = useNavigate();
   const { role } = useAuth();
+  const dispatch = useAppThunkDispatch();
+  const [profilePicture, setProfilePicture] = useState<string | null>(null);
+  useEffect(() => {
+    dispatch(getUserProfilePicture(otherParticipant?.id || "")).then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        setProfilePicture(res.payload.url);
+      }
+    });
+  }, [dispatch, otherParticipant?.id]);
   return (
     <>
       <div
@@ -58,10 +69,7 @@ const ThreadCard = ({
         }}
       >
         <Avatar className="w-[4rem] h-[4rem]">
-          <AvatarImage
-            src={otherParticipant?.profile_picture || ""}
-            alt="pic"
-          />
+          <AvatarImage src={profilePicture || ""} alt="pic" />
           <AvatarFallback>
             {otherParticipant?.first_name?.charAt(0)}
             {otherParticipant?.last_name?.charAt(0)}

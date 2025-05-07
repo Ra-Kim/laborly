@@ -131,9 +131,9 @@ export const getMyServices = createAsyncThunk(
 
 export const searchServices = createAsyncThunk(
   "search-services",
-  async (data: { location: string; title: string }, thunkAPI) => {
+  async (data: { location: string; query: string }, thunkAPI) => {
     const response = await useAxios({
-      url: `${BASE_URL}services/search?title=${data.title}&location=${data.location}`,
+      url: `${BASE_URL}services/search?query=${data.query}&location=${data.location}`,
       method: "GET",
     });
 
