@@ -25,6 +25,7 @@ import {
 } from "@/Components/ui/responsiveModal";
 import ViewWorker from "@/Components/modals/ViewWorker";
 import { useInView } from "react-intersection-observer";
+import { getWorkerProfilePicture } from "@/redux/worker/thunkActions";
 
 const ServiceFragment = () => {
   const { searchedServices, loading } = useAppSelector(
@@ -128,6 +129,7 @@ export const Service = ({ service }: { service: IService }) => {
   const { worker } = service;
   const dispatch = useAppThunkDispatch();
   const [rating, setRating] = useState<IWorkerSummary>();
+  const [workerProfilePicture, setWorkerProfilePicture] = useState<string>();
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.3 });
   const [viewWorker, setViewWorker] = useState(false);
   useEffect(() => {
@@ -135,6 +137,11 @@ export const Service = ({ service }: { service: IService }) => {
       dispatch(getWorkerSummary(service.worker_id)).then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
           setRating(res.payload);
+        }
+      });
+      dispatch(getWorkerProfilePicture(service.worker_id)).then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          setWorkerProfilePicture(res.payload.url);
         }
       });
     }
@@ -147,7 +154,7 @@ export const Service = ({ service }: { service: IService }) => {
       {/* Profile Image */}
       <div className="relative mb-4">
         <Avatar className="w-[10rem] h-[10rem]">
-          <AvatarImage src={worker?.profile_picture || ""} alt="pic" />
+          <AvatarImage src={workerProfilePicture || ""} alt="pic" />
           <AvatarFallback>
             {worker?.first_name?.charAt(0)}
             {worker?.last_name?.charAt(0)}

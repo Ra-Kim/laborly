@@ -54,7 +54,7 @@ const WorkerSlice = createSlice({
       return {
         ...state,
         loading: "successful",
-        clientProfilePicture: action.payload,
+        workerProfilePicture: action.payload,
       };
     });
     builder.addCase(getWorkerProfilePicture.rejected, (state) => {

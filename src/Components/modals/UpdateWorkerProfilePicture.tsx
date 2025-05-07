@@ -7,17 +7,17 @@ import { Button } from "@/Components/ui/button";
 import { toast } from "react-toastify";
 import { CloudUpload, RefreshCcw, Trash } from "lucide-react";
 import { useAppSelector, useAppThunkDispatch } from "@/redux/store";
-import { getClientProfilePicture, patchClientProfilePic } from "@/redux/client/thunkActions";
+import { getWorkerProfilePicture, patchWorkerProfilePic } from "@/redux/worker/thunkActions";
 
-const UpdateKYC = ({
+const UpdateWorkerProfilePic = ({
   setAddModalOpen,
 }: {
   setAddModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const { clientProfilePicture } = useAppSelector(({ client }) => client);
+  const { workerProfilePicture } = useAppSelector(({ worker }) => worker);
   const [preview, setPreview] = useState<string[] | undefined>(() => {
-    if (clientProfilePicture) {
-      return [clientProfilePicture];
+    if (workerProfilePicture) {
+      return [workerProfilePicture];
     } else return undefined;
   });
   const inputRef = useRef<HTMLInputElement>(null);
@@ -74,7 +74,7 @@ const UpdateKYC = ({
 
   const dispatch = useAppThunkDispatch();
   useEffect(() => {
-    dispatch(getClientProfilePicture(""));
+    dispatch(getWorkerProfilePicture(""));
   }, [dispatch]);
 
   const onSubmit: SubmitHandler<Yup.InferType<typeof validationSchema>> = (
@@ -87,11 +87,11 @@ const UpdateKYC = ({
       toast.error("Add selfie file");
       return;
     }
-    dispatch(patchClientProfilePic(formData)).then((res) => {
+    dispatch(patchWorkerProfilePic(formData)).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
         setPreview(undefined);
         setValue("profile_picture", null);
-        dispatch(getClientProfilePicture(""));
+        dispatch(getWorkerProfilePicture(""));
         setAddModalOpen(false);
       }
     });
@@ -171,4 +171,4 @@ const UpdateKYC = ({
   );
 };
 
-export default UpdateKYC;
+export default UpdateWorkerProfilePic;

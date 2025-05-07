@@ -43,7 +43,7 @@ export const getWorkerProfilePicture = createAsyncThunk(
       return thunkAPI.rejectWithValue(response.error);
     }
 
-    return response.data;
+    return response.data.url;
   }
 );
 

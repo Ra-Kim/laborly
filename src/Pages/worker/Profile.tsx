@@ -1,6 +1,10 @@
 import { getWorkerSummary } from "@/redux/reviews/thunkActions";
 import { useAppSelector, useAppThunkDispatch } from "@/redux/store";
-import { getWorkerKYC, getWorkerProfile, getWorkerProfilePicture } from "@/redux/worker/thunkActions";
+import {
+  getWorkerKYC,
+  getWorkerProfile,
+  getWorkerProfilePicture,
+} from "@/redux/worker/thunkActions";
 import { CheckCircle2Icon, ChevronLeft, Pencil } from "lucide-react";
 import { useEffect, useState } from "react";
 import { FaRegStar, FaStar } from "react-icons/fa";
@@ -17,7 +21,7 @@ import { IWorkerKYCStatus } from "@/types/worker";
 import Spinner from "@/Components/ui/Spinner";
 import UpdateKYC from "@/Components/modals/UpdateKYC";
 import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar";
-import UpdateProfilePicture from "@/Components/modals/UpdateProfilePicture";
+import UpdateWorkerProfilePicture from "@/Components/modals/UpdateWorkerProfilePicture";
 
 const Profile = () => {
   const [updateProfile, setUpdateProfile] = useState(false);
@@ -29,13 +33,17 @@ const Profile = () => {
   const dispatch = useAppThunkDispatch();
   useEffect(() => {
     dispatch(getWorkerKYC(""));
-    dispatch(getWorkerProfilePicture(""))
+    dispatch(getWorkerProfilePicture(""));
     dispatch(getWorkerProfile("")).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
         dispatch(getWorkerSummary(res.payload.id));
       }
     });
   }, [dispatch]);
+
+  useEffect(() => {
+    console.log(workerProfilePicture);
+  }, [workerProfilePicture]);
   const statusColors = {
     PENDING: "bg-yellow-100 text-yellow-700",
     APPROVED: "bg-green-100 text-green-700",
@@ -222,7 +230,7 @@ const Profile = () => {
             </div>
             <p className="">Update Profile Picture</p>
           </SheetTitle>
-          <UpdateProfilePicture setAddModalOpen={setUpdatePic} />
+          <UpdateWorkerProfilePicture setAddModalOpen={setUpdatePic} />
         </SheetContent>
       </Sheet>
     </>
