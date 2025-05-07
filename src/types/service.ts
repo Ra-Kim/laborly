@@ -1,3 +1,5 @@
+import { IWorkerProfile } from "./worker";
+
 export interface INewService {
   title: string;
   description: string;
@@ -12,4 +14,5 @@ export interface IService {
   worker_id: string;
   created_at: string;
   updated_at: string;
+  worker: IWorkerProfile
 }

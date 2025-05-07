@@ -6,13 +6,12 @@ export const useAxios = async (
   try {
     const response = await axios.request({
       ...request,
+      withCredentials: true,
       headers: {
         ...request.headers,
-        authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
 
-    console.log(response);
 
     // Example: check for unauthorized response
     if (response.status === 401) {

@@ -2,7 +2,6 @@ import { Button } from "@/Components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { acceptJob, completeJob } from "@/redux/jobs/thunkActions";
 import { useAppSelector, useAppThunkDispatch } from "@/redux/store";
-import { getWorkerById } from "@/redux/worker/thunkActions";
 import { IJob, jobStatus } from "@/types/jobs";
 import { ChevronUpIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
@@ -15,9 +14,6 @@ import {
 } from "@/Components/ui/responsiveModal";
 import CancelJob from "@/Components/modals/CancelJob";
 import WriteReview from "@/Components/modals/WriteReview";
-import { IService } from "@/types/service";
-import { IWorkerProfile } from "@/types/worker";
-import { getServiceById } from "@/redux/services/thunkActions";
 import { getClientJobs } from "@/redux/client/thunkActions";
 
 const statusMap = {
@@ -38,7 +34,6 @@ const statusStyles = {
 
 const WorkerJobs = () => {
   const [selectedJob, setSelectedJob] = useState<IJob | null>(null);
-
   const openSidebar = (job: IJob) => {
     setSelectedJob(job);
   };
@@ -124,23 +119,7 @@ const SelectedJob = ({
   const dispatch = useAppThunkDispatch();
   const { role } = useAuth();
 
-  const [service, setService] = useState<IService>();
-  const [worker, setWorker] = useState<IWorkerProfile>();
-  useEffect(() => {
-    dispatch(getWorkerById(selectedJob.worker_id)).then((res) => {
-      if (res.meta.requestStatus === "fulfilled") {
-        setWorker(res.payload);
-      }
-    });
-  }, [dispatch, selectedJob.worker_id]);
-
-  useEffect(() => {
-    dispatch(getServiceById(selectedJob.service_id)).then((res) => {
-      if (res.meta.requestStatus === "fulfilled") {
-        setService(res.payload);
-      }
-    });
-  }, [dispatch, selectedJob.worker_id]);
+  const { worker, service } = selectedJob;
 
   const closeSidebar = () => {
     setSelectedJob(null);
@@ -263,7 +242,7 @@ const SelectedJob = ({
                     onClick={() =>
                       acceptJobFunc({
                         job_id: selectedJob.id,
-                        worker_id: selectedJob?.worker_id,
+                        worker_id: selectedJob?.worker.id,
                       })
                     }
                   >
@@ -338,24 +317,7 @@ const JobCard = ({
   job: IJob;
   openSidebar: (job: IJob) => void;
 }) => {
-  const dispatch = useAppThunkDispatch();
-  const [service, setService] = useState<IService>();
-  const [worker, setWorker] = useState<IWorkerProfile>();
-  useEffect(() => {
-    dispatch(getWorkerById(job.worker_id)).then((res) => {
-      if (res.meta.requestStatus === "fulfilled") {
-        setWorker(res.payload);
-      }
-    });
-  }, [dispatch, job.worker_id]);
-
-  useEffect(() => {
-    dispatch(getServiceById(job.service_id)).then((res) => {
-      if (res.meta.requestStatus === "fulfilled") {
-        setService(res.payload);
-      }
-    });
-  }, [dispatch, job.worker_id]);
+  const { worker, service } = job;
 
   return (
     <div

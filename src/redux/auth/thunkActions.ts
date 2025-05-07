@@ -31,7 +31,7 @@ export const signUp = createAsyncThunk(
       render: response.data.detail || "Account created successfully!",
       type: "success",
       isLoading: false,
-      autoClose: 5000,
+      autoClose: 6000,
     });
 
     return response.data;

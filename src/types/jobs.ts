@@ -5,8 +5,22 @@ export interface ICreateJob {
 
 export interface IJob {
   id: string;
-  service_id: string;
-  worker_id: string;
+  service: {
+    title: string;
+    description: string;
+    location: string;
+    id: string;
+  };
+  worker: {
+    id: string;
+    first_name: string;
+    last_name: string;
+  };
+  client: {
+    id: string;
+    first_name: string;
+    last_name: string;
+  };
   status: string;
   started_at: string;
   completed_at: string | null;

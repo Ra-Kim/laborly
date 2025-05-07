@@ -40,7 +40,7 @@ const ClientProfile = () => {
                 {/* Avatar */}
                 <div className="relative w-[6rem] h-[6rem]">
                   <Avatar className="w-full h-full">
-                    <AvatarImage src={clientProfilePicture} alt="pic" />
+                    <AvatarImage src={clientProfilePicture || ""} alt="pic" />
                     <AvatarFallback className="rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white text-3xl font-bold">
                       {profile.first_name?.charAt(0)}
                       {profile.last_name?.charAt(0)}

@@ -29,10 +29,8 @@ const VerifyEmail = () => {
         setLoading(true);
         dispatch(verifyEmail(token)).then((res) => {
           if (res.meta.requestStatus === "fulfilled") {
-            navigate("/");
-          } else {
             navigate("/auth/sign-in");
-          }
+          } 
         });
         setLoading(false);
       } else {
@@ -80,7 +78,7 @@ const VerifyEmail = () => {
             <p className="text-[#50555CB2] mt-4">
               Check your spam folder or{" "}
               <span
-                className="text-[#121212E5] cursor-pointer"
+                className="text-blue-500 cursor-pointer text-xs"
                 onClick={resendEmailFunc}
               >
                 resend email

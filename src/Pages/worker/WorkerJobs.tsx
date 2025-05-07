@@ -14,10 +14,6 @@ import {
   ResponsiveModalTitle,
 } from "@/Components/ui/responsiveModal";
 import CancelJob from "@/Components/modals/CancelJob";
-import { getClientById } from "@/redux/client/thunkActions";
-import { IClientProfile } from "@/types/client";
-import { IService } from "@/types/service";
-import { getServiceById } from "@/redux/services/thunkActions";
 
 const statusMap = {
   NEGOTIATING: "Negotiating",
@@ -119,23 +115,7 @@ const SelectedJob = ({
   const dispatch = useAppThunkDispatch();
   const { role } = useAuth();
 
-  const [service, setService] = useState<IService>();
-  const [client, setClient] = useState<IClientProfile>();
-  useEffect(() => {
-    dispatch(getClientById(selectedJob.worker_id)).then((res) => {
-      if (res.meta.requestStatus === "fulfilled") {
-        setClient(res.payload);
-      }
-    });
-  }, [dispatch, selectedJob.worker_id]);
-
-  useEffect(() => {
-    dispatch(getServiceById(selectedJob.service_id)).then((res) => {
-      if (res.meta.requestStatus === "fulfilled") {
-        setService(res.payload);
-      }
-    });
-  }, [dispatch, selectedJob.worker_id]);
+  const { client, service } = selectedJob;
 
   const closeSidebar = () => {
     setSelectedJob(null);
@@ -258,7 +238,7 @@ const SelectedJob = ({
                     onClick={() =>
                       acceptJobFunc({
                         job_id: selectedJob.id,
-                        worker_id: selectedJob?.worker_id,
+                        worker_id: selectedJob?.worker.id,
                       })
                     }
                   >
@@ -319,24 +299,7 @@ const JobCard = ({
   job: IJob;
   openSidebar: (job: IJob) => void;
 }) => {
-  const [service, setService] = useState<IService>();
-  const [client, setClient] = useState<IClientProfile>();
-  const dispatch = useAppThunkDispatch();
-  useEffect(() => {
-    dispatch(getClientById(job.client_id)).then((res) => {
-      if (res.meta.requestStatus === "fulfilled") {
-        setClient(res.payload);
-      }
-    });
-  }, [dispatch, job.client_id]);
-
-  useEffect(() => {
-    dispatch(getServiceById(job.service_id)).then((res) => {
-      if (res.meta.requestStatus === "fulfilled") {
-        setService(res.payload);
-      }
-    });
-  }, [dispatch, job.service_id]);
+  const { client, service } = job;
 
   return (
     <div

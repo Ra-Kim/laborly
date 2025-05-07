@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   function checkAuthentication() {
-    const authToken = localStorage.getItem("token");
+    const authToken = localStorage.getItem("role");
     return !!authToken;
   }
 

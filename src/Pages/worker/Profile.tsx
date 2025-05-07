@@ -1,6 +1,6 @@
 import { getWorkerSummary } from "@/redux/reviews/thunkActions";
 import { useAppSelector, useAppThunkDispatch } from "@/redux/store";
-import { getWorkerKYC, getWorkerProfile } from "@/redux/worker/thunkActions";
+import { getWorkerKYC, getWorkerProfile, getWorkerProfilePicture } from "@/redux/worker/thunkActions";
 import { CheckCircle2Icon, ChevronLeft, Pencil } from "lucide-react";
 import { useEffect, useState } from "react";
 import { FaRegStar, FaStar } from "react-icons/fa";
@@ -29,6 +29,7 @@ const Profile = () => {
   const dispatch = useAppThunkDispatch();
   useEffect(() => {
     dispatch(getWorkerKYC(""));
+    dispatch(getWorkerProfilePicture(""))
     dispatch(getWorkerProfile("")).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
         dispatch(getWorkerSummary(res.payload.id));

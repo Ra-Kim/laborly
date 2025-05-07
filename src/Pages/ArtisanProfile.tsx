@@ -20,7 +20,6 @@ const ArtisanProfile = () => {
     const fetchArtisanData = async () => {
         const artisanData = profileData.find(artisan => artisan.id === Number(artisanId)) ?? null
         setArtisanInfo(artisanData)
-        console.log(artisanInfo)
     }
 
     useEffect(() => {

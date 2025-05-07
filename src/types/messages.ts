@@ -24,8 +24,17 @@ export interface IMessage {
 export interface IThread {
   id: string;
   created_at: string;
-  job_id: string;
-  is_closed: true;
+  job: {
+    id: string
+    status: string
+    service: {
+      title: string;
+      description: string;
+      location: string
+      id: string
+    };
+  };
+  is_closed: boolean;
   participants: {
     user: {
       id: string;

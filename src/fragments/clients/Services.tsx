@@ -2,10 +2,8 @@ import Spinner from "@/Components/ui/Spinner";
 import { getWorkerSummary } from "@/redux/reviews/thunkActions";
 import { searchServices } from "@/redux/services/thunkActions";
 import { useAppSelector, useAppThunkDispatch } from "@/redux/store";
-import { getWorkerById } from "@/redux/worker/thunkActions";
 import { IWorkerSummary } from "@/types/reviews";
 import { IService } from "@/types/service";
-import { IWorkerProfile } from "@/types/worker";
 import { SearchIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { FaRegStar, FaStar } from "react-icons/fa";
@@ -26,6 +24,7 @@ import {
   ResponsiveModalTitle,
 } from "@/Components/ui/responsiveModal";
 import ViewWorker from "@/Components/modals/ViewWorker";
+import { useInView } from "react-intersection-observer";
 
 const ServiceFragment = () => {
   const { searchedServices, loading } = useAppSelector(
@@ -126,26 +125,25 @@ export default ServiceFragment;
 
 export const Service = ({ service }: { service: IService }) => {
   //   const navigate = useNavigate();
+  const { worker } = service;
   const dispatch = useAppThunkDispatch();
-  const [worker, setWorker] = useState<IWorkerProfile>();
   const [rating, setRating] = useState<IWorkerSummary>();
+  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.3 });
   const [viewWorker, setViewWorker] = useState(false);
   useEffect(() => {
-    if (service.worker_id) {
+    if (inView && service.worker_id) {
       dispatch(getWorkerSummary(service.worker_id)).then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
           setRating(res.payload);
         }
       });
-      dispatch(getWorkerById(service.worker_id)).then((res) => {
-        if (res.meta.requestStatus === "fulfilled") {
-          setWorker(res.payload);
-        }
-      });
     }
-  }, [dispatch, service.worker_id]);
+  }, [dispatch, service.worker_id, inView]);
   return (
-    <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border group cursor-pointer flex flex-col items-center text-center">
+    <div
+      ref={ref}
+      className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border group cursor-pointer flex flex-col items-center text-center"
+    >
       {/* Profile Image */}
       <div className="relative mb-4">
         <Avatar className="w-[10rem] h-[10rem]">
@@ -179,7 +177,7 @@ export const Service = ({ service }: { service: IService }) => {
 
       {/*  */}
       <div className="border-t-2 border-b-2 py-4">
-        <p className="text-sm mt-2">{worker?.bio.slice(0, 50)}... </p>
+        <p className="text-sm mt-2">{worker?.bio?.slice(0, 50)}... </p>
       </div>
 
       {/* Skills */}
