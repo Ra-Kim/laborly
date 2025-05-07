@@ -57,10 +57,10 @@ const NavBar = () => {
 
         <div className="flex items-center justify-center gap-4 sm:gap-8">
           <button
-            onClick={() => navigate("/auth/sign-up")}
+            onClick={() => navigate("/auth/sign-in")}
             className="btn btn-primary hidden lg:block"
           >
-            Create an Account <IoIosSend />
+            Log In <IoIosSend />
           </button>
           {/* <button
             onClick={() => navigate("/auth/sign-in")}
