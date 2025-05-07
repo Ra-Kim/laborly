@@ -62,12 +62,12 @@ const NavBar = () => {
           >
             Create an Account <IoIosSend />
           </button>
-          <button
+          {/* <button
             onClick={() => navigate("/auth/sign-in")}
             className="btn hidden lg:inline-block border border-darkPrimary text-darkPrimary hover:scale-90 transition-all duration-300 px-4 py-2 rounded-md"
           >
             Sign in
-          </button>
+          </button> */}
 
           {/* Menu Icon */}
           <button onClick={toggleNavbar} className="inline-block lg:hidden">

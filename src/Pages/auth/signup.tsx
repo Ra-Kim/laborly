@@ -274,7 +274,7 @@ const Signup = () => {
             <Button type="submit">Create Account</Button>
           </form>
         </Form>
-        <div className="border-t border-t-[#4B555833] flex justify-center my-12">
+        {/* <div className="border-t border-t-[#4B555833] flex justify-center my-12">
           <p className="-mt-3 text-[#50555CD9] px-4 bg-white">
             Or Sign up with
           </p>
@@ -334,7 +334,7 @@ const Signup = () => {
               </div>
             </div>
           </ResponsiveModalContent>
-        </ResponsiveModal>
+        </ResponsiveModal> */}
       </div>
     </div>
   );
